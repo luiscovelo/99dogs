@@ -8,10 +8,10 @@
 		<version>2.3.0.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>99dogs-api-fai</groupId>
-	<artifactId>99dogs-api-fai</artifactId>
+	<groupId>99dogs-api</groupId>
+	<artifactId>99dogs-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>99dogs-api-fai</name>
+	<name>99dogs-api</name>
 	<description>Projeo 99dogs api</description>
 
 	<properties>

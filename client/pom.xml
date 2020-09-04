@@ -10,10 +10,10 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.fai.99dogs</groupId>
-	<artifactId>99dogs-fai</artifactId>
+	<artifactId>99dogs-client</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>99dogs</name>
-	<description>Demo project for Spring Boot</description>
+	<name>99dogs-client</name>
+	<description>99Dogs Client</description>
 
 	<properties>
 		<java.version>11</java.version>
@@ -60,15 +60,15 @@
 		</dependency>
 
 		<dependency>
-			<groupId>99dogs.model.fai</groupId>
-			<artifactId>99dogs-model-fai</artifactId>
+			<groupId>99dogs.model</groupId>
+			<artifactId>99dogs-model</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 
 		</dependency>
 
 		<dependency>
-			<groupId>99dogs.db.fai</groupId>
-			<artifactId>99dogs-db-fai</artifactId>
+			<groupId>99dogs.database</groupId>
+			<artifactId>99dogs-database</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 

@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>99dogs.db.fai</groupId>
-  <artifactId>99dogs-db-fai</artifactId>
+  <groupId>99dogs.database</groupId>
+  <artifactId>99dogs-database</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>99dogs-db-fai</name>
+  <name>99dogs-database</name>
   <description>Modulo do banco de dados do 99dogs</description>
   
   <properties>
@@ -20,7 +20,6 @@
 			<version>42.2.5</version>
 		</dependency>
 
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
@@ -28,10 +27,9 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>99dogs.model.fai</groupId>
-			<artifactId>99dogs-model-fai</artifactId>
+			<groupId>99dogs.model</groupId>
+			<artifactId>99dogs-model</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-
 		</dependency>
 	</dependencies>
 </project>
