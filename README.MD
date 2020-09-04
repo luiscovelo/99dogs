@@ -22,6 +22,6 @@ O projeto está divido em 4 partes isoladas onde cada um cumpre com uma função
 - Gabriel Carvalho
     - Repositório: https://github.com/GabrielCarvalho10
 - Luis Felipe
-    - Repostório: https://github.com/luiscovelo
+    - Repositório: https://github.com/luiscovelo
 - Marco Antônio
     - Repositório: https://github.com/Marcomatj
