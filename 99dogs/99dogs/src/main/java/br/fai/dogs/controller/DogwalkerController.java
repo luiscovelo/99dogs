@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/dogwalker")
 public class DogwalkerController {
 	
-	@GetMapping("/index")
+	@GetMapping("/dashboard")
 	public String getIndexPage(){
-		return "dogwalker/index";
+		return "dogwalker/dashboard";
 	}
 
 }

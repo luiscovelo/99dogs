@@ -13,9 +13,9 @@ public class ClienteControler {
 		return "cliente/feedback";
 	}
 	
-	@GetMapping("/index")
-	public String getIndexPage(){
-		return "cliente/index";
+	@GetMapping("/dashboard")
+	public String getDashboardPage(){
+		return "cliente/dashboard";
 	}
 	
 	@GetMapping("/meus-caes")

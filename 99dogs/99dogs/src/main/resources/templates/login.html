@@ -19,15 +19,15 @@
             <div class="wrap-login">
                 <div class="background-image-login text-center" id="background_image_login"></div>
                 <div class="background-login">
-                    <form action="#" class="login100" method="GET">
+                    <form action="#" class="login100" method="POST" th:object="${pessoa}" th:action="@{/login/autenticacao}">
 
                         <p id="msgLogin"></p>
                         <hr><br>
                         <div class="mb-3">
-                            <input id="email" type="email" class="form-control input-border" placeholder="Informe seu e-mail de acesso.">
+                            <input id="email" type="text" class="form-control input-border" placeholder="Informe seu e-mail de acesso." th:name="email">
                         </div>
                         <div class="mb-3">
-                            <input id="senha" type="password" class="form-control input-border" placeholder="Informe sua senha.">
+                            <input id="senha" type="password" class="form-control input-border" placeholder="Informe sua senha." th:name="senha">
                         </div>
                         <div class="mt-4">
                             <button type="submit" id="btnSubmit" class="btn btn-primary btn-block py-2">
@@ -75,11 +75,10 @@
             let msgLogin = document.querySelector("#msgLogin");
             let bg_login = document.querySelector("#background_image_login");
             let url = window.location.href;
-            let uriPage = url.split("?page=");
+            let uriPage = url.split("?type=");
             if (uriPage[1]) {
                 let form = document.querySelector("form");
                 if (form && uriPage[1] == "cliente") {
-                    form.action = "./cliente/index.html";
 
                     if (bg_login) {
                         bg_login.style.backgroundImage = "url(./assets/imgs/3824874.jpg)";
@@ -88,9 +87,11 @@
                     if (msgLogin) {
                         msgLogin.innerHTML = "Olá, faça seu login abaixo!"
                     }
-
+	
+                    document.querySelector("#email").value = "cliente";
+                    document.querySelector("#senha").value = "1";
+                    
                 } else if (form && uriPage[1] == "dogwalker") {
-                    form.action = "./dogwalker/index.html";
 
                     if (bg_login) {
                         bg_login.style.backgroundImage = "url(./assets/imgs/3723847.jpg)";
@@ -99,7 +100,10 @@
                     if (msgLogin) {
                         msgLogin.innerHTML = "Olá Dog Walker, faça seu login abaixo!"
                     }
-
+	
+                    document.querySelector("#email").value = "dogwalker";
+                    document.querySelector("#senha").value = "1";
+                    
                 }
 
             } else {

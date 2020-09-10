@@ -213,3 +213,12 @@ a {
         padding: 10px;
     }
 }
+
+.btn-login {
+	background: #0069D9!important;
+	color: #fff;
+}
+
+.btn-login:hover {
+	color: #fff!important;
+}

@@ -23,32 +23,32 @@
 
             <ul class="list-unstyled components">
                 <li>
-                    <a href="#">
+                    <a th:href="@{/cliente/dashboard}">
                         <i class="fa fa-tachometer space" aria-hidden="true"></i> Dashboard
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a th:href="@{/cliente/passeios}">
                         <i class="fa fa-calendar space" aria-hidden="true"></i> Meus Passeios
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a th:href="@{/cliente/meus-caes}">
                         <i class="fa fa-paw space" aria-hidden="true"></i> Meus Cães
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a th:href="@{/cliente/servicos}">
                         <i class="fa fa-list space" aria-hidden="true"></i> Serviços
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a th:href="@{/cliente/feedback}">
                         <i class="fa fa-rss space" aria-hidden="true"></i> Feedback
                     </a>
                 </li>
                 <li>
-                    <a href="../login.html?page=cliente">
+                    <a th:href="@{/login}">
                         <i class="fa fa-sign-out space" aria-hidden="true"></i> Desconectar
                     </a>
                 </li>
@@ -78,16 +78,8 @@
                     </div>
                 </div>
             </nav>
-
-            <div class="container-box">
-                <h2>Dashboard</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
-                    aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
-                    aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            </div>
-
-            <div class="line"></div>
+			
+			<div layout:fragment="body"></div>
 
         </div>
     </div>
