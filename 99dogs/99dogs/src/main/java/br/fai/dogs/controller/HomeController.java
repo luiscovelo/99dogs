@@ -11,14 +11,14 @@ public class HomeController {
 		return "home";
 	}
 	
-	@GetMapping("/creat-conta-cliente")
-	public String getCreatContaClientePage() {
-		return "creat-conta-cliente";
+	@GetMapping("/quero-encontrar-dogwalkers")
+	public String getCreateContaClientePage() {
+		return "create-conta-cliente";
 	}
 	
-	@GetMapping("/creat-conta-dog-walker")
-	public String getCreatContaDogWalkerPage() {
-		return "creat-conta-dog-walker";
+	@GetMapping("/quero-ser-um-dogwalker")
+	public String getCreateContaDogWalkerPage() {
+		return "create-conta-dog-walker";
 	}
 	
 	@GetMapping("/login")
