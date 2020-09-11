@@ -2,15 +2,15 @@ package br.fai.dogs.model.entities;
 
 public class Qualificacao extends BasePojo{
 	
-	private String titular;
+	private String titulo;
 	private String modalidade;
 	private String descricao;
 	private int profissional_id;
-	public String getTitular() {
-		return titular;
+	public String getTitulo() {
+		return titulo;
 	}
-	public void setTitular(String titular) {
-		this.titular = titular;
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
 	}
 	public String getModalidade() {
 		return modalidade;
