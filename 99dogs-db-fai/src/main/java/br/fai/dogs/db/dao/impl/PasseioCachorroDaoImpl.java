@@ -9,13 +9,13 @@ import java.util.List;
 
 import br.fai.dogs.db.connection.ConnectionFactory;
 import br.fai.dogs.db.dao.BaseDao;
-import br.fai.dogs.model.entities.Cachorro;
+import br.fai.dogs.model.entities.PasseioCachorro;
 
-public class CachorroDaoImpl implements BaseDao<Cachorro> {
+public class PasseioCachorroDaoImpl implements BaseDao<PasseioCachorro>{
 
 	@Override
-	public List<Cachorro> readAll() {
-		List<Cachorro> cachorros = new ArrayList<Cachorro>();
+	public List<PasseioCachorro> readAll() {
+		List<PasseioCachorro> passeiosCachorros = new ArrayList<PasseioCachorro>();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -24,7 +24,7 @@ public class CachorroDaoImpl implements BaseDao<Cachorro> {
 
 			connection = ConnectionFactory.getConnection();
 
-			String sql = "SELECT * FROM cachorro;";
+			String sql = "SELECT * FROM passeio_cachorro;";
 
 			preparedStatement = connection.prepareStatement(sql);
 
@@ -32,14 +32,12 @@ public class CachorroDaoImpl implements BaseDao<Cachorro> {
 
 			while (resultSet.next()) {
 
-				Cachorro cachorro = new Cachorro();
-				cachorro.setId(resultSet.getLong("id"));
-				cachorro.setNome(resultSet.getString("nome"));
-				cachorro.setDataNascimento(resultSet.getDate("data_nascimento"));
-				cachorro.setRacaId(resultSet.getInt("raca_id"));
-				cachorro.setClienteId(resultSet.getInt("cliente_id"));
+				PasseioCachorro passeioCachorro = new PasseioCachorro();
+				passeioCachorro.setId(resultSet.getLong("id"));
+				passeioCachorro.setPasseioId(resultSet.getInt("passeio_id"));
+				passeioCachorro.setCachorroId(resultSet.getInt("cachorro_id"));
 
-				cachorros.add(cachorro);
+				passeiosCachorros.add(passeioCachorro);
 
 			}
 
@@ -55,21 +53,19 @@ public class CachorroDaoImpl implements BaseDao<Cachorro> {
 	}
 
 	@Override
-	public boolean create(Cachorro entity) {
+	public boolean create(PasseioCachorro entity) {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
-		String sql = "INSERT INTO cachorro (nome, data_nascimento, raca_id, cliente_id)";
-		sql += " VALUES (?, ?, ?, ?); ";
+		String sql = "INSERT INTO passeio_cachorro (passeio_id, cachorro_id)";
+		sql += " VALUES (?, ?); ";
 
 		try {
 			connection = ConnectionFactory.getConnection();
 			connection.setAutoCommit(false);
 
-			preparedStatement.setString(1, entity.getNome());
-			preparedStatement.setDate(2, entity.getDataNascimento());
-			preparedStatement.setInt(3, entity.getRacaId());
-			preparedStatement.setInt(4, entity.getClienteId());
+			preparedStatement.setInt(1, entity.getPasseioId());
+			preparedStatement.setInt(2, entity.getCachorroId());
 
 			preparedStatement.execute();
 
@@ -88,8 +84,8 @@ public class CachorroDaoImpl implements BaseDao<Cachorro> {
 	}
 
 	@Override
-	public Cachorro readById(Long id) {
-		Cachorro cachorro = null;
+	public PasseioCachorro readById(Long id) {
+		PasseioCachorro passeioCachorro = null;
 
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -98,7 +94,7 @@ public class CachorroDaoImpl implements BaseDao<Cachorro> {
 		try {
 			connection = ConnectionFactory.getConnection();
 
-			String sql = "SELECT * FROM cachorro WHERE id = ?";
+			String sql = "SELECT * FROM passeio_cachorro WHERE id = ?";
 
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setLong(1, id);
@@ -106,12 +102,10 @@ public class CachorroDaoImpl implements BaseDao<Cachorro> {
 			resultSet = preparedStatement.executeQuery();
 
 			if (resultSet.next()) {
-				cachorro = new Cachorro();
-				cachorro.setId(resultSet.getLong("id"));
-				cachorro.setNome(resultSet.getString("nome"));
-				cachorro.setDataNascimento(resultSet.getDate("data_nascimento"));
-				cachorro.setRacaId(resultSet.getInt("raca_id"));
-				cachorro.setClienteId(resultSet.getInt("cliente_id"));
+				passeioCachorro = new PasseioCachorro();
+				passeioCachorro.setId(resultSet.getLong("id"));
+				passeioCachorro.setPasseioId(resultSet.getInt("passeio_id"));
+				passeioCachorro.setCachorroId(resultSet.getInt("cachorro_id"));
 
 			}
 
@@ -121,26 +115,25 @@ public class CachorroDaoImpl implements BaseDao<Cachorro> {
 			ConnectionFactory.close(resultSet, preparedStatement, connection);
 		}
 
-		return cachorro;
+		return passeioCachorro;
 	}
 
 	@Override
-	public boolean update(Cachorro entity) {
+	public boolean update(PasseioCachorro entity) {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
-		String sql = "UPDATE cachorro SET nome = ?, data_nascimento = ?, raca_id = ?, cliente_id = ? WHERE id = ?;";
+		String sql = "UPDATE passeio_cachorro SET passeio_id = ?, cachorro_id = ? WHERE id = ?;";
 
 		try {
 			connection = ConnectionFactory.getConnection();
 			connection.setAutoCommit(false);
 
 			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setString(1, entity.getNome());
-			preparedStatement.setDate(2, entity.getDataNascimento());
-			preparedStatement.setInt(3, entity.getRacaId());
-			preparedStatement.setInt(4, entity.getClienteId());
-			preparedStatement.setLong(5, entity.getId());
+			preparedStatement.setInt(1, entity.getPasseioId());
+			preparedStatement.setInt(2, entity.getCachorroId());
+			preparedStatement.setLong(3, entity.getId());
+			
 
 			preparedStatement.execute();
 			connection.commit();
@@ -164,7 +157,7 @@ public class CachorroDaoImpl implements BaseDao<Cachorro> {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
-		String sql = "DELETE FROM cachorro WHERE id = ?;";
+		String sql = "DELETE FROM passeio_cachorro WHERE id = ?;";
 
 		try {
 
@@ -189,4 +182,5 @@ public class CachorroDaoImpl implements BaseDao<Cachorro> {
 		}
 	}
 
+	
 }

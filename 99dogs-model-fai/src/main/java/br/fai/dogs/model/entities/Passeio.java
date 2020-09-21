@@ -5,15 +5,16 @@ import java.sql.Time;
 
 public class Passeio extends BasePojo{
 
-	private Date date;
+	private Date data;
 	private Time hora;
 	private String status;
 	private double valor;
-	public Date getDate() {
-		return date;
+	
+	public Date getData() {
+		return data;
 	}
-	public void setDate(Date date) {
-		this.date = date;
+	public void setData(Date data) {
+		this.data = data;
 	}
 	public Time getHora() {
 		return hora;
@@ -35,7 +36,7 @@ public class Passeio extends BasePojo{
 	}
 	@Override
 	public String toString() {
-		return "Passeio [date=" + date + ", hora=" + hora + ", status=" + status + ", valor=" + valor + "]";
+		return "Passeio [data=" + data + ", hora=" + hora + ", status=" + status + ", valor=" + valor + "]";
 	}
 	
 	

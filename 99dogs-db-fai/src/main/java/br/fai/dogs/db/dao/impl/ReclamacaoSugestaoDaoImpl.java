@@ -9,13 +9,13 @@ import java.util.List;
 
 import br.fai.dogs.db.connection.ConnectionFactory;
 import br.fai.dogs.db.dao.BaseDao;
-import br.fai.dogs.model.entities.Cachorro;
+import br.fai.dogs.model.entities.ReclamacaoSugestao;
 
-public class CachorroDaoImpl implements BaseDao<Cachorro> {
+public class ReclamacaoSugestaoDaoImpl implements BaseDao<ReclamacaoSugestao>{
 
 	@Override
-	public List<Cachorro> readAll() {
-		List<Cachorro> cachorros = new ArrayList<Cachorro>();
+	public List<ReclamacaoSugestao> readAll() {
+		List<ReclamacaoSugestao> reclamacoesSugestoes = new ArrayList<ReclamacaoSugestao>();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -24,7 +24,7 @@ public class CachorroDaoImpl implements BaseDao<Cachorro> {
 
 			connection = ConnectionFactory.getConnection();
 
-			String sql = "SELECT * FROM cachorro;";
+			String sql = "SELECT * FROM reclamacao_sugestao;";
 
 			preparedStatement = connection.prepareStatement(sql);
 
@@ -32,14 +32,14 @@ public class CachorroDaoImpl implements BaseDao<Cachorro> {
 
 			while (resultSet.next()) {
 
-				Cachorro cachorro = new Cachorro();
-				cachorro.setId(resultSet.getLong("id"));
-				cachorro.setNome(resultSet.getString("nome"));
-				cachorro.setDataNascimento(resultSet.getDate("data_nascimento"));
-				cachorro.setRacaId(resultSet.getInt("raca_id"));
-				cachorro.setClienteId(resultSet.getInt("cliente_id"));
+				ReclamacaoSugestao reclamacaoSugestao = new ReclamacaoSugestao();
+				reclamacaoSugestao.setId(resultSet.getLong("id"));
+				reclamacaoSugestao.setNome(resultSet.getString("nome"));
+				reclamacaoSugestao.setEmail(resultSet.getString("email"));
+				reclamacaoSugestao.setAssunto(resultSet.getString("assunto"));
+				reclamacaoSugestao.setMensagem(resultSet.getString("mensagem"));
 
-				cachorros.add(cachorro);
+				reclamacoesSugestoes.add(reclamacaoSugestao);
 
 			}
 
@@ -55,11 +55,11 @@ public class CachorroDaoImpl implements BaseDao<Cachorro> {
 	}
 
 	@Override
-	public boolean create(Cachorro entity) {
+	public boolean create(ReclamacaoSugestao entity) {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
-		String sql = "INSERT INTO cachorro (nome, data_nascimento, raca_id, cliente_id)";
+		String sql = "INSERT INTO reclamacao_sugestao (nome, email, assunto, mensagem)";
 		sql += " VALUES (?, ?, ?, ?); ";
 
 		try {
@@ -67,9 +67,9 @@ public class CachorroDaoImpl implements BaseDao<Cachorro> {
 			connection.setAutoCommit(false);
 
 			preparedStatement.setString(1, entity.getNome());
-			preparedStatement.setDate(2, entity.getDataNascimento());
-			preparedStatement.setInt(3, entity.getRacaId());
-			preparedStatement.setInt(4, entity.getClienteId());
+			preparedStatement.setString(2, entity.getEmail());
+			preparedStatement.setString(3, entity.getAssunto());
+			preparedStatement.setString(4, entity.getMensagem());
 
 			preparedStatement.execute();
 
@@ -88,8 +88,8 @@ public class CachorroDaoImpl implements BaseDao<Cachorro> {
 	}
 
 	@Override
-	public Cachorro readById(Long id) {
-		Cachorro cachorro = null;
+	public ReclamacaoSugestao readById(Long id) {
+		ReclamacaoSugestao reclamacaoSugestao = null;
 
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -98,7 +98,7 @@ public class CachorroDaoImpl implements BaseDao<Cachorro> {
 		try {
 			connection = ConnectionFactory.getConnection();
 
-			String sql = "SELECT * FROM cachorro WHERE id = ?";
+			String sql = "SELECT * FROM reclamacao_sugestao WHERE id = ?";
 
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setLong(1, id);
@@ -106,12 +106,12 @@ public class CachorroDaoImpl implements BaseDao<Cachorro> {
 			resultSet = preparedStatement.executeQuery();
 
 			if (resultSet.next()) {
-				cachorro = new Cachorro();
-				cachorro.setId(resultSet.getLong("id"));
-				cachorro.setNome(resultSet.getString("nome"));
-				cachorro.setDataNascimento(resultSet.getDate("data_nascimento"));
-				cachorro.setRacaId(resultSet.getInt("raca_id"));
-				cachorro.setClienteId(resultSet.getInt("cliente_id"));
+				reclamacaoSugestao = new ReclamacaoSugestao();
+				reclamacaoSugestao.setId(resultSet.getLong("id"));
+				reclamacaoSugestao.setNome(resultSet.getString("nome"));
+				reclamacaoSugestao.setEmail(resultSet.getString("email"));
+				reclamacaoSugestao.setAssunto(resultSet.getString("assunto"));
+				reclamacaoSugestao.setMensagem(resultSet.getString("mensagem"));
 
 			}
 
@@ -121,15 +121,15 @@ public class CachorroDaoImpl implements BaseDao<Cachorro> {
 			ConnectionFactory.close(resultSet, preparedStatement, connection);
 		}
 
-		return cachorro;
+		return reclamacaoSugestao;
 	}
 
 	@Override
-	public boolean update(Cachorro entity) {
+	public boolean update(ReclamacaoSugestao entity) {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
-		String sql = "UPDATE cachorro SET nome = ?, data_nascimento = ?, raca_id = ?, cliente_id = ? WHERE id = ?;";
+		String sql = "UPDATE reclamacao_sugestao SET nome = ?, email = ?, assunto = ?, mensagem = ? WHERE id = ?;";
 
 		try {
 			connection = ConnectionFactory.getConnection();
@@ -137,9 +137,9 @@ public class CachorroDaoImpl implements BaseDao<Cachorro> {
 
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, entity.getNome());
-			preparedStatement.setDate(2, entity.getDataNascimento());
-			preparedStatement.setInt(3, entity.getRacaId());
-			preparedStatement.setInt(4, entity.getClienteId());
+			preparedStatement.setString(2, entity.getEmail());
+			preparedStatement.setString(3, entity.getAssunto());
+			preparedStatement.setString(4, entity.getMensagem());
 			preparedStatement.setLong(5, entity.getId());
 
 			preparedStatement.execute();
@@ -164,7 +164,7 @@ public class CachorroDaoImpl implements BaseDao<Cachorro> {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
-		String sql = "DELETE FROM cachorro WHERE id = ?;";
+		String sql = "DELETE FROM reclamacao_sugestao WHERE id = ?;";
 
 		try {
 

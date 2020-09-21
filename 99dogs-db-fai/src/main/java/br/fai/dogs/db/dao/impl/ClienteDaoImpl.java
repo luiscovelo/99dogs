@@ -9,13 +9,13 @@ import java.util.List;
 
 import br.fai.dogs.db.connection.ConnectionFactory;
 import br.fai.dogs.db.dao.BaseDao;
-import br.fai.dogs.model.entities.Cachorro;
+import br.fai.dogs.model.entities.Cliente;
 
-public class CachorroDaoImpl implements BaseDao<Cachorro> {
+public class ClienteDaoImpl implements BaseDao<Cliente>{
 
 	@Override
-	public List<Cachorro> readAll() {
-		List<Cachorro> cachorros = new ArrayList<Cachorro>();
+	public List<Cliente> readAll() {
+		List<Cliente> clientes = new ArrayList<Cliente>();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -24,7 +24,7 @@ public class CachorroDaoImpl implements BaseDao<Cachorro> {
 
 			connection = ConnectionFactory.getConnection();
 
-			String sql = "SELECT * FROM cachorro;";
+			String sql = "SELECT * FROM cliente;";
 
 			preparedStatement = connection.prepareStatement(sql);
 
@@ -32,14 +32,11 @@ public class CachorroDaoImpl implements BaseDao<Cachorro> {
 
 			while (resultSet.next()) {
 
-				Cachorro cachorro = new Cachorro();
-				cachorro.setId(resultSet.getLong("id"));
-				cachorro.setNome(resultSet.getString("nome"));
-				cachorro.setDataNascimento(resultSet.getDate("data_nascimento"));
-				cachorro.setRacaId(resultSet.getInt("raca_id"));
-				cachorro.setClienteId(resultSet.getInt("cliente_id"));
-
-				cachorros.add(cachorro);
+				Cliente cliente = new Cliente();
+				cliente.setId(resultSet.getLong("id"));
+				cliente.setPessoaId(resultSet.getInt("pessoa_id"));
+				
+				clientes.add(cliente);
 
 			}
 
@@ -55,21 +52,18 @@ public class CachorroDaoImpl implements BaseDao<Cachorro> {
 	}
 
 	@Override
-	public boolean create(Cachorro entity) {
+	public boolean create(Cliente entity) {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
-		String sql = "INSERT INTO cachorro (nome, data_nascimento, raca_id, cliente_id)";
-		sql += " VALUES (?, ?, ?, ?); ";
+		String sql = "INSERT INTO cliente (pessoa_id)";
+		sql += " VALUES (?); ";
 
 		try {
 			connection = ConnectionFactory.getConnection();
 			connection.setAutoCommit(false);
 
-			preparedStatement.setString(1, entity.getNome());
-			preparedStatement.setDate(2, entity.getDataNascimento());
-			preparedStatement.setInt(3, entity.getRacaId());
-			preparedStatement.setInt(4, entity.getClienteId());
+			preparedStatement.setInt(1, entity.getPessoaId());
 
 			preparedStatement.execute();
 
@@ -88,8 +82,8 @@ public class CachorroDaoImpl implements BaseDao<Cachorro> {
 	}
 
 	@Override
-	public Cachorro readById(Long id) {
-		Cachorro cachorro = null;
+	public Cliente readById(Long id) {
+		Cliente cliente = null;
 
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -98,7 +92,7 @@ public class CachorroDaoImpl implements BaseDao<Cachorro> {
 		try {
 			connection = ConnectionFactory.getConnection();
 
-			String sql = "SELECT * FROM cachorro WHERE id = ?";
+			String sql = "SELECT * FROM cliente WHERE id = ?";
 
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setLong(1, id);
@@ -106,12 +100,9 @@ public class CachorroDaoImpl implements BaseDao<Cachorro> {
 			resultSet = preparedStatement.executeQuery();
 
 			if (resultSet.next()) {
-				cachorro = new Cachorro();
-				cachorro.setId(resultSet.getLong("id"));
-				cachorro.setNome(resultSet.getString("nome"));
-				cachorro.setDataNascimento(resultSet.getDate("data_nascimento"));
-				cachorro.setRacaId(resultSet.getInt("raca_id"));
-				cachorro.setClienteId(resultSet.getInt("cliente_id"));
+				cliente = new Cliente();
+				cliente.setId(resultSet.getLong("id"));
+				cliente.setPessoaId(resultSet.getInt("pessoa_id"));
 
 			}
 
@@ -121,27 +112,24 @@ public class CachorroDaoImpl implements BaseDao<Cachorro> {
 			ConnectionFactory.close(resultSet, preparedStatement, connection);
 		}
 
-		return cachorro;
+		return cliente;
 	}
 
 	@Override
-	public boolean update(Cachorro entity) {
+	public boolean update(Cliente entity) {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
-		String sql = "UPDATE cachorro SET nome = ?, data_nascimento = ?, raca_id = ?, cliente_id = ? WHERE id = ?;";
+		String sql = "UPDATE cliente SET pessoa_id = ? WHERE id = ?;";
 
 		try {
 			connection = ConnectionFactory.getConnection();
 			connection.setAutoCommit(false);
 
 			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setString(1, entity.getNome());
-			preparedStatement.setDate(2, entity.getDataNascimento());
-			preparedStatement.setInt(3, entity.getRacaId());
-			preparedStatement.setInt(4, entity.getClienteId());
-			preparedStatement.setLong(5, entity.getId());
-
+			preparedStatement.setInt(1, entity.getPessoaId());
+			preparedStatement.setLong(2, entity.getId());
+			
 			preparedStatement.execute();
 			connection.commit();
 			return true;
@@ -164,7 +152,7 @@ public class CachorroDaoImpl implements BaseDao<Cachorro> {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
-		String sql = "DELETE FROM cachorro WHERE id = ?;";
+		String sql = "DELETE FROM cliente WHERE id = ?;";
 
 		try {
 
@@ -188,5 +176,6 @@ public class CachorroDaoImpl implements BaseDao<Cachorro> {
 			ConnectionFactory.close(preparedStatement, connection);
 		}
 	}
+
 
 }

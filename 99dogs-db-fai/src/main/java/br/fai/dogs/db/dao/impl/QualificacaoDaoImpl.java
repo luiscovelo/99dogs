@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.fai.dogs.db.connection.ConnectionFactory;
-import br.fai.dogs.db.dao.EntityInterface;
+import br.fai.dogs.db.dao.BaseDao;
 import br.fai.dogs.model.entities.Qualificacao;
 
-public class QualificacaoDaoImpl implements EntityInterface<Qualificacao> {
+public class QualificacaoDaoImpl implements BaseDao<Qualificacao> {
 
 	@Override
 	public List<Qualificacao> readAll() {
@@ -37,7 +37,7 @@ public class QualificacaoDaoImpl implements EntityInterface<Qualificacao> {
 				qualificacao.setTitulo(resultSet.getString("titulo"));
 				qualificacao.setModalidade(resultSet.getString("modalidade"));
 				qualificacao.setDescricao(resultSet.getString("descricao"));
-				qualificacao.setProfissional_id(resultSet.getInt("profissionalId"));
+				qualificacao.setProfissionalId(resultSet.getInt("profissional_id"));
 
 				qualificacoes.add(qualificacao);
 
@@ -59,7 +59,7 @@ public class QualificacaoDaoImpl implements EntityInterface<Qualificacao> {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
-		String sql = "INSERT INTO qualificacao (titulo, modalidade, descricao, profissionalId ";
+		String sql = "INSERT INTO qualificacao (titulo, modalidade, descricao, profissional_id ";
 		sql += " VALUES (?, ?, ?, ?); ";
 
 		try {
@@ -69,7 +69,7 @@ public class QualificacaoDaoImpl implements EntityInterface<Qualificacao> {
 			preparedStatement.setString(1, entity.getTitulo());
 			preparedStatement.setString(2, entity.getModalidade());
 			preparedStatement.setString(3, entity.getDescricao());
-			preparedStatement.setInt(4, entity.getProfissional_id());
+			preparedStatement.setInt(4, entity.getProfissionalId());
 
 			preparedStatement.execute();
 
@@ -111,7 +111,7 @@ public class QualificacaoDaoImpl implements EntityInterface<Qualificacao> {
 				qualificacao.setTitulo(resultSet.getString("titulo"));
 				qualificacao.setModalidade(resultSet.getString("modalidade"));
 				qualificacao.setDescricao(resultSet.getString("descricao"));
-				qualificacao.setProfissional_id(resultSet.getInt("profissionalId"));
+				qualificacao.setProfissionalId(resultSet.getInt("profissional_id"));
 
 			}
 
@@ -129,7 +129,7 @@ public class QualificacaoDaoImpl implements EntityInterface<Qualificacao> {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
-		String sql = "UPDATE qualificacao SET titulo = ?, modalidade = ?, descricao = ?, profissionalId = ? WHERE id = ?;";
+		String sql = "UPDATE qualificacao SET titulo = ?, modalidade = ?, descricao = ?, profissional_id = ? WHERE id = ?;";
 
 		try {
 			connection = ConnectionFactory.getConnection();
@@ -139,7 +139,7 @@ public class QualificacaoDaoImpl implements EntityInterface<Qualificacao> {
 			preparedStatement.setString(1, entity.getTitulo());
 			preparedStatement.setString(2, entity.getModalidade());
 			preparedStatement.setString(3, entity.getDescricao());
-			preparedStatement.setInt(4, entity.getProfissional_id());
+			preparedStatement.setInt(4, entity.getProfissionalId());
 			preparedStatement.setLong(5, entity.getId());
 
 			preparedStatement.execute();

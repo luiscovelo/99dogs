@@ -5,12 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.fai.dogs.api.service.PessoaService;
+import br.fai.dogs.api.service.BaseService;
 import br.fai.dogs.db.dao.EntityInterface;
 import br.fai.dogs.model.entities.Pessoa;
 
 @Service
-public class PessoaServiceImpl implements PessoaService{
+public class PessoaServiceImpl implements BaseService{
 
 	@Autowired
 	private EntityInterface pessoaDao;
