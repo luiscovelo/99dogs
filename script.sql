@@ -89,3 +89,4 @@ create table if not exists passeio_cachorro(
 	cachorro_id integer references passeio(id) on update cascade,
 	primary key(passeio_id, cachorro_id)
 );
+
