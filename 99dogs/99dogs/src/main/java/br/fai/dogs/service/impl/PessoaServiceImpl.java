@@ -4,14 +4,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import br.fai.dogs.db.dao.PessoaDao;
+import br.fai.dogs.db.dao.BaseDao;
 import br.fai.dogs.model.entities.Pessoa;
 import br.fai.dogs.service.PessoaService;
 
 public class PessoaServiceImpl implements PessoaService{
 
 	@Autowired
-	private PessoaDao pessoaDao;
+	private BaseDao pessoaDao;
 	
 	@Override
 	public List<Pessoa> readAll() {

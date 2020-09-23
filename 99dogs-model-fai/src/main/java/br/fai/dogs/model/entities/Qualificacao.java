@@ -2,15 +2,15 @@ package br.fai.dogs.model.entities;
 
 public class Qualificacao extends BasePojo{
 	
-	private String titular;
+	private String titulo;
 	private String modalidade;
 	private String descricao;
-	private int profissional_id;
-	public String getTitular() {
-		return titular;
+	private int profissionalId;
+	public String getTitulo() {
+		return titulo;
 	}
-	public void setTitular(String titular) {
-		this.titular = titular;
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
 	}
 	public String getModalidade() {
 		return modalidade;
@@ -24,16 +24,16 @@ public class Qualificacao extends BasePojo{
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-	public int getProfissional_id() {
-		return profissional_id;
+	public int getProfissionalId() {
+		return profissionalId;
 	}
-	public void setProfissional_id(int profissional_id) {
-		this.profissional_id = profissional_id;
+	public void setProfissionalId(int profissionalId) {
+		this.profissionalId = profissionalId;
 	}
 	@Override
 	public String toString() {
-		return "Qualificacao [titular=" + titular + ", modalidade=" + modalidade + ", descricao=" + descricao
-				+ ", profissional_id=" + profissional_id + "]";
+		return "Qualificacao [titulo=" + titulo + ", modalidade=" + modalidade + ", descricao=" + descricao
+				+ ", profissionalId=" + profissionalId + "]";
 	}
 	
 	
