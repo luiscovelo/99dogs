@@ -6,25 +6,43 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.fai.dogs.api.service.BaseService;
-import br.fai.dogs.db.dao.EntityInterface;
+import br.fai.dogs.db.dao.BaseDao;
 import br.fai.dogs.model.entities.Pessoa;
 
 @Service
 public class PessoaServiceImpl implements BaseService{
 
 	@Autowired
-	private EntityInterface pessoaDao;
+	private BaseDao pessoaDao;
 	
 	@Override
-	public List<Pessoa> readAll() {
-		
-		return pessoaDao.readAll();
+	public boolean create(Object entity) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
-	public boolean create(Pessoa entity) {
-		
-		return pessoaDao.create(entity);
+	public Object readById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean update(Object entity) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean deleteById(Long id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public List readAll() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
