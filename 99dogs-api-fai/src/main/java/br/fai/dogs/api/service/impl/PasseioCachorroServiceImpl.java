@@ -7,42 +7,42 @@ import org.springframework.stereotype.Service;
 
 import br.fai.dogs.api.service.BaseService;
 import br.fai.dogs.db.dao.BaseDao;
-import br.fai.dogs.model.entities.Pessoa;
+import br.fai.dogs.model.entities.PasseioCachorro;
 
 @Service
-public class PessoaServiceImpl implements BaseService{
+public class PasseioCachorroServiceImpl implements BaseService{
+
 
 	@Autowired
-	private BaseDao<Object> pessoaDao;
+	private BaseDao<Object> passeioCachorroDao;
 	
 	@Override
 	public boolean create(Object entity) {
 		
-		return pessoaDao.create(entity);
+		return passeioCachorroDao.create(entity);
 	}
 
 	@Override
-	public Pessoa readById(Long id) {
+	public PasseioCachorro readById(Long id) {
 		
-		return (Pessoa) pessoaDao.readById(id);
+		return (PasseioCachorro) passeioCachorroDao.readById(id);
 	}
 
 	@Override
 	public boolean update(Object entity) {
 		
-		return pessoaDao.update(entity);
+		return passeioCachorroDao.update(entity);
 	}
 
 	@Override
 	public boolean deleteById(Long id) {
 		
-		return pessoaDao.deleteById(id);
+		return passeioCachorroDao.deleteById(id);
 	}
 
 	@Override
 	public List readAll() {
 		
-		return pessoaDao.readAll();
+		return passeioCachorroDao.readAll();
 	}
-
 }
