@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.fai.dogs.api.service.BaseService;
+import br.fai.dogs.api.service.ReclamacaoSugestaoService;
 import br.fai.dogs.model.entities.ReclamacaoSugestao;
 
 @RestController
@@ -23,7 +23,7 @@ import br.fai.dogs.model.entities.ReclamacaoSugestao;
 public class ReclamacaoSugestaoRestController {
 
 	@Autowired
-	private BaseService reclamacaoSugestaoService;
+	private ReclamacaoSugestaoService reclamacaoSugestaoService;
 	
 	@GetMapping("/read-all")
 	public ResponseEntity<List<ReclamacaoSugestao>> readAll(){

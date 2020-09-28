@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.fai.dogs.api.service.BaseService;
+import br.fai.dogs.api.service.ClienteService;
 import br.fai.dogs.model.entities.Cliente;
 
 @RestController
@@ -23,7 +23,7 @@ import br.fai.dogs.model.entities.Cliente;
 public class ClienteRestController {
 	
 	@Autowired
-	private BaseService clienteService;
+	private ClienteService clienteService;
 	
 	@GetMapping("/read-all")
 	public ResponseEntity<List<Cliente>> readAll(){

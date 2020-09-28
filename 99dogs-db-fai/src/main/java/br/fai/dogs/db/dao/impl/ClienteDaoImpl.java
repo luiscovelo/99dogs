@@ -7,11 +7,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import br.fai.dogs.db.connection.ConnectionFactory;
-import br.fai.dogs.db.dao.BaseDao;
+import br.fai.dogs.db.dao.ClienteDao;
 import br.fai.dogs.model.entities.Cliente;
 
-public class ClienteDaoImpl implements BaseDao<Cliente>{
+@Repository
+public class ClienteDaoImpl implements ClienteDao {
 
 	@Override
 	public List<Cliente> readAll() {

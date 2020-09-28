@@ -6,11 +6,14 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import br.fai.dogs.db.connection.ConnectionFactory;
-import br.fai.dogs.db.dao.BaseDao;
+import br.fai.dogs.db.dao.ComportamentoDao;
 import br.fai.dogs.model.entities.Comportamento;
 
-public class ComportamentoDaoImpl implements BaseDao<Comportamento>{
+@Repository
+public class ComportamentoDaoImpl implements ComportamentoDao {
 
 	@Override
 	public List<Comportamento> readAll() {

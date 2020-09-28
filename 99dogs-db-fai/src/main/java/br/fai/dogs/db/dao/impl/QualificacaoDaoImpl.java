@@ -7,11 +7,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import br.fai.dogs.db.connection.ConnectionFactory;
-import br.fai.dogs.db.dao.BaseDao;
+import br.fai.dogs.db.dao.QualificacaoDao;
 import br.fai.dogs.model.entities.Qualificacao;
 
-public class QualificacaoDaoImpl implements BaseDao<Qualificacao> {
+@Repository
+public class QualificacaoDaoImpl implements QualificacaoDao {
 
 	@Override
 	public List<Qualificacao> readAll() {

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.fai.dogs.api.service.BaseService;
+import br.fai.dogs.api.service.ComportamentoService;
 import br.fai.dogs.model.entities.Comportamento;
 
 @RestController
@@ -19,7 +19,7 @@ import br.fai.dogs.model.entities.Comportamento;
 public class ComportamentoRestController {
 
 	@Autowired
-	private BaseService comportamentoService;
+	private ComportamentoService comportamentoService;
 	
 	@GetMapping("/read-all")
 	public ResponseEntity<List<Comportamento>> readAll(){

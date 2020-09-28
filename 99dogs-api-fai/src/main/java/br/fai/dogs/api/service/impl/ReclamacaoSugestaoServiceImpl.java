@@ -5,18 +5,18 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.fai.dogs.api.service.BaseService;
-import br.fai.dogs.db.dao.BaseDao;
+import br.fai.dogs.api.service.ReclamacaoSugestaoService;
+import br.fai.dogs.db.dao.ReclamacaoSugestaoDao;
 import br.fai.dogs.model.entities.ReclamacaoSugestao;
 
 @Service
-public class ReclamacaoSugestaoServiceImpl implements BaseService{
+public class ReclamacaoSugestaoServiceImpl implements ReclamacaoSugestaoService {
 
 	@Autowired
-	private BaseDao<Object> reclamacaoSugestaoDao;
+	private ReclamacaoSugestaoDao reclamacaoSugestaoDao;
 	
 	@Override
-	public boolean create(Object entity) {
+	public boolean create(ReclamacaoSugestao entity) {
 		
 		return reclamacaoSugestaoDao.create(entity);
 	}
@@ -28,7 +28,7 @@ public class ReclamacaoSugestaoServiceImpl implements BaseService{
 	}
 
 	@Override
-	public boolean update(Object entity) {
+	public boolean update(ReclamacaoSugestao entity) {
 		
 		return reclamacaoSugestaoDao.update(entity);
 	}
@@ -40,7 +40,7 @@ public class ReclamacaoSugestaoServiceImpl implements BaseService{
 	}
 
 	@Override
-	public List readAll() {
+	public List<ReclamacaoSugestao> readAll() {
 		
 		return reclamacaoSugestaoDao.readAll();
 	}

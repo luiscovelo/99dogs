@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.fai.dogs.api.service.BaseService;
+import br.fai.dogs.api.service.FormaDePagamentoService;
 import br.fai.dogs.model.entities.FormaDePagamento;
 
 @RestController
@@ -19,7 +19,7 @@ import br.fai.dogs.model.entities.FormaDePagamento;
 public class FormaDePagamentoRestController {
 
 	@Autowired
-	private BaseService formaDePagamentoService;
+	private FormaDePagamentoService formaDePagamentoService;
 	
 	@GetMapping("/read-all")
 	public ResponseEntity<List<FormaDePagamento>> readAll(){

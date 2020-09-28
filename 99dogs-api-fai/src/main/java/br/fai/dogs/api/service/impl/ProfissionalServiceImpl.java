@@ -5,18 +5,18 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.fai.dogs.api.service.BaseService;
-import br.fai.dogs.db.dao.BaseDao;
+import br.fai.dogs.api.service.ProfissionalService;
+import br.fai.dogs.db.dao.ProfissionalDao;
 import br.fai.dogs.model.entities.Profissional;
 
 @Service
-public class ProfissionalServiceImpl implements BaseService{
+public class ProfissionalServiceImpl implements ProfissionalService {
 	
 	@Autowired
-	private BaseDao<Object> profissionalDao;
+	private ProfissionalDao profissionalDao;
 	
 	@Override
-	public boolean create(Object entity) {
+	public boolean create(Profissional entity) {
 		
 		return profissionalDao.create(entity);
 	}
@@ -28,7 +28,7 @@ public class ProfissionalServiceImpl implements BaseService{
 	}
 
 	@Override
-	public boolean update(Object entity) {
+	public boolean update(Profissional entity) {
 		
 		return profissionalDao.update(entity);
 	}
@@ -40,7 +40,7 @@ public class ProfissionalServiceImpl implements BaseService{
 	}
 
 	@Override
-	public List readAll() {
+	public List<Profissional> readAll() {
 		
 		return profissionalDao.readAll();
 	}

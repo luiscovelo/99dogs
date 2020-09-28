@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.fai.dogs.api.service.BaseService;
+import br.fai.dogs.api.service.PorteService;
 import br.fai.dogs.model.entities.Porte;
 
 @RestController
@@ -19,7 +19,7 @@ import br.fai.dogs.model.entities.Porte;
 public class PorteRestController {
 
 	@Autowired
-	private BaseService porteService;
+	private PorteService porteService;
 	
 	@GetMapping("/read-all")
 	public ResponseEntity<List<Porte>> readAll(){

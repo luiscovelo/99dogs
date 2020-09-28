@@ -5,20 +5,20 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.fai.dogs.api.service.BaseService;
-import br.fai.dogs.db.dao.BaseDao;
+import br.fai.dogs.api.service.RacaService;
+import br.fai.dogs.db.dao.RacaDao;
 import br.fai.dogs.model.entities.Raca;
 
 @Service
-public class RacaServiceImpl implements BaseService{
+public class RacaServiceImpl implements RacaService {
 
 	@Autowired
-	private BaseDao<Object> racaDao;
+	private RacaDao racaDao;
 	
 	@Override
-	public boolean create(Object entity) {
+	public boolean create(Raca entity) {
 		
-		return (Boolean) null;
+		return false;
 	}
 
 	@Override
@@ -28,19 +28,19 @@ public class RacaServiceImpl implements BaseService{
 	}
 
 	@Override
-	public boolean update(Object entity) {
+	public boolean update(Raca entity) {
 		
-		return (Boolean) null;
+		return false;
 	}
 
 	@Override
 	public boolean deleteById(Long id) {
 		
-		return (Boolean) null;
+		return false;
 	}
 
 	@Override
-	public List readAll() {
+	public List<Raca> readAll() {
 		
 		return racaDao.readAll();
 	}

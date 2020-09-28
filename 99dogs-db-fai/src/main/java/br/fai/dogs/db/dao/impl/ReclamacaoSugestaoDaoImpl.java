@@ -7,11 +7,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import br.fai.dogs.db.connection.ConnectionFactory;
-import br.fai.dogs.db.dao.BaseDao;
+import br.fai.dogs.db.dao.ReclamacaoSugestaoDao;
 import br.fai.dogs.model.entities.ReclamacaoSugestao;
 
-public class ReclamacaoSugestaoDaoImpl implements BaseDao<ReclamacaoSugestao>{
+@Repository
+public class ReclamacaoSugestaoDaoImpl implements ReclamacaoSugestaoDao {
 
 	@Override
 	public List<ReclamacaoSugestao> readAll() {

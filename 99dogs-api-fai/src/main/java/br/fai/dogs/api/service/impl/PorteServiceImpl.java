@@ -5,20 +5,20 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.fai.dogs.api.service.BaseService;
-import br.fai.dogs.db.dao.BaseDao;
+import br.fai.dogs.api.service.PorteService;
+import br.fai.dogs.db.dao.PorteDao;
 import br.fai.dogs.model.entities.Porte;
 
 @Service
-public class PorteServiceImpl implements BaseService{
+public class PorteServiceImpl implements PorteService {
 
 	@Autowired
-	private BaseDao<Object> porteDao;
+	private PorteDao porteDao;
 	
 	@Override
-	public boolean create(Object entity) {
+	public boolean create(Porte entity) {
 		
-		return (Boolean) null;
+		return false;
 	}
 
 	@Override
@@ -28,19 +28,19 @@ public class PorteServiceImpl implements BaseService{
 	}
 
 	@Override
-	public boolean update(Object entity) {
+	public boolean update(Porte entity) {
 		
-		return (Boolean) null;
+		return false;
 	}
 
 	@Override
 	public boolean deleteById(Long id) {
 		
-		return (Boolean) null;
+		return false;
 	}
 
 	@Override
-	public List readAll() {
+	public List<Porte> readAll() {
 		
 		return porteDao.readAll();
 	}

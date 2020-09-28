@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.fai.dogs.api.service.BaseService;
+import br.fai.dogs.api.service.ProfissionalService;
 import br.fai.dogs.model.entities.Profissional;
 
 @RestController
@@ -23,7 +23,7 @@ import br.fai.dogs.model.entities.Profissional;
 public class ProfissionalRestController {
 
 	@Autowired
-	private BaseService profissionalService;
+	private ProfissionalService profissionalService;
 	
 	@GetMapping("/read-all")
 	public ResponseEntity<List<Profissional>> readAll(){

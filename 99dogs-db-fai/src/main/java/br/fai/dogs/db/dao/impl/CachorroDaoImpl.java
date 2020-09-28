@@ -7,11 +7,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import br.fai.dogs.db.connection.ConnectionFactory;
-import br.fai.dogs.db.dao.BaseDao;
+import br.fai.dogs.db.dao.CachorroDao;
 import br.fai.dogs.model.entities.Cachorro;
 
-public class CachorroDaoImpl implements BaseDao<Cachorro> {
+@Repository
+public class CachorroDaoImpl implements CachorroDao {
 
 	@Override
 	public List<Cachorro> readAll() {

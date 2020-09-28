@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.fai.dogs.api.service.BaseService;
+import br.fai.dogs.api.service.PasseioService;
 import br.fai.dogs.model.entities.Passeio;
 
 @RestController
@@ -23,7 +23,7 @@ import br.fai.dogs.model.entities.Passeio;
 public class PasseioRestController {
 
 	@Autowired
-	private BaseService passeioService;
+	private PasseioService passeioService;
 	
 	@GetMapping("/read-all")
 	public ResponseEntity<List<Passeio>> readAll(){

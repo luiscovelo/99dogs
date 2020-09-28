@@ -5,18 +5,18 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.fai.dogs.api.service.BaseService;
-import br.fai.dogs.db.dao.BaseDao;
+import br.fai.dogs.api.service.QualificacaoService;
+import br.fai.dogs.db.dao.QualificacaoDao;
 import br.fai.dogs.model.entities.Qualificacao;
 
 @Service
-public class QualificacaoServiceImpl implements BaseService {
+public class QualificacaoServiceImpl implements QualificacaoService {
 
 	@Autowired
-	private BaseDao<Object> qualificacaoDao;
+	private QualificacaoDao qualificacaoDao;
 	
 	@Override
-	public boolean create(Object entity) {
+	public boolean create(Qualificacao entity) {
 		
 		return qualificacaoDao.create(entity);
 	}
@@ -28,7 +28,7 @@ public class QualificacaoServiceImpl implements BaseService {
 	}
 
 	@Override
-	public boolean update(Object entity) {
+	public boolean update(Qualificacao entity) {
 		
 		return qualificacaoDao.update(entity);
 	}
@@ -40,7 +40,7 @@ public class QualificacaoServiceImpl implements BaseService {
 	}
 
 	@Override
-	public List readAll() {
+	public List<Qualificacao> readAll() {
 		
 		return qualificacaoDao.readAll();
 	}

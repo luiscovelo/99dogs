@@ -6,11 +6,14 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import br.fai.dogs.db.connection.ConnectionFactory;
-import br.fai.dogs.db.dao.BaseDao;
+import br.fai.dogs.db.dao.FormaDePagamentoDao;
 import br.fai.dogs.model.entities.FormaDePagamento;
 
-public class FormaDePagamentoDaoImpl implements BaseDao<FormaDePagamento>{
+@Repository
+public class FormaDePagamentoDaoImpl implements FormaDePagamentoDao {
 
 	@Override
 	public List<FormaDePagamento> readAll() {

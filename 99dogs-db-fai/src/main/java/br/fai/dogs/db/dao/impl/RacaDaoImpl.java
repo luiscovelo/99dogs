@@ -6,11 +6,14 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import br.fai.dogs.db.connection.ConnectionFactory;
-import br.fai.dogs.db.dao.BaseDao;
+import br.fai.dogs.db.dao.RacaDao;
 import br.fai.dogs.model.entities.Raca;
 
-public class RacaDaoImpl implements BaseDao<Raca>{
+@Repository
+public class RacaDaoImpl implements RacaDao {
 
 	@Override
 	public List<Raca> readAll() {

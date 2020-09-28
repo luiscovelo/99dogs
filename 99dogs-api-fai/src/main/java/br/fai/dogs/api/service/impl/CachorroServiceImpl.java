@@ -5,19 +5,19 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.fai.dogs.api.service.BaseService;
-import br.fai.dogs.db.dao.BaseDao;
+import br.fai.dogs.api.service.CachorroService;
+import br.fai.dogs.db.dao.CachorroDao;
 import br.fai.dogs.model.entities.Cachorro;
 
 
 @Service
-public class CachorroServiceImpl implements BaseService{
+public class CachorroServiceImpl implements CachorroService {
 
 	@Autowired
-	private BaseDao<Object> cachorroDao;
+	private CachorroDao cachorroDao;
 	
 	@Override
-	public boolean create(Object entity) {
+	public boolean create(Cachorro entity) {
 		
 		return cachorroDao.create(entity);
 	}
@@ -29,7 +29,7 @@ public class CachorroServiceImpl implements BaseService{
 	}
 
 	@Override
-	public boolean update(Object entity) {
+	public boolean update(Cachorro entity) {
 		
 		return cachorroDao.update(entity);
 	}
@@ -41,7 +41,7 @@ public class CachorroServiceImpl implements BaseService{
 	}
 
 	@Override
-	public List readAll() {
+	public List<Cachorro> readAll() {
 		
 		return cachorroDao.readAll();
 	}

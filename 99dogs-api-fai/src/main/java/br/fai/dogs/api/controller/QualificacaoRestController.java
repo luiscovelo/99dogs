@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.fai.dogs.api.service.BaseService;
+import br.fai.dogs.api.service.QualificacaoService;
 import br.fai.dogs.model.entities.Qualificacao;
 
 @RestController
@@ -23,7 +23,7 @@ import br.fai.dogs.model.entities.Qualificacao;
 public class QualificacaoRestController {
 
 	@Autowired
-	private BaseService qualificacaoService;
+	private QualificacaoService qualificacaoService;
 	
 	@GetMapping("/read-all")
 	public ResponseEntity<List<Qualificacao>> readAll(){

@@ -6,11 +6,14 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import br.fai.dogs.db.connection.ConnectionFactory;
-import br.fai.dogs.db.dao.BaseDao;
+import br.fai.dogs.db.dao.PorteDao;
 import br.fai.dogs.model.entities.Porte;
 
-public class PorteDaoImpl implements BaseDao<Porte>{
+@Repository
+public class PorteDaoImpl implements PorteDao {
 
 	@Override
 	public List<Porte> readAll() {
