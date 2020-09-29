@@ -12,19 +12,22 @@
 			<form method="POST" th:object="${passeio}" th:action="@{/passeio/cliente/post-solicitar-passeio}">
 				<div class="form-group">
 				  	<label for="formGroupExampleInput">Profissional:</label>
-				  	<input type="text" class="form-control" id="formGroupExampleInput" placeholder="">
+				  	<input type="text" class="form-control" id="formGroupExampleInput" placeholder="" th:name="profissionalId">
 				</div>
+				
 				<div class="form-group">
-				  	<label for="formGroupExampleInput2">Data do Passeio:</label>
-				  	<input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+				  	<label for="formGroupExampleInput">Profissional:</label>
+				  	<input type="datetime-local" class="form-control" id="formGroupExampleInput" placeholder="" th:name="datahora">
 				</div>
+
+			  	<br>
 				<div class="form-group">
 				  	<label for="formGroupExampleInput2">Este passeio é para qual cão?</label>
-				  	<input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+				  	<input type="text" class="form-control" id="formGroupExampleInput2" placeholder="" th:name="cachorro_id">
 				</div>
 				<div class="form-group">
 				  	<label for="formGroupExampleInput2">Este é o valor do passeio.</label>
-				  	<input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+				  	<input type="number" class="form-control" id="formGroupExampleInput2" placeholder="" th:name="valor">
 				</div>
 				<div class="form-group">
 				  	<button type="submit" class="btn btn-success btn-block">Solicitar Passeio</button>

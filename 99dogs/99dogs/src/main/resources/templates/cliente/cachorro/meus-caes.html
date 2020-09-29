@@ -28,9 +28,10 @@
 						<td th:text="${cachorro.id}">1</td>
 						<td th:text="${cachorro.dataNascimento}">1</td>
 						<td th:text="${cachorro.nome}">1</td>
-						<td th:text="${cachorro.raca_id}">1</td>
+						<td th:text="${cachorro.racaId}">1</td>
 						<td>
-							<a th:href="@{/cachorro/cliente/detalhes/{id} (id=${cachorro.id})}" class="btn btn-secondary">Detalhes</a>
+							<a th:href="@{/cachorro/cliente/alterar-cachorro/{id} (id=${cachorro.id})}" class="btn btn-warning">Alterar</a>
+							<a th:href="@{/cachorro/cliente/deletar-cachorro/{id} (id=${cachorro.id})}" class="btn btn-danger">Excluir</a>
 						</td>
 					</tr>
 				

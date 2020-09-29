@@ -17,6 +17,7 @@ public class RacaDaoImpl implements RacaDao {
 
 	@Override
 	public List<Raca> readAll() {
+		
 		List<Raca> racas = new ArrayList<Raca>();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -43,16 +44,20 @@ public class RacaDaoImpl implements RacaDao {
 				racas.add(raca);
 
 			}
-
+			
+			return racas;
+			
 		} catch (Exception e) {
-
+			
+			System.out.println("Ocorreu um problema ao obter a lista de racas: " + e.getMessage());
+			return null;
+			
 		} finally {
 
 			ConnectionFactory.close(resultSet, preparedStatement, connection);
 
 		}
 
-		return null;
 	}
 
 	@Override

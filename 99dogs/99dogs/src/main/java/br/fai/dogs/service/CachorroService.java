@@ -8,4 +8,10 @@ public interface CachorroService {
 	
 	List<Cachorro> cachorrosPorCliente(Long cliente_id);
 	
+	boolean create(Cachorro entity);
+	
+	Cachorro readById(Long id);
+	
+	boolean update(Cachorro entity);
+	
 }

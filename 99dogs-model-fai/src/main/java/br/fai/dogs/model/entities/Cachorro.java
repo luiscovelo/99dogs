@@ -6,8 +6,9 @@ public class Cachorro extends BasePojo{
 	
 	private String nome;
 	private Date dataNascimento;
-	private int racaId;
-	private int clienteId;
+	private Long racaId;
+	private Long clienteId;
+	
 	public String getNome() {
 		return nome;
 	}
@@ -20,16 +21,16 @@ public class Cachorro extends BasePojo{
 	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
-	public int getRacaId() {
+	public Long getRacaId() {
 		return racaId;
 	}
-	public void setRacaId(int racaId) {
+	public void setRacaId(Long racaId) {
 		this.racaId = racaId;
 	}
-	public int getClienteId() {
+	public Long getClienteId() {
 		return clienteId;
 	}
-	public void setClienteId(int clienteId) {
+	public void setClienteId(Long clienteId) {
 		this.clienteId = clienteId;
 	}
 	@Override

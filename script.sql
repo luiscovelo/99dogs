@@ -10,10 +10,20 @@ create table if not exists comportamento(
 	descricao character varying(50) not null check(descricao in('Agressivo', 'Medroso', 'Agitado', 'Calmo'))
 );
 
+insert into comportamento (descricao) values ('Agressivo');
+insert into comportamento (descricao) values ('Medroso');
+insert into comportamento (descricao) values ('Agitado');
+insert into comportamento (descricao) values ('Calmo');
+
+
 create table if not exists porte(
 	id serial primary key,
 	descricao character varying(50) not null check(descricao in('Grande', 'Medio', 'Pequeno'))
 );
+
+insert into porte (descricao) values ('Grande');
+insert into porte (descricao) values ('Medio');
+insert into porte (descricao) values ('Pequeno');
 
 create table if not exists raca(
 	id serial primary key,
@@ -21,6 +31,10 @@ create table if not exists raca(
 	comportamento_id integer not null references comportamento(id) on update cascade,
 	porte_id integer not null references porte(id) on update cascade
 );
+
+insert into raca (nome,comportamento_id,porte_id) values ('S.R.D (Sem raça definida)',4,2);
+insert into raca (nome,comportamento_id,porte_id) values ('Border Collie',4,2);
+insert into raca (nome,comportamento_id,porte_id) values ('Blue Heller',4,2);
 
 create table if not exists pessoa(
 	id serial primary key,
@@ -73,7 +87,7 @@ create table if not exists reclamacao_sugestao(
 
 create table if not exists passeio(
 	id serial primary key,
-	datahora timestamp with time zone not null,
+	datahora timestamp without time zone not null,
 	status character varying(30) not null check(status in('Recusado', 'Aprovado', 'Finalizado', 'Espera')),
 	valor double precision default 0 not null,
 	profissional_id integer not null references pessoa(id) on update cascade,

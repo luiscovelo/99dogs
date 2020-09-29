@@ -40,7 +40,7 @@ public class PasseioDaoImpl implements PasseioDao {
 				Passeio passeio = new Passeio();
 				passeio.setId(resultSet.getLong("id"));
 				passeio.setStatus(resultSet.getString("status"));
-				passeio.setDatahora(resultSet.getTimestamp("datahora").toLocalDateTime());
+				passeio.setDatahora(resultSet.getTimestamp("datahora"));
 				passeio.setValor(resultSet.getDouble("valor"));
 
 				passeios.add(passeio);
@@ -65,21 +65,19 @@ public class PasseioDaoImpl implements PasseioDao {
 		PreparedStatement preparedStatement = null;
 
 		String sql = "INSERT INTO passeio (status, datahora, valor, cliente_id, profissional_id)";
-		sql += " VALUES (?, ?, ?, ?, ?); ";
+		sql += " VALUES (?, ?, ?, ?, ?, ?); ";
 		
 		try {
 			connection = ConnectionFactory.getConnection();
 			connection.setAutoCommit(false);
 			
-	        Timestamp timestamp = Timestamp.valueOf(entity.getDatahora());
-			
 	        preparedStatement = connection.prepareStatement(sql);
 	        
 	        preparedStatement.setString(1, entity.getStatus());
-	        preparedStatement.setTimestamp(2, timestamp);
-	        preparedStatement.setDouble(3, entity.getValor());
-	        preparedStatement.setLong(4, entity.getClienteId());
-	        preparedStatement.setLong(5, entity.getProfissionalId());
+	        preparedStatement.setTimestamp(2, entity.getDatahora());
+	        preparedStatement.setDouble(4, entity.getValor());
+	        preparedStatement.setLong(5, entity.getClienteId());
+	        preparedStatement.setLong(6, entity.getProfissionalId());
 	        
 			preparedStatement.execute();
 
@@ -123,7 +121,7 @@ public class PasseioDaoImpl implements PasseioDao {
 				passeio = new Passeio();
 				passeio.setId(resultSet.getLong("id"));
 				passeio.setStatus(resultSet.getString("status"));
-				passeio.setDatahora(resultSet.getTimestamp("datahora").toLocalDateTime());
+				passeio.setDatahora(resultSet.getTimestamp("datahora"));
 				passeio.setValor(resultSet.getDouble("valor"));
 
 			}
@@ -150,7 +148,7 @@ public class PasseioDaoImpl implements PasseioDao {
 
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, entity.getStatus());
-			preparedStatement.setTimestamp(2, new Timestamp(entity.getDatahora().getLong(null)));
+			preparedStatement.setTimestamp(2, entity.getDatahora());
 			preparedStatement.setDouble(4, entity.getValor());
 			preparedStatement.setLong(5, entity.getId());
 
@@ -226,7 +224,7 @@ public class PasseioDaoImpl implements PasseioDao {
 				
 				passeio.setId(resultSet.getLong("id"));
 				passeio.setStatus(resultSet.getString("status"));
-				passeio.setDatahora(resultSet.getTimestamp("datahora").toLocalDateTime());
+				passeio.setDatahora(resultSet.getTimestamp("datahora"));
 				passeio.setValor(resultSet.getDouble("valor"));
 				passeio.setClienteId(resultSet.getLong("cliente_id"));
 				passeio.setProfissionalId(resultSet.getLong("profissional_id"));

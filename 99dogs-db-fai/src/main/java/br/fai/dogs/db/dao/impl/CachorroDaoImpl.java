@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 import br.fai.dogs.db.connection.ConnectionFactory;
 import br.fai.dogs.db.dao.CachorroDao;
 import br.fai.dogs.model.entities.Cachorro;
-import br.fai.dogs.model.entities.Passeio;
 
 @Repository
 public class CachorroDaoImpl implements CachorroDao {
@@ -40,8 +39,8 @@ public class CachorroDaoImpl implements CachorroDao {
 				cachorro.setId(resultSet.getLong("id"));
 				cachorro.setNome(resultSet.getString("nome"));
 				cachorro.setDataNascimento(resultSet.getDate("data_nascimento"));
-				cachorro.setRacaId(resultSet.getInt("raca_id"));
-				cachorro.setClienteId(resultSet.getInt("cliente_id"));
+				cachorro.setRacaId(resultSet.getLong("raca_id"));
+				cachorro.setClienteId(resultSet.getLong("cliente_id"));
 
 				cachorros.add(cachorro);
 
@@ -60,6 +59,7 @@ public class CachorroDaoImpl implements CachorroDao {
 
 	@Override
 	public boolean create(Cachorro entity) {
+		
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
@@ -67,25 +67,34 @@ public class CachorroDaoImpl implements CachorroDao {
 		sql += " VALUES (?, ?, ?, ?); ";
 
 		try {
+			
 			connection = ConnectionFactory.getConnection();
 			connection.setAutoCommit(false);
-
+			
+			preparedStatement = connection.prepareStatement(sql);
+			
 			preparedStatement.setString(1, entity.getNome());
 			preparedStatement.setDate(2, entity.getDataNascimento());
-			preparedStatement.setInt(3, entity.getRacaId());
-			preparedStatement.setInt(4, entity.getClienteId());
-
+			preparedStatement.setLong(3, entity.getRacaId());
+			preparedStatement.setLong(4, entity.getClienteId());
+						
 			preparedStatement.execute();
 
 			connection.commit();
+			
+			return true;
+			
 		} catch (Exception e) {
+			System.out.println("caiu aqui" + e.getMessage());
 			try {
+				System.out.println("Problema ao conectar ou preparar o sql de create cachorro: " + e.getMessage());
 				connection.rollback();
 			} catch (SQLException e1) {
+				System.out.println("Problema no sql do create cachorro" + e1.getMessage());
 				return false;
 			}
 		} finally {
-			ConnectionFactory.close(null, preparedStatement, connection);
+			ConnectionFactory.close(preparedStatement, connection);
 		}
 
 		return false;
@@ -114,8 +123,8 @@ public class CachorroDaoImpl implements CachorroDao {
 				cachorro.setId(resultSet.getLong("id"));
 				cachorro.setNome(resultSet.getString("nome"));
 				cachorro.setDataNascimento(resultSet.getDate("data_nascimento"));
-				cachorro.setRacaId(resultSet.getInt("raca_id"));
-				cachorro.setClienteId(resultSet.getInt("cliente_id"));
+				cachorro.setRacaId(resultSet.getLong("raca_id"));
+				cachorro.setClienteId(resultSet.getLong("cliente_id"));
 
 			}
 
@@ -130,24 +139,26 @@ public class CachorroDaoImpl implements CachorroDao {
 
 	@Override
 	public boolean update(Cachorro entity) {
+		
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
-		String sql = "UPDATE cachorro SET nome = ?, data_nascimento = ?, raca_id = ?, cliente_id = ? WHERE id = ?;";
+		String sql = "UPDATE cachorro SET nome = ?, data_nascimento = ?, raca_id = ? WHERE id = ?;";
 
 		try {
+			
 			connection = ConnectionFactory.getConnection();
 			connection.setAutoCommit(false);
 
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, entity.getNome());
 			preparedStatement.setDate(2, entity.getDataNascimento());
-			preparedStatement.setInt(3, entity.getRacaId());
-			preparedStatement.setInt(4, entity.getClienteId());
-			preparedStatement.setLong(5, entity.getId());
+			preparedStatement.setLong(3, entity.getRacaId());
+			preparedStatement.setLong(4, entity.getId());
 
 			preparedStatement.execute();
 			connection.commit();
+			
 			return true;
 
 		} catch (Exception e) {
@@ -213,13 +224,13 @@ public class CachorroDaoImpl implements CachorroDao {
 			resultSet = preparedStatement.executeQuery();
 			
 			while (resultSet.next()) {
-
+								
 				Cachorro cachorro = new Cachorro();
 				
 				cachorro.setId(resultSet.getLong("id"));
 				cachorro.setNome(resultSet.getString("nome"));
 				cachorro.setDataNascimento(resultSet.getDate("data_nascimento"));
-				cachorro.setRacaId(resultSet.getInt("raca_id"));
+				cachorro.setRacaId(resultSet.getLong("raca_id"));
 				
 				cachorros.add(cachorro);
 

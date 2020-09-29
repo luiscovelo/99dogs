@@ -1,15 +1,16 @@
 package br.fai.dogs.controller;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import br.fai.dogs.model.entities.Passeio;
 import br.fai.dogs.service.PasseioService;
@@ -49,19 +50,18 @@ public class PasseioController {
 	
 	@PostMapping("/cliente/post-solicitar-passeio")
 	public String postSolicitarPasseio(Passeio passeio) {
-		
+				
 		Long cliente_id = pessoaService.sessaoAtual().getId();
 		Long profissional_id = (long) 2;
 		
 		passeio.setClienteId(cliente_id);
 		passeio.setProfissionalId(profissional_id);
 		passeio.setStatus("Espera");
-		passeio.setDatahora(LocalDateTime.now());
-		
+				
 		boolean response = passeioService.create(passeio);
 		
 		return "redirect:/passeio/cliente/meus-passeios";
 		
 	}
-	
+		
 }

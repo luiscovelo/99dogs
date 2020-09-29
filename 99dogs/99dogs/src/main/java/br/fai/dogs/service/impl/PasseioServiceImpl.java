@@ -1,8 +1,6 @@
 package br.fai.dogs.service.impl;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,16 +62,15 @@ public class PasseioServiceImpl implements PasseioService {
 						
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON);
-			headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 			
 			Map<String, Object> map = new HashMap<>();
 			
-			map.put("cliente_id", entity.getClienteId());
+			map.put("clienteId", entity.getClienteId());
 			map.put("datahora", entity.getDatahora());
-			map.put("profissional_id", entity.getProfissionalId());
+			map.put("profissionalId", entity.getProfissionalId());
 			map.put("status", entity.getStatus());
 			map.put("valor", entity.getValor());
-			
+							
 			HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(map, headers);
 			 
 			ResponseEntity<Void> requestResponse = restTemplate.exchange(
@@ -82,6 +79,8 @@ public class PasseioServiceImpl implements PasseioService {
 				requestEntity,
 				Void.class
 			);			
+			
+			System.out.println(requestResponse);
 			
 		} catch (Exception e) {
 			System.out.println("Caiu aqui: " + e.getMessage());

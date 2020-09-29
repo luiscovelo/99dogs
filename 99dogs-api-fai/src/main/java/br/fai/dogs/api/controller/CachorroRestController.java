@@ -73,4 +73,13 @@ public class CachorroRestController {
 		
 		return ResponseEntity.ok(response);
 	}
+	
+	@GetMapping("/cachorrosPorCliente/{id}")
+	public ResponseEntity<List<Cachorro>> cachorrosPorCliente(@PathVariable("id") Long id){
+		
+		List<Cachorro> response = cachorroService.cachorrosPorCliente(id);
+		return ResponseEntity.ok(response);
+		
+	}
+	
 }

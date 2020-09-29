@@ -1,19 +1,19 @@
 package br.fai.dogs.model.entities;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 public class Passeio extends BasePojo{
 
-	private LocalDateTime datahora;
+	private Timestamp datahora;
 	private String status;
 	private double valor;
 	private Long profissionalId;
 	private Long clienteId;
 	
-	public LocalDateTime getDatahora() {
+	public Timestamp getDatahora() {
 		return datahora;
 	}
-	public void setDatahora(LocalDateTime datahora) {
+	public void setDatahora(Timestamp datahora) {
 		this.datahora = datahora;
 	}
 	public String getStatus() {
@@ -31,20 +31,20 @@ public class Passeio extends BasePojo{
 	public Long getProfissionalId() {
 		return profissionalId;
 	}
-	public void setProfissionalId(Long profissional_id) {
-		this.profissionalId = profissional_id;
+	public void setProfissionalId(Long profissionalId) {
+		this.profissionalId = profissionalId;
 	}
 	public Long getClienteId() {
 		return clienteId;
 	}
-	public void setClienteId(Long cliente_id) {
-		this.clienteId = cliente_id;
+	public void setClienteId(Long clienteId) {
+		this.clienteId = clienteId;
 	}
 	
 	@Override
 	public String toString() {
-		return "Passeio [datahora=" + datahora + ", status=" + status + ", valor=" + valor + ", profissional_id="
-				+ profissionalId + ", cliente_id=" + clienteId + "]";
+		return "Passeio [datahora=" + datahora + ", status=" + status + ", valor=" + valor + ", profissionalId="
+				+ profissionalId + ", clienteId=" + clienteId + "]";
 	}
 	
 }
