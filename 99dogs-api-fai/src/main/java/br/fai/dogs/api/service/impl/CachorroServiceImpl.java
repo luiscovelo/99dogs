@@ -46,4 +46,9 @@ public class CachorroServiceImpl implements CachorroService {
 		return cachorroDao.readAll();
 	}
 
+	@Override
+	public List<Cachorro> cachorrosPorCliente(Long cliente_id) {
+		return cachorroDao.cachorrosPorCliente(cliente_id);
+	}
+	
 }

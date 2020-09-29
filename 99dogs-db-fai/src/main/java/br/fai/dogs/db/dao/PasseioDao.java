@@ -16,4 +16,6 @@ public interface PasseioDao {
 
 	boolean deleteById(Long id);
 	
+	List<Passeio> passeiosPorCliente(Long cliente_id);
+	
 }

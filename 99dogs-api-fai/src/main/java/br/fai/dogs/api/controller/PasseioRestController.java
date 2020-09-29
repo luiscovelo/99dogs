@@ -3,6 +3,7 @@ package br.fai.dogs.api.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.fai.dogs.api.service.PasseioService;
@@ -41,7 +43,6 @@ public class PasseioRestController {
 	@PostMapping("/create")
 	public ResponseEntity<Boolean> create(@RequestBody Passeio entity){
 		boolean response = passeioService.create(entity);
-		
 		return ResponseEntity.ok(response);
 		
 	}
@@ -73,4 +74,13 @@ public class PasseioRestController {
 		
 		return ResponseEntity.ok(response);
 	}
+	
+	@GetMapping("/passeiosPorCliente/{id}")
+	public HttpEntity<List<Passeio>> passeiosPorCliente(@PathVariable("id") Long id){
+		
+		List<Passeio> response = passeioService.passeiosPorCliente(id);
+		return ResponseEntity.ok(response);
+		
+	}
+	
 }

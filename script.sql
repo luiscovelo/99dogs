@@ -33,26 +33,21 @@ create table if not exists pessoa(
 	cidade character varying(100) not null,
 	estado character varying(100) not null,
 	pais character varying(100) not null,
-	numero integer not null,
-	foto character varying(100) not null
+	numero character varying(100) not null,
+	foto character varying(100) not null,
+	tipo character varying(50) not null check(tipo in('ADMIN', 'PROFISSIONAL', 'CLIENTE'))
 );
 
-create table if not exists cliente(
-	id serial unique,
-	pessoa_id integer references pessoa(id) on update cascade primary key
-);
-
-create table if not exists profissional(
-	id serial unique,
-	pessoa_id integer references pessoa(id) on update cascade primary key
-);
+insert into pessoa (nome,telefone,email,senha,rua,bairro,cidade,estado,pais,numero,foto,tipo) values ('Luis Felipe', '359998617955', 'luis.covelo@hotmail.com','123','TESTE','bairro','cidade','estado','br','55','','ADMIN');
+insert into pessoa (nome,telefone,email,senha,rua,bairro,cidade,estado,pais,numero,foto,tipo) values ('Profissional', '359998617955', 'profissional@hotmail.com','123','TESTE','bairro','cidade','estado','br','55','','PROFISSIONAL');
+insert into pessoa (nome,telefone,email,senha,rua,bairro,cidade,estado,pais,numero,foto,tipo) values ('Cliente', '359998617955', 'cliente@hotmail.com','123','TESTE','bairro','cidade','estado','br','55','','CLIENTE');
 
 create table if not exists cachorro(
 	id serial primary key,
 	nome character varying(50) not null,
 	data_nascimento date,
 	raca_id integer not null references raca(id) on update cascade,
-	cliente_id integer not null references cliente(id) on update cascade
+	cliente_id integer not null references pessoa(id) on update cascade
 );
 
 create table if not exists qualificacao(
@@ -60,7 +55,7 @@ create table if not exists qualificacao(
 	titulo character varying(50) not null,
 	modalidade character varying(50) not null check(modalidade in('Graduacao', 'Tecnico', 'Pos-Graduacao', 'Mestrado')),
 	descricao character varying(100),
-	profissional_id integer not null references profissional(id) on update cascade
+	pessoa_id integer not null references pessoa(id) on update cascade
 );
 
 create table if not exists forma_de_pagamento(
@@ -78,10 +73,11 @@ create table if not exists reclamacao_sugestao(
 
 create table if not exists passeio(
 	id serial primary key,
-	data date not null,
-	hora time without time zone not null,
+	datahora timestamp with time zone not null,
 	status character varying(30) not null check(status in('Recusado', 'Aprovado', 'Finalizado', 'Espera')),
-	valor double precision default 0 not null
+	valor double precision default 0 not null,
+	profissional_id integer not null references pessoa(id) on update cascade,
+	cliente_id integer not null references pessoa(id) on update cascade
 );
 
 create table if not exists passeio_cachorro(
@@ -89,3 +85,4 @@ create table if not exists passeio_cachorro(
 	cachorro_id integer references passeio(id) on update cascade,
 	primary key(passeio_id, cachorro_id)
 );
+

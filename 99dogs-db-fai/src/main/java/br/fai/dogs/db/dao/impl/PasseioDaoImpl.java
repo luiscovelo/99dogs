@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -18,6 +20,7 @@ public class PasseioDaoImpl implements PasseioDao {
 
 	@Override
 	public List<Passeio> readAll() {
+		
 		List<Passeio> passeios = new ArrayList<Passeio>();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -26,9 +29,8 @@ public class PasseioDaoImpl implements PasseioDao {
 		try {
 
 			connection = ConnectionFactory.getConnection();
-
+			
 			String sql = "SELECT * FROM passeio;";
-
 			preparedStatement = connection.prepareStatement(sql);
 
 			resultSet = preparedStatement.executeQuery();
@@ -38,8 +40,7 @@ public class PasseioDaoImpl implements PasseioDao {
 				Passeio passeio = new Passeio();
 				passeio.setId(resultSet.getLong("id"));
 				passeio.setStatus(resultSet.getString("status"));
-				passeio.setData(resultSet.getDate("data"));
-				passeio.setHora(resultSet.getTime("hora"));
+				passeio.setDatahora(resultSet.getTimestamp("datahora").toLocalDateTime());
 				passeio.setValor(resultSet.getDouble("valor"));
 
 				passeios.add(passeio);
@@ -59,32 +60,42 @@ public class PasseioDaoImpl implements PasseioDao {
 
 	@Override
 	public boolean create(Passeio entity) {
+				
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
-		String sql = "INSERT INTO cachorro (status, data, hora, valor)";
-		sql += " VALUES (?, ?, ?, ?); ";
-
+		String sql = "INSERT INTO passeio (status, datahora, valor, cliente_id, profissional_id)";
+		sql += " VALUES (?, ?, ?, ?, ?); ";
+		
 		try {
 			connection = ConnectionFactory.getConnection();
 			connection.setAutoCommit(false);
-
-			preparedStatement.setString(1, entity.getStatus());
-			preparedStatement.setDate(2, entity.getData());
-			preparedStatement.setTime(3, entity.getHora());
-			preparedStatement.setDouble(4, entity.getValor());
-
+			
+	        Timestamp timestamp = Timestamp.valueOf(entity.getDatahora());
+			
+	        preparedStatement = connection.prepareStatement(sql);
+	        
+	        preparedStatement.setString(1, entity.getStatus());
+	        preparedStatement.setTimestamp(2, timestamp);
+	        preparedStatement.setDouble(3, entity.getValor());
+	        preparedStatement.setLong(4, entity.getClienteId());
+	        preparedStatement.setLong(5, entity.getProfissionalId());
+	        
 			preparedStatement.execute();
 
 			connection.commit();
+			
+			return true;
+			
 		} catch (Exception e) {
+			System.out.println("caiu aqui" + e.getMessage());
 			try {
 				connection.rollback();
 			} catch (SQLException e1) {
-				return false;
+				System.out.println(e1.getMessage());
 			}
 		} finally {
-			ConnectionFactory.close(null, preparedStatement, connection);
+			ConnectionFactory.close(preparedStatement, connection);
 		}
 
 		return false;
@@ -112,8 +123,7 @@ public class PasseioDaoImpl implements PasseioDao {
 				passeio = new Passeio();
 				passeio.setId(resultSet.getLong("id"));
 				passeio.setStatus(resultSet.getString("status"));
-				passeio.setData(resultSet.getDate("data"));
-				passeio.setHora(resultSet.getTime("hora"));
+				passeio.setDatahora(resultSet.getTimestamp("datahora").toLocalDateTime());
 				passeio.setValor(resultSet.getDouble("valor"));
 
 			}
@@ -140,8 +150,7 @@ public class PasseioDaoImpl implements PasseioDao {
 
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, entity.getStatus());
-			preparedStatement.setDate(2, entity.getData());
-			preparedStatement.setTime(3, entity.getHora());
+			preparedStatement.setTimestamp(2, new Timestamp(entity.getDatahora().getLong(null)));
 			preparedStatement.setDouble(4, entity.getValor());
 			preparedStatement.setLong(5, entity.getId());
 
@@ -191,5 +200,54 @@ public class PasseioDaoImpl implements PasseioDao {
 			ConnectionFactory.close(preparedStatement, connection);
 		}
 	}
+	
+	@Override
+	public List<Passeio> passeiosPorCliente(Long cliente_id) {
+		
+		List<Passeio> passeios = new ArrayList<Passeio>();
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
 
+		try {
+
+			connection = ConnectionFactory.getConnection();
+			
+			String sql = "SELECT * FROM passeio where cliente_id = ?";
+			
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setLong(1, cliente_id);
+			
+			resultSet = preparedStatement.executeQuery();
+			
+			while (resultSet.next()) {
+
+				Passeio passeio = new Passeio();
+				
+				passeio.setId(resultSet.getLong("id"));
+				passeio.setStatus(resultSet.getString("status"));
+				passeio.setDatahora(resultSet.getTimestamp("datahora").toLocalDateTime());
+				passeio.setValor(resultSet.getDouble("valor"));
+				passeio.setClienteId(resultSet.getLong("cliente_id"));
+				passeio.setProfissionalId(resultSet.getLong("profissional_id"));
+
+				passeios.add(passeio);
+
+			}
+			
+			return passeios;
+			
+		} catch (Exception e) {
+			
+			System.out.println("Falha ao obter lista de passeios por cliente: " + e.getMessage());
+			return null;
+			
+		} finally {
+
+			ConnectionFactory.close(resultSet, preparedStatement, connection);
+
+		}
+
+	}
+	
 }

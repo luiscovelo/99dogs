@@ -45,4 +45,10 @@ public class PessoaServiceImpl implements PessoaService {
 		return pessoaDao.readAll();
 	}
 
+	@Override
+	public Pessoa validarLogin(Pessoa entity) {
+		
+		return pessoaDao.validarLogin(entity);
+	}
+
 }

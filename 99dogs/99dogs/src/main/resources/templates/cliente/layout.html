@@ -8,7 +8,7 @@
     <title>Dashboard | Cliente</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-    <link rel="stylesheet" href="../assets/css/admin-template.css">
+    <link rel="stylesheet" href="/assets/css/admin-template.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -18,37 +18,32 @@
         <!-- Sidebar  -->
         <nav id="sidebar">
             <div class="sidebar-header">
-                <img src="../assets/imgs/logo_size.png" alt="Logo 99Dogs" width="70">
+                <img src="/assets/imgs/logo_size.png" alt="Logo 99Dogs" width="70">
             </div>
 
             <ul class="list-unstyled components">
                 <li>
-                    <a th:href="@{/cliente/dashboard}">
+                    <a th:href="@{/dashboard/cliente}">
                         <i class="fa fa-tachometer space" aria-hidden="true"></i> Dashboard
                     </a>
                 </li>
                 <li>
-                    <a th:href="@{/cliente/passeios}">
+                    <a th:href="@{/passeio/cliente/meus-passeios}">
                         <i class="fa fa-calendar space" aria-hidden="true"></i> Meus Passeios
                     </a>
                 </li>
                 <li>
-                    <a th:href="@{/cliente/meus-caes}">
+                    <a th:href="@{/cachorro/cliente/meus-caes}">
                         <i class="fa fa-paw space" aria-hidden="true"></i> Meus Cães
                     </a>
                 </li>
                 <li>
-                    <a th:href="@{/cliente/servicos}">
-                        <i class="fa fa-list space" aria-hidden="true"></i> Serviços
-                    </a>
-                </li>
-                <li>
-                    <a th:href="@{/cliente/feedback}">
+                    <a th:href="@{/feedback/cliente/meus-feedbacks}">
                         <i class="fa fa-rss space" aria-hidden="true"></i> Feedback
                     </a>
                 </li>
                 <li>
-                    <a th:href="@{/login}">
+                    <a th:href="@{/login/deslogar}">
                         <i class="fa fa-sign-out space" aria-hidden="true"></i> Desconectar
                     </a>
                 </li>

@@ -13,6 +13,7 @@ public class Pessoa extends BasePojo{
 	private String pais;
 	private String foto;
 	private int numero;
+	private String tipo;
 	
 	public String getNome() {
 		return nome;
@@ -80,14 +81,20 @@ public class Pessoa extends BasePojo{
 	public void setNumero(int numero) {
 		this.numero = numero;
 	}
+	
+	public String getTipo() {
+		return tipo;
+	}
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+	
 	@Override
 	public String toString() {
 		return "Pessoa [nome=" + nome + ", telefone=" + telefone + ", email=" + email + ", senha=" + senha + ", rua="
 				+ rua + ", bairro=" + bairro + ", cidade=" + cidade + ", estado=" + estado + ", pais=" + pais
-				+ ", foto=" + foto + ", numero=" + numero + "]";
+				+ ", foto=" + foto + ", numero=" + numero + ", tipo=" + tipo + "]";
 	}
-	
-	
 	
 }
 

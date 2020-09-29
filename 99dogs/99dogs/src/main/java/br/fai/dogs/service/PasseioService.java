@@ -1,4 +1,4 @@
-package br.fai.dogs.api.service;
+package br.fai.dogs.service;
 
 import java.util.List;
 

@@ -16,4 +16,6 @@ public interface PessoaDao {
 
 	boolean deleteById(Long id);
 	
+	Pessoa validarLogin(Pessoa entity);
+	
 }

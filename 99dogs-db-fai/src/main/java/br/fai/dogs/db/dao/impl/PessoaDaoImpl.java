@@ -218,4 +218,51 @@ public class PessoaDaoImpl implements PessoaDao {
 			ConnectionFactory.close(preparedStatement, connection);
 		}
 	}
+
+	@Override
+	public Pessoa validarLogin(Pessoa entity) {
+		
+		Pessoa pessoa = null;
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+			connection = ConnectionFactory.getConnection();
+
+			String sql = "SELECT * FROM pessoa WHERE email = ? and senha = ?";
+
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, entity.getEmail());
+			preparedStatement.setString(2, entity.getSenha());
+
+			resultSet = preparedStatement.executeQuery();
+
+			if (resultSet.next()) {
+				pessoa = new Pessoa();
+				pessoa.setId(resultSet.getLong("id"));
+				pessoa.setNome(resultSet.getString("nome"));
+				pessoa.setTelefone(resultSet.getString("telefone"));
+				pessoa.setEmail(resultSet.getString("email"));
+				pessoa.setRua(resultSet.getString("rua"));
+				pessoa.setBairro(resultSet.getString("bairro"));
+				pessoa.setCidade(resultSet.getString("cidade"));
+				pessoa.setEstado(resultSet.getString("estado"));
+				pessoa.setPais(resultSet.getString("pais"));
+				pessoa.setFoto(resultSet.getString("foto"));
+				pessoa.setNumero(resultSet.getInt("numero"));
+				pessoa.setTipo(resultSet.getString("tipo"));
+			}
+
+		} catch (Exception e) {
+			
+			System.out.println(e.getMessage());
+			
+		} finally {
+			ConnectionFactory.close(resultSet, preparedStatement, connection);
+		}
+
+		return pessoa;
+		
+	}
 }

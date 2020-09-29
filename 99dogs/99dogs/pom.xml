@@ -20,6 +20,13 @@
 	</properties>
 
 	<dependencies>
+	
+		<dependency>
+			<groupId>99dogs.model.fai</groupId>
+			<artifactId>99dogs-model-fai</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -57,13 +64,6 @@
 		<dependency>
 			<groupId>org.thymeleaf</groupId>
 			<artifactId>thymeleaf-spring5</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>99dogs.model.fai</groupId>
-			<artifactId>99dogs-model-fai</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-
 		</dependency>
 
 		<dependency>

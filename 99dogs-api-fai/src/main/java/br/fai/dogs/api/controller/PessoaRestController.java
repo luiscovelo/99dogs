@@ -73,4 +73,18 @@ public class PessoaRestController {
 		
 		return ResponseEntity.ok(response);
 	}
+	
+	@PostMapping("/validarLogin")
+	public ResponseEntity<Pessoa> validarLogin(@RequestBody Pessoa entity){
+		
+		Pessoa pessoa = pessoaService.validarLogin(entity);
+
+		if(pessoa == null) {
+			return ResponseEntity.notFound().build();
+		}
+		
+		return ResponseEntity.ok(pessoa);
+		
+	}
+	
 }

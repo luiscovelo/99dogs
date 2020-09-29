@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html layout:decorate="~{/cliente/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Cliente | Meus Cães</title>
+</head>
+<body>
+	
+	<div layout:fragment="body">
+		<div class="container-box">
+
+			<a th:href="@{/cachorro/cliente/adicionar-cachorro}" class="btn btn-success">Adcionar Cachorro</a>
+			<hr>
+
+			<table class="table">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Data de Nascimento</th>
+						<th>Nome</th>
+						<th>Raça</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					
+					<tr th:each="cachorro: ${cachorros}">
+						<td th:text="${cachorro.id}">1</td>
+						<td th:text="${cachorro.dataNascimento}">1</td>
+						<td th:text="${cachorro.nome}">1</td>
+						<td th:text="${cachorro.raca_id}">1</td>
+						<td>
+							<a th:href="@{/cachorro/cliente/detalhes/{id} (id=${cachorro.id})}" class="btn btn-secondary">Detalhes</a>
+						</td>
+					</tr>
+				
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
+</body>
+</html>

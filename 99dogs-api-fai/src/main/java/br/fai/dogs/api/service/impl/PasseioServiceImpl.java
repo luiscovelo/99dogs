@@ -40,4 +40,9 @@ public class PasseioServiceImpl implements PasseioService {
 		return passeioDao.deleteById(id);
 	}
 
+	@Override
+	public List<Passeio> passeiosPorCliente(Long cliente_id) {
+		return passeioDao.passeiosPorCliente(cliente_id);
+	}
+
 }

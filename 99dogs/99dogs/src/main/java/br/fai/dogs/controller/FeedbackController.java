@@ -5,12 +5,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/dogwalker")
-public class DogwalkerController {
+@RequestMapping("/feedback")
+public class FeedbackController {
 	
-	@GetMapping("/dashboard")
-	public String getIndexPage(){
-		return "dogwalker/dashboard";
+	@GetMapping("/cliente/meus-feedbacks")
+	public String getListaDeFeedbackPorCliente() {
+		
+		return "/cliente/feedback";
+		
 	}
-
+	
 }

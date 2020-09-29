@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html layout:decorate="~{/cliente/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Cliente | Solicitar Passeio</title>
+</head>
+<body>
+	
+	<div layout:fragment="body">
+		<div class="container-box">
+			
+			<form method="POST" th:object="${passeio}" th:action="@{/passeio/cliente/post-solicitar-passeio}">
+				<div class="form-group">
+				  	<label for="formGroupExampleInput">Profissional:</label>
+				  	<input type="text" class="form-control" id="formGroupExampleInput" placeholder="">
+				</div>
+				<div class="form-group">
+				  	<label for="formGroupExampleInput2">Data do Passeio:</label>
+				  	<input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+				</div>
+				<div class="form-group">
+				  	<label for="formGroupExampleInput2">Este passeio é para qual cão?</label>
+				  	<input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+				</div>
+				<div class="form-group">
+				  	<label for="formGroupExampleInput2">Este é o valor do passeio.</label>
+				  	<input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+				</div>
+				<div class="form-group">
+				  	<button type="submit" class="btn btn-success btn-block">Solicitar Passeio</button>
+				</div>
+			  </form>
+			
+		</div>
+	</div>
+	
+</body>
+</html>

@@ -19,9 +19,9 @@ public class ConnectionFactory {
 		try {
 
 			connection = DriverManager.getConnection(url, user, password);
-
+			
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			System.out.println("Ocorreu um erro ao obter a instancia do banco de dados: " + e.getMessage());
 		}
 
 		return connection;
@@ -66,7 +66,7 @@ public class ConnectionFactory {
 	public static void close(PreparedStatement preparedStatement, Connection connection2) {
 
 		closePreparedStatement(preparedStatement);
-		closeConnection(connection);
+		closeConnection(connection2);
 
 	}
 }

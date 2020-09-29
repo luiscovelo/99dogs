@@ -16,4 +16,6 @@ public interface CachorroDao {
 
 	boolean deleteById(Long id);
 	
+	List<Cachorro> cachorrosPorCliente(Long cliente_id);
+	
 }

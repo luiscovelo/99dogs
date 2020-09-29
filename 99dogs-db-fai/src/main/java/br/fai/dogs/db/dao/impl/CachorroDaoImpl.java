@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import br.fai.dogs.db.connection.ConnectionFactory;
 import br.fai.dogs.db.dao.CachorroDao;
 import br.fai.dogs.model.entities.Cachorro;
+import br.fai.dogs.model.entities.Passeio;
 
 @Repository
 public class CachorroDaoImpl implements CachorroDao {
@@ -190,6 +191,53 @@ public class CachorroDaoImpl implements CachorroDao {
 		} finally {
 			ConnectionFactory.close(preparedStatement, connection);
 		}
+	}
+
+	@Override
+	public List<Cachorro> cachorrosPorCliente(Long cliente_id) {
+		
+		List<Cachorro> cachorros = new ArrayList<Cachorro>();
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+
+			connection = ConnectionFactory.getConnection();
+			
+			String sql = "SELECT * FROM cachorro where cliente_id = ?";
+			
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setLong(1, cliente_id);
+			
+			resultSet = preparedStatement.executeQuery();
+			
+			while (resultSet.next()) {
+
+				Cachorro cachorro = new Cachorro();
+				
+				cachorro.setId(resultSet.getLong("id"));
+				cachorro.setNome(resultSet.getString("nome"));
+				cachorro.setDataNascimento(resultSet.getDate("data_nascimento"));
+				cachorro.setRacaId(resultSet.getInt("raca_id"));
+				
+				cachorros.add(cachorro);
+
+			}
+			
+			return cachorros;
+			
+		} catch (Exception e) {
+			
+			System.out.println("Falha ao obter lista de cachorros por cliente: " + e.getMessage());
+			return null;
+			
+		} finally {
+
+			ConnectionFactory.close(resultSet, preparedStatement, connection);
+
+		}
+		
 	}
 
 }
