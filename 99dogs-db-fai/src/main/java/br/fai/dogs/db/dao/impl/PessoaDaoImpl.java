@@ -265,4 +265,56 @@ public class PessoaDaoImpl implements PessoaDao {
 		return pessoa;
 		
 	}
+
+	@Override
+	public List<Pessoa> readAllProfissional() {
+		
+		List<Pessoa> pessoas = new ArrayList<Pessoa>();
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+
+			connection = ConnectionFactory.getConnection();
+
+			String sql = "SELECT * FROM pessoa WHERE tipo = 'PROFISSIONAL';";
+
+			preparedStatement = connection.prepareStatement(sql);
+
+			resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) {
+
+				Pessoa pessoa = new Pessoa();
+				pessoa.setId(resultSet.getLong("id"));
+				pessoa.setNome(resultSet.getString("nome"));
+				pessoa.setTelefone(resultSet.getString("telefone"));
+				pessoa.setEmail(resultSet.getString("email"));
+				pessoa.setSenha(resultSet.getString("senha"));
+				pessoa.setRua(resultSet.getString("rua"));
+				pessoa.setBairro(resultSet.getString("bairro"));
+				pessoa.setCidade(resultSet.getString("cidade"));
+				pessoa.setEstado(resultSet.getString("estado"));
+				pessoa.setPais(resultSet.getString("pais"));
+				pessoa.setFoto(resultSet.getString("foto"));
+				pessoa.setNumero(resultSet.getInt("numero"));
+
+				pessoas.add(pessoa);
+
+			}
+			
+			return pessoas;
+			
+		} catch (Exception e) {
+			
+			return null;
+			
+		} finally {
+
+			ConnectionFactory.close(resultSet, preparedStatement, connection);
+
+		}
+		
+	}
 }

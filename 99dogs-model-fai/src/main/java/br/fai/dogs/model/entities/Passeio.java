@@ -1,19 +1,22 @@
 package br.fai.dogs.model.entities;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import org.springframework.format.annotation.DateTimeFormat;
 
 public class Passeio extends BasePojo{
-
-	private Timestamp datahora;
+	
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+	private LocalDateTime datahora;
+	
 	private String status;
 	private double valor;
 	private Long profissionalId;
 	private Long clienteId;
 	
-	public Timestamp getDatahora() {
+	public LocalDateTime getDatahora() {
 		return datahora;
 	}
-	public void setDatahora(Timestamp datahora) {
+	public void setDatahora(LocalDateTime datahora) {
 		this.datahora = datahora;
 	}
 	public String getStatus() {

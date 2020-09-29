@@ -87,4 +87,17 @@ public class PessoaRestController {
 		
 	}
 	
+	@GetMapping("/read-all-profissional")
+	public ResponseEntity<List<Pessoa>> readAllProfissional(){
+		
+		List<Pessoa> pessoa = pessoaService.readAllProfissional();
+		
+		if(pessoa == null || pessoa.size()==0) {
+			return ResponseEntity.ok(null);
+			
+		}else {
+			return ResponseEntity.ok(pessoa);
+		}
+	}
+	
 }

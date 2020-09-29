@@ -49,8 +49,6 @@ public class PessoaServiceImpl implements PessoaService {
 		
 		return pessoa;
 		
-		//return (Pessoa) session.getAttribute("pessoa");
-		
 	}
 
 	@Override
@@ -69,6 +67,13 @@ public class PessoaServiceImpl implements PessoaService {
 		}
 		
 		return false;
+		
+	}
+
+	@Override
+	public List<Pessoa> readAllProfissional() {
+		
+		return pessoaDao.readAllProfissional();
 		
 	}
 	

@@ -70,7 +70,7 @@ public class PasseioServiceImpl implements PasseioService {
 			map.put("profissionalId", entity.getProfissionalId());
 			map.put("status", entity.getStatus());
 			map.put("valor", entity.getValor());
-							
+						
 			HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(map, headers);
 			 
 			ResponseEntity<Void> requestResponse = restTemplate.exchange(
@@ -80,7 +80,9 @@ public class PasseioServiceImpl implements PasseioService {
 				Void.class
 			);			
 			
-			System.out.println(requestResponse);
+			if(requestResponse.getStatusCode().equals(200)) {
+				return true;
+			}
 			
 		} catch (Exception e) {
 			System.out.println("Caiu aqui: " + e.getMessage());

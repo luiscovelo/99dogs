@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -34,28 +33,33 @@ public class PasseioDaoImpl implements PasseioDao {
 			preparedStatement = connection.prepareStatement(sql);
 
 			resultSet = preparedStatement.executeQuery();
-
+			
 			while (resultSet.next()) {
 
 				Passeio passeio = new Passeio();
 				passeio.setId(resultSet.getLong("id"));
 				passeio.setStatus(resultSet.getString("status"));
-				passeio.setDatahora(resultSet.getTimestamp("datahora"));
+				passeio.setDatahora(resultSet.getTimestamp("datahora").toLocalDateTime());
 				passeio.setValor(resultSet.getDouble("valor"));
 
 				passeios.add(passeio);
 
 			}
-
+			
+			return passeios;
+			
 		} catch (Exception e) {
-
+			
+			System.out.println("Falha ao obter lista de passeios {99-dogs-fai}: " + e.getMessage());
+			
 		} finally {
 
 			ConnectionFactory.close(resultSet, preparedStatement, connection);
 
 		}
-
+		
 		return null;
+		
 	}
 
 	@Override
@@ -65,7 +69,7 @@ public class PasseioDaoImpl implements PasseioDao {
 		PreparedStatement preparedStatement = null;
 
 		String sql = "INSERT INTO passeio (status, datahora, valor, cliente_id, profissional_id)";
-		sql += " VALUES (?, ?, ?, ?, ?, ?); ";
+		sql += " VALUES (?, ?, ?, ?, ?); ";
 		
 		try {
 			connection = ConnectionFactory.getConnection();
@@ -74,11 +78,11 @@ public class PasseioDaoImpl implements PasseioDao {
 	        preparedStatement = connection.prepareStatement(sql);
 	        
 	        preparedStatement.setString(1, entity.getStatus());
-	        preparedStatement.setTimestamp(2, entity.getDatahora());
-	        preparedStatement.setDouble(4, entity.getValor());
-	        preparedStatement.setLong(5, entity.getClienteId());
-	        preparedStatement.setLong(6, entity.getProfissionalId());
-	        
+	        preparedStatement.setTimestamp(2, Timestamp.valueOf(entity.getDatahora()));
+	        preparedStatement.setDouble(3, entity.getValor());
+	        preparedStatement.setLong(4, entity.getClienteId());
+	        preparedStatement.setLong(5, entity.getProfissionalId());
+	        	        
 			preparedStatement.execute();
 
 			connection.commit();
@@ -86,12 +90,15 @@ public class PasseioDaoImpl implements PasseioDao {
 			return true;
 			
 		} catch (Exception e) {
-			System.out.println("caiu aqui" + e.getMessage());
+			
+			System.out.println("Falha ao criar o passeio {99-dogs-fai}: " + e.getMessage());
+			
 			try {
 				connection.rollback();
 			} catch (SQLException e1) {
-				System.out.println(e1.getMessage());
+				System.out.println("Falha no query no momento de criar o passeio {99-dogs-fai}: " + e1.getMessage());
 			}
+			
 		} finally {
 			ConnectionFactory.close(preparedStatement, connection);
 		}
@@ -101,6 +108,7 @@ public class PasseioDaoImpl implements PasseioDao {
 
 	@Override
 	public Passeio readById(Long id) {
+		
 		Passeio passeio = null;
 
 		Connection connection = null;
@@ -121,13 +129,17 @@ public class PasseioDaoImpl implements PasseioDao {
 				passeio = new Passeio();
 				passeio.setId(resultSet.getLong("id"));
 				passeio.setStatus(resultSet.getString("status"));
-				passeio.setDatahora(resultSet.getTimestamp("datahora"));
+				passeio.setDatahora(resultSet.getTimestamp("datahora").toLocalDateTime());
 				passeio.setValor(resultSet.getDouble("valor"));
 
 			}
-
+			
+			return passeio;
+			
 		} catch (Exception e) {
-			// TODO: handle exception
+			
+			System.out.println("Ocorreu um problema ao ler o passeio {99-dogs-fai}: " + e.getMessage());
+			
 		} finally {
 			ConnectionFactory.close(resultSet, preparedStatement, connection);
 		}
@@ -137,6 +149,7 @@ public class PasseioDaoImpl implements PasseioDao {
 
 	@Override
 	public boolean update(Passeio entity) {
+		
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
@@ -148,29 +161,38 @@ public class PasseioDaoImpl implements PasseioDao {
 
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, entity.getStatus());
-			preparedStatement.setTimestamp(2, entity.getDatahora());
+			preparedStatement.setTimestamp(2, Timestamp.valueOf(entity.getDatahora()));
 			preparedStatement.setDouble(4, entity.getValor());
 			preparedStatement.setLong(5, entity.getId());
 
 			preparedStatement.execute();
 			connection.commit();
+			
 			return true;
 
 		} catch (Exception e) {
-
+			
+			System.out.println("Ocorreu um problema ao atualizar o passeio {99-dogs-fai}: " + e.getMessage());
+			
 			try {
 				connection.rollback();
 			} catch (SQLException e1) {
-				e1.printStackTrace();
+				System.out.println("Ocorreu um problema no query de atualizar o passeio {99-dogs-fai}: " + e1.getMessage());
 			}
-			return false;
+			
 		} finally {
+			
 			ConnectionFactory.close(preparedStatement, connection);
+			
 		}
+		
+		return false;
+		
 	}
 
 	@Override
 	public boolean deleteById(Long id) {
+		
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
@@ -183,20 +205,29 @@ public class PasseioDaoImpl implements PasseioDao {
 
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setLong(1, id);
+			
 			preparedStatement.execute();
 			connection.commit();
+			
 			return true;
 
 		} catch (Exception e) {
+			
+			System.out.println("Ocorreu um problema ao atualizar o passeio {99-dogs-fai}: " + e.getMessage());
+			
 			try {
 				connection.rollback();
 			} catch (SQLException e1) {
 				e1.printStackTrace();
+				System.out.println("Ocorreu no query do atualizar passeio {99-dogs-fai}: " + e1.getMessage());
 			}
-			return false;
+			
 		} finally {
 			ConnectionFactory.close(preparedStatement, connection);
 		}
+		
+		return false;
+		
 	}
 	
 	@Override
@@ -224,7 +255,7 @@ public class PasseioDaoImpl implements PasseioDao {
 				
 				passeio.setId(resultSet.getLong("id"));
 				passeio.setStatus(resultSet.getString("status"));
-				passeio.setDatahora(resultSet.getTimestamp("datahora"));
+				passeio.setDatahora(resultSet.getTimestamp("datahora").toLocalDateTime());
 				passeio.setValor(resultSet.getDouble("valor"));
 				passeio.setClienteId(resultSet.getLong("cliente_id"));
 				passeio.setProfissionalId(resultSet.getLong("profissional_id"));
@@ -238,7 +269,6 @@ public class PasseioDaoImpl implements PasseioDao {
 		} catch (Exception e) {
 			
 			System.out.println("Falha ao obter lista de passeios por cliente: " + e.getMessage());
-			return null;
 			
 		} finally {
 
@@ -246,6 +276,8 @@ public class PasseioDaoImpl implements PasseioDao {
 
 		}
 
+		return null;
+		
 	}
 	
 }

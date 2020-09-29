@@ -18,4 +18,6 @@ public interface PessoaService {
 	
 	Boolean gravarSessao(HttpSession session, Pessoa entity);
 	
+	List<Pessoa> readAllProfissional();
+	
 }

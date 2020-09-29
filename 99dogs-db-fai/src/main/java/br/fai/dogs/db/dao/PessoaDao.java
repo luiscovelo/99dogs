@@ -18,4 +18,6 @@ public interface PessoaDao {
 	
 	Pessoa validarLogin(Pessoa entity);
 	
+	List<Pessoa> readAllProfissional();
+	
 }
