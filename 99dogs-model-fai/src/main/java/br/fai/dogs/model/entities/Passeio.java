@@ -12,6 +12,7 @@ public class Passeio extends BasePojo{
 	private double valor;
 	private Long profissionalId;
 	private Long clienteId;
+	private Long formaDePagamentoId;
 	
 	public LocalDateTime getDatahora() {
 		return datahora;
@@ -43,11 +44,17 @@ public class Passeio extends BasePojo{
 	public void setClienteId(Long clienteId) {
 		this.clienteId = clienteId;
 	}
+	public Long getFormaDePagamentoId() {
+		return formaDePagamentoId;
+	}
+	public void setFormaDePagamentoId(Long formaDePagamentoId) {
+		this.formaDePagamentoId = formaDePagamentoId;
+	}
 	
 	@Override
 	public String toString() {
 		return "Passeio [datahora=" + datahora + ", status=" + status + ", valor=" + valor + ", profissionalId="
-				+ profissionalId + ", clienteId=" + clienteId + "]";
+				+ profissionalId + ", clienteId=" + clienteId + ", formaDePagamentoId=" + formaDePagamentoId + "]";
 	}
-	
+		
 }

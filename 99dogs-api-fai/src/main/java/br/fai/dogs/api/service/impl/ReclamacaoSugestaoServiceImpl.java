@@ -44,4 +44,10 @@ public class ReclamacaoSugestaoServiceImpl implements ReclamacaoSugestaoService 
 		
 		return reclamacaoSugestaoDao.readAll();
 	}
+
+	@Override
+	public List<ReclamacaoSugestao> reclamacaoSugestaoPorCliente(Long id) {
+		
+		return reclamacaoSugestaoDao.reclamacaoSugestaoPorCliente(id);
+	}
 }

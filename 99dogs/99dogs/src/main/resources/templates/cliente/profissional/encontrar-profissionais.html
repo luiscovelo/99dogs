@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html layout:decorate="~{/cliente/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Cliente | Encontrar Profissionais</title>
+</head>
+<body>
+	
+	<div layout:fragment="body">
+		<div class="container-box">
+			
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Logo</th>
+						<th>Nome</th>
+						<th>Email</th>
+						<th>TeleFone</th>
+						<th>Cidade/UF</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="profissional: ${profissionais}">
+						<td>
+							<img class="rounded-circle" th:src="${profissional.foto}" width="50">
+						</td>
+						<td th:text="${profissional.nome}"></td>
+						<td th:text="${profissional.email}"></td>
+						<td th:text="${profissional.telefone}"></td>
+						<td th:text="${profissional.cidade}"></td>
+						<td>
+							<a th:href="@{/profissional/cliente/detalhes/{id} (id=${profissional.id})}" class="btn btn-secondary">Detalhes</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		
+		</div>
+	</div>
+	
+</body>
+</html>

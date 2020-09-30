@@ -74,4 +74,13 @@ public class ReclamacaoSugestaoRestController {
 		return ResponseEntity.ok(response);
 	}
 	
+	@GetMapping("/reclamacaoSugestaoPorCliente/{id}")
+	public ResponseEntity<List<ReclamacaoSugestao>> reclamacaoSugestaoPorCliente(@PathVariable("id") Long id){
+		
+		List<ReclamacaoSugestao> response = reclamacaoSugestaoService.reclamacaoSugestaoPorCliente(id);
+		
+		return ResponseEntity.ok(response);
+		
+	}
+	
 }

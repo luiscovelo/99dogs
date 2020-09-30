@@ -8,13 +8,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import br.fai.dogs.model.entities.Cachorro;
+import br.fai.dogs.model.entities.FormaDePagamento;
 import br.fai.dogs.model.entities.Passeio;
 import br.fai.dogs.model.entities.Pessoa;
 import br.fai.dogs.service.CachorroService;
+import br.fai.dogs.service.FormaDePagamentoService;
 import br.fai.dogs.service.PasseioService;
 import br.fai.dogs.service.PessoaService;
 
@@ -30,6 +33,9 @@ public class PasseioController {
 	
 	@Autowired
 	private CachorroService cachorroService;
+	
+	@Autowired
+	private FormaDePagamentoService formaDePagamentoService;
 	
 	@GetMapping("/cliente/meus-passeios")
 	public String getListaDePasseiosPorCliente(Model model) {
@@ -53,7 +59,10 @@ public class PasseioController {
 		model.addAttribute("profissionais", profissionais);
 		
 		List<Cachorro> cachorros = cachorroService.cachorrosPorCliente(cliente_id);
-		model.addAttribute("cachorros",cachorros);
+		model.addAttribute("cachorros", cachorros);
+		
+		List<FormaDePagamento> formasDePagamento = formaDePagamentoService.readAll();
+		model.addAttribute("formasDePagamento", formasDePagamento);
 		
 		return "/cliente/passeio/solicitar-passeio";
 		
@@ -72,5 +81,12 @@ public class PasseioController {
 		return "redirect:/passeio/cliente/meus-passeios";
 		
 	}
+	
+	@GetMapping("/cliente/detalhes/{id}")
+	public String getPageDetalhesDoPasseio(@PathVariable("id") Long id) {
 		
+		return "/cliente/passeio/detalhes";
+		
+	}
+	
 }

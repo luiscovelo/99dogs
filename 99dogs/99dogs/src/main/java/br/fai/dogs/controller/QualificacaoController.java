@@ -5,13 +5,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/feedback")
-public class FeedbackController {
+@RequestMapping("/qualificacao")
+public class QualificacaoController {
 	
-	@GetMapping("/cliente/meus-feedbacks")
-	public String getListaDeFeedbackPorCliente() {
+	@GetMapping("/profissional/minhas-qualificacoes")
+	public String getPageMinhasQualificacoes() {
 		
-		return "/cliente/feedback";
+		return "/profissional/qualificacao/minhas-qualificacoes";
 		
 	}
 	

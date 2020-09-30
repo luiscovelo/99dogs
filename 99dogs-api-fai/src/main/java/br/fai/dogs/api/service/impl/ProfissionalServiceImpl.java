@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import br.fai.dogs.api.service.ProfissionalService;
 import br.fai.dogs.db.dao.ProfissionalDao;
+import br.fai.dogs.model.entities.Pessoa;
 import br.fai.dogs.model.entities.Profissional;
 
 @Service
@@ -40,7 +41,7 @@ public class ProfissionalServiceImpl implements ProfissionalService {
 	}
 
 	@Override
-	public List<Profissional> readAll() {
+	public List<Pessoa> readAll() {
 		
 		return profissionalDao.readAll();
 	}

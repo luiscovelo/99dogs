@@ -15,4 +15,11 @@ public class DashboardController {
 		
 	}
 	
+	@GetMapping("/profissional")
+	public String getDashboardProfissional() {
+		
+		return "/profissional/dashboard";
+		
+	}
+	
 }

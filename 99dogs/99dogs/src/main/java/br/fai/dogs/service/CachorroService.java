@@ -14,4 +14,6 @@ public interface CachorroService {
 	
 	boolean update(Cachorro entity);
 	
+	boolean deleteById(Long id);
+	
 }

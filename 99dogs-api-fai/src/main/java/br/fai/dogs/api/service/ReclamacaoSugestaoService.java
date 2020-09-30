@@ -16,4 +16,6 @@ public interface ReclamacaoSugestaoService {
 
 	boolean deleteById(Long id);
 	
+	List<ReclamacaoSugestao> reclamacaoSugestaoPorCliente(Long id);
+	
 }

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html layout:decorate="~{/cliente/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Cliente | Feedback</title>
+</head>
+<body>
+	
+	<div layout:fragment="body">
+		<div class="container-box">
+		
+			<a th:href="@{/reclamacaoSugestao/cliente/registrar-feedback}" class="btn btn-success">Registrar</a>
+			<hr>
+
+			<table class="table">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Assunto</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="item : ${listReclamacaoSugestao}">
+						<td th:text=${item.id}></td>
+						<td th:text=${item.assunto}></td>
+						<td>
+							<a th:href="@{/reclamacaoSugestao/cliente/detalhes/{id} (id=${item.id})}" class="btn btn-secondary">Detalhes</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		
+		</div>
+	</div>
+	
+</body>
+</html>

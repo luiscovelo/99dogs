@@ -63,8 +63,8 @@ public class CachorroDaoImpl implements CachorroDao {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
-		String sql = "INSERT INTO cachorro (nome, data_nascimento, raca_id, cliente_id)";
-		sql += " VALUES (?, ?, ?, ?); ";
+		String sql = "INSERT INTO cachorro (id, nome, data_nascimento, raca_id, cliente_id)";
+		sql += " VALUES (default,?, ?, ?, ?); ";
 
 		try {
 			
@@ -79,25 +79,28 @@ public class CachorroDaoImpl implements CachorroDao {
 			preparedStatement.setLong(4, entity.getClienteId());
 						
 			preparedStatement.execute();
-
+			
 			connection.commit();
 			
 			return true;
 			
 		} catch (Exception e) {
+			
 			System.out.println("caiu aqui" + e.getMessage());
+			
 			try {
 				System.out.println("Problema ao conectar ou preparar o sql de create cachorro: " + e.getMessage());
 				connection.rollback();
 			} catch (SQLException e1) {
 				System.out.println("Problema no sql do create cachorro" + e1.getMessage());
-				return false;
 			}
+			
+			return false;
+			
 		} finally {
 			ConnectionFactory.close(preparedStatement, connection);
 		}
 
-		return false;
 	}
 
 	@Override

@@ -96,4 +96,13 @@ public class CachorroController {
 		
 	}
 	
+	@GetMapping("/cliente/deletar-cachorro/{id}")
+	public String deleteCachorro(@PathVariable("id") Long id) {
+		
+		boolean response = cachorroService.deleteById(id);
+		
+		return "redirect:/cachorro/cliente/meus-caes";
+		
+	}
+	
 }

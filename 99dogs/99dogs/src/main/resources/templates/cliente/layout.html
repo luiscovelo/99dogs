@@ -11,7 +11,13 @@
     <link rel="stylesheet" href="/assets/css/admin-template.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+	
+	<style>
+		th, td {
+		    vertical-align: middle!important;
+		}
+	</style>
+	
 </head>
 <body>
 <div class="wrapper">
@@ -28,6 +34,11 @@
                     </a>
                 </li>
                 <li>
+                    <a th:href="@{/profissional/cliente/encontrar-profissionais}">
+                        <i class="fa fa-search space" aria-hidden="true"></i> Profissionais
+                    </a>
+                </li>
+                <li>
                     <a th:href="@{/passeio/cliente/meus-passeios}">
                         <i class="fa fa-calendar space" aria-hidden="true"></i> Meus Passeios
                     </a>
@@ -38,7 +49,7 @@
                     </a>
                 </li>
                 <li>
-                    <a th:href="@{/feedback/cliente/meus-feedbacks}">
+                    <a th:href="@{/reclamacaoSugestao/cliente/meus-feedbacks}">
                         <i class="fa fa-rss space" aria-hidden="true"></i> Feedback
                     </a>
                 </li>

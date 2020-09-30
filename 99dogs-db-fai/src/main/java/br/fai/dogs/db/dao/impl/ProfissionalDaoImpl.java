@@ -11,14 +11,16 @@ import org.springframework.stereotype.Repository;
 
 import br.fai.dogs.db.connection.ConnectionFactory;
 import br.fai.dogs.db.dao.ProfissionalDao;
+import br.fai.dogs.model.entities.Pessoa;
 import br.fai.dogs.model.entities.Profissional;
 
 @Repository
 public class ProfissionalDaoImpl implements ProfissionalDao {
 
 	@Override
-	public List<Profissional> readAll() {
-		List<Profissional> profissionais = new ArrayList<Profissional>();
+	public List<Pessoa> readAll() {
+		
+		List<Pessoa> profissionais = new ArrayList<Pessoa>();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -27,25 +29,40 @@ public class ProfissionalDaoImpl implements ProfissionalDao {
 
 			connection = ConnectionFactory.getConnection();
 
-			String sql = "SELECT * FROM profissional;";
+			String sql = "select p.* from pessoa p inner join profissional pro on pro.pessoa_id = p.id";
 
 			preparedStatement = connection.prepareStatement(sql);
 
 			resultSet = preparedStatement.executeQuery();
 
 			while (resultSet.next()) {
-
-				Profissional profissional = new Profissional();
-				profissional.setId(resultSet.getLong("id"));
-				profissional.setPessoaId(resultSet.getInt("pessoa_id"));
 				
-
+				Pessoa profissional = new Pessoa();
+								
+				profissional.setId(resultSet.getLong("id"));
+				profissional.setNome(resultSet.getString("nome"));
+				profissional.setTelefone(resultSet.getString("telefone"));
+				profissional.setEmail(resultSet.getString("email"));
+				profissional.setSenha(resultSet.getString("senha"));
+				profissional.setRua(resultSet.getString("rua"));
+				profissional.setBairro(resultSet.getString("bairro"));
+				profissional.setCidade(resultSet.getString("cidade"));
+				profissional.setEstado(resultSet.getString("estado"));
+				profissional.setPais(resultSet.getString("pais"));
+				profissional.setFoto(resultSet.getString("foto"));
+				profissional.setNumero(resultSet.getInt("numero"));
+				profissional.setTipo(resultSet.getString("tipo"));
+				
 				profissionais.add(profissional);
 
 			}
-
+			
+			return profissionais;
+			
 		} catch (Exception e) {
-
+			
+			System.out.println(e.getMessage());
+			
 		} finally {
 
 			ConnectionFactory.close(resultSet, preparedStatement, connection);

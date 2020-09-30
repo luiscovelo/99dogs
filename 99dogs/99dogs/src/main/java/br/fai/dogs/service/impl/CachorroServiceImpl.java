@@ -166,4 +166,34 @@ public class CachorroServiceImpl implements CachorroService {
 		
 	}
 
+	@Override
+	public boolean deleteById(Long id) {
+		
+		String endpoint = "http://localhost:8082/api/v1/cachorro/delete/" + id;
+
+		RestTemplate restTemplate = new RestTemplate();
+		
+		try {
+			
+			HttpEntity<String> requestEntity = new HttpEntity<String>("");
+			
+			ResponseEntity<Cachorro> requestResponse = restTemplate.exchange(
+				endpoint, 
+				HttpMethod.DELETE, 
+				requestEntity,
+				Cachorro.class
+			);
+			
+			if(requestResponse.getStatusCodeValue() == 200) {
+				return true;
+			}
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return false;
+		
+	}
+
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.fai.dogs.api.service.ProfissionalService;
+import br.fai.dogs.model.entities.Pessoa;
 import br.fai.dogs.model.entities.Profissional;
 
 @RestController
@@ -26,9 +27,9 @@ public class ProfissionalRestController {
 	private ProfissionalService profissionalService;
 	
 	@GetMapping("/read-all")
-	public ResponseEntity<List<Profissional>> readAll(){
+	public ResponseEntity<List<Pessoa>> readAll(){
 		
-		List<Profissional> profissional = profissionalService.readAll();
+		List<Pessoa> profissional = profissionalService.readAll();
 		
 		if(profissional == null || profissional.size()==0) {
 			return ResponseEntity.ok(null);

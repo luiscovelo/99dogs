@@ -8,27 +8,32 @@
     <title>Dogwalker</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-    <link rel="stylesheet" href="../assets/css/admin-template.css">
+    <link rel="stylesheet" href="/assets/css/admin-template.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+	
 </head>
 <body>
 <div class="wrapper">
         <!-- Sidebar  -->
         <nav id="sidebar">
             <div class="sidebar-header">
-                <img src="../assets/imgs/logo_size.png" alt="Logo 99Dogs" width="70">
+                <img src="/assets/imgs/logo_size.png" alt="Logo 99Dogs" width="70">
             </div>
 
             <ul class="list-unstyled components">
                 <li>
-                    <a th:href="@{/dogwalker/dashboard}">
+                    <a th:href="@{/dashboard/profissional}">
                         <i class="fa fa-tachometer space" aria-hidden="true"></i> Dashboard
                     </a>
                 </li>
                 <li>
-                    <a th:href="@{/login}">
+                    <a th:href="@{/qualificacao/profissional/minhas-qualificacoes}">
+                        <i class="fa fa-university space" aria-hidden="true"></i> Minhas Qualificações
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/login/deslogar}">
                         <i class="fa fa-sign-out space" aria-hidden="true"></i> Desconectar
                     </a>
                 </li>

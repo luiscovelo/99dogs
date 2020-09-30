@@ -59,35 +59,48 @@ public class ReclamacaoSugestaoDaoImpl implements ReclamacaoSugestaoDao {
 
 	@Override
 	public boolean create(ReclamacaoSugestao entity) {
+		
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
-		String sql = "INSERT INTO reclamacao_sugestao (nome, email, assunto, mensagem)";
-		sql += " VALUES (?, ?, ?, ?); ";
+		String sql = "INSERT INTO reclamacao_sugestao (nome, email, assunto, mensagem, cliente_id)";
+		sql += " VALUES (?, ?, ?, ?, ?); ";
 
 		try {
+			
 			connection = ConnectionFactory.getConnection();
 			connection.setAutoCommit(false);
-
+			
+			preparedStatement = connection.prepareStatement(sql);
+			
 			preparedStatement.setString(1, entity.getNome());
 			preparedStatement.setString(2, entity.getEmail());
 			preparedStatement.setString(3, entity.getAssunto());
 			preparedStatement.setString(4, entity.getMensagem());
+			preparedStatement.setLong(5, entity.getClienteId());
 
 			preparedStatement.execute();
 
 			connection.commit();
+			
+			return true;
+			
 		} catch (Exception e) {
+			
+			System.out.println(e.getMessage());
+			
 			try {
 				connection.rollback();
 			} catch (SQLException e1) {
-				return false;
+				e1.printStackTrace();
 			}
+			
 		} finally {
-			ConnectionFactory.close(null, preparedStatement, connection);
+			ConnectionFactory.close(preparedStatement, connection);
 		}
 
 		return false;
+		
 	}
 
 	@Override
@@ -190,6 +203,53 @@ public class ReclamacaoSugestaoDaoImpl implements ReclamacaoSugestaoDao {
 		} finally {
 			ConnectionFactory.close(preparedStatement, connection);
 		}
+	}
+
+	@Override
+	public List<ReclamacaoSugestao> reclamacaoSugestaoPorCliente(Long id) {
+		
+		List<ReclamacaoSugestao> listReclamacaoSugestao = new ArrayList<ReclamacaoSugestao>();
+
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+			connection = ConnectionFactory.getConnection();
+
+			String sql = "SELECT * FROM reclamacao_sugestao WHERE cliente_id = ?";
+
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setLong(1, id);
+
+			resultSet = preparedStatement.executeQuery();
+
+			if (resultSet.next()) {
+				
+				ReclamacaoSugestao reclamacaoSugestao = new ReclamacaoSugestao();
+				
+				reclamacaoSugestao.setId(resultSet.getLong("id"));
+				reclamacaoSugestao.setNome(resultSet.getString("nome"));
+				reclamacaoSugestao.setEmail(resultSet.getString("email"));
+				reclamacaoSugestao.setAssunto(resultSet.getString("assunto"));
+				reclamacaoSugestao.setMensagem(resultSet.getString("mensagem"));
+				
+				listReclamacaoSugestao.add(reclamacaoSugestao);
+				
+			}
+			
+			return listReclamacaoSugestao;
+			
+		} catch (Exception e) {
+			
+			System.out.println("Ocorreu um problema ao obter lista de reclamacaoSugestao por cliente {99dogs-db}: " + e.getMessage());
+			
+		} finally {
+			ConnectionFactory.close(resultSet, preparedStatement, connection);
+		}
+
+		return null;
+		
 	}
 
 }

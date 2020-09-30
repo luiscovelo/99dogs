@@ -6,6 +6,8 @@ public class ReclamacaoSugestao extends BasePojo {
 	private String email;
 	private String assunto;
 	private String mensagem;
+	private Long clienteId;
+	
 	public String getNome() {
 		return nome;
 	}
@@ -30,12 +32,17 @@ public class ReclamacaoSugestao extends BasePojo {
 	public void setMensagem(String mensagem) {
 		this.mensagem = mensagem;
 	}
+	public Long getClienteId() {
+		return clienteId;
+	}
+	public void setClienteId(Long clienteId) {
+		this.clienteId = clienteId;
+	}
+	
 	@Override
 	public String toString() {
 		return "ReclamacaoSugestao [nome=" + nome + ", email=" + email + ", assunto=" + assunto + ", mensagem="
-				+ mensagem + "]";
+				+ mensagem + ", clienteId=" + clienteId + "]";
 	}
 	
-	
-
 }

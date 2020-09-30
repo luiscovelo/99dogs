@@ -46,6 +46,8 @@ public class PessoaServiceImpl implements PessoaService {
 		
 		pessoa.setId((long) 3);
 		pessoa.setTipo("CLIENTE");
+		pessoa.setEmail("cliente@hotmail.com");
+		pessoa.setNome("Cliente");
 		
 		return pessoa;
 		

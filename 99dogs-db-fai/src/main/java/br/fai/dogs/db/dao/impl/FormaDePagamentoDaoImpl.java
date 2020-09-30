@@ -17,6 +17,7 @@ public class FormaDePagamentoDaoImpl implements FormaDePagamentoDao {
 
 	@Override
 	public List<FormaDePagamento> readAll() {
+		
 		List<FormaDePagamento> formasDePagamento = new ArrayList<FormaDePagamento>();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -42,16 +43,21 @@ public class FormaDePagamentoDaoImpl implements FormaDePagamentoDao {
 				formasDePagamento.add(formaDePagamento);
 
 			}
-
+			
+			return formasDePagamento;
+			
 		} catch (Exception e) {
-
+			
+			System.out.println("Ocorreu um problema ao obter a lista de formas de pagamento {99dogs-db}: " + e.getMessage());
+			
+			return null;
+			
 		} finally {
 
 			ConnectionFactory.close(resultSet, preparedStatement, connection);
 
 		}
 
-		return null;
 	}
 
 	@Override
