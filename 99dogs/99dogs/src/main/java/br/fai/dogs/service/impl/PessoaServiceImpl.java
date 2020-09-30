@@ -40,9 +40,20 @@ public class PessoaServiceImpl implements PessoaService {
 	}
 
 	@Override
-	public Pessoa sessaoAtual() {
+	public Pessoa sessaoAtual(String tipo) {
 		
 		Pessoa pessoa = new Pessoa();
+		
+		if(tipo == "p") {
+			
+			pessoa.setId((long) 1);
+			pessoa.setTipo("PROFISSIONAL");
+			pessoa.setEmail("profissional@hotmail.com");
+			pessoa.setNome("Dogwlaker");
+			
+			return pessoa;
+			
+		}
 		
 		pessoa.setId((long) 3);
 		pessoa.setTipo("CLIENTE");

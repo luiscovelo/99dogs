@@ -45,4 +45,11 @@ public class QualificacaoServiceImpl implements QualificacaoService {
 		return qualificacaoDao.readAll();
 	}
 
+	@Override
+	public List<Qualificacao> readByProfissionalId(Long id) {
+		
+		return qualificacaoDao.readByProfissionalId(id);
+		
+	}
+
 }

@@ -45,4 +45,9 @@ public class PasseioServiceImpl implements PasseioService {
 		return passeioDao.passeiosPorCliente(cliente_id);
 	}
 
+	@Override
+	public List<Passeio> passeiosPorProfissional(Long profissional) {
+		return passeioDao.passeiosPorProfissional(profissional);
+	}
+
 }

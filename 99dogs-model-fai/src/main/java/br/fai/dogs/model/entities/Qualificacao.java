@@ -5,7 +5,7 @@ public class Qualificacao extends BasePojo{
 	private String titulo;
 	private String modalidade;
 	private String descricao;
-	private int profissionalId;
+	private Long profissionalId;
 	public String getTitulo() {
 		return titulo;
 	}
@@ -24,11 +24,11 @@ public class Qualificacao extends BasePojo{
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-	public int getProfissionalId() {
+	public Long getProfissionalId() {
 		return profissionalId;
 	}
-	public void setProfissionalId(int profissionalId) {
-		this.profissionalId = profissionalId;
+	public void setProfissionalId(Long profissional_id) {
+		this.profissionalId = profissional_id;
 	}
 	@Override
 	public String toString() {

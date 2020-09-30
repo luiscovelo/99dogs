@@ -73,4 +73,18 @@ public class QualificacaoRestController {
 		
 		return ResponseEntity.ok(response);
 	}
+	
+	@GetMapping("/read-by-profissional-id/{id}")
+	public ResponseEntity<List<Qualificacao>> readByProfissionalId(@PathVariable("id") Long id){
+		
+		List<Qualificacao> qualificacao = qualificacaoService.readByProfissionalId(id);
+		
+		if(qualificacao == null || qualificacao.size()==0) {
+			return ResponseEntity.ok(null);
+			
+		}else {
+			return ResponseEntity.ok(qualificacao);
+		}
+	}
+	
 }

@@ -28,7 +28,7 @@ public class ReclamacaoSugestaoController {
 	@GetMapping("/cliente/meus-feedbacks")
 	public String getListaDeReclamacaoSugestaoPorCliente(Model model) {
 		
-		Long cliente_id = pessoaService.sessaoAtual().getId();
+		Long cliente_id = pessoaService.sessaoAtual("c").getId();
 		
 		List<ReclamacaoSugestao> listReclamacaoSugestao = reclamacaoSugestaoService.reclamacaoSugestaoPorCliente(cliente_id);
 		model.addAttribute("listReclamacaoSugestao", listReclamacaoSugestao);
@@ -42,8 +42,8 @@ public class ReclamacaoSugestaoController {
 		
 		Pessoa cliente = new Pessoa();
 		
-		cliente.setNome(pessoaService.sessaoAtual().getNome());
-		cliente.setEmail(pessoaService.sessaoAtual().getEmail());
+		cliente.setNome(pessoaService.sessaoAtual("c").getNome());
+		cliente.setEmail(pessoaService.sessaoAtual("c").getEmail());
 		
 		model.addAttribute("cliente", cliente);
 		
@@ -63,7 +63,7 @@ public class ReclamacaoSugestaoController {
 	@PostMapping("/cliente/post-registrar-feedback")
 	public String postRegistrarFeedback(ReclamacaoSugestao reclamacaoSugestao) {
 		
-		Long cliente_id = pessoaService.sessaoAtual().getId();
+		Long cliente_id = pessoaService.sessaoAtual("c").getId();
 		
 		reclamacaoSugestao.setClienteId(cliente_id);
 

@@ -141,4 +141,35 @@ public class PasseioServiceImpl implements PasseioService {
 		
 	}
 
+	@Override
+	public List<Passeio> passeiosPorProfissional(Long profissional_id) {
+		
+		List<Passeio> response = null;
+		String endpoint = "http://localhost:8082/api/v1/passeio/passeiosPorProfissional/" + profissional_id;
+
+		RestTemplate restTemplate = new RestTemplate();
+		
+		try {
+			
+			HttpEntity<String> requestEntity = new HttpEntity<String>("");
+			
+			ResponseEntity<Passeio[]> requestResponse = restTemplate.exchange(
+				endpoint, 
+				HttpMethod.GET, 
+				requestEntity,
+				Passeio[].class
+			);
+			
+			Passeio[] passeios = requestResponse.getBody();
+			
+			response = Arrays.asList(passeios);
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return response;
+		
+	}
+
 }

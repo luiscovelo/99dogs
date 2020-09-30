@@ -279,5 +279,55 @@ public class PasseioDaoImpl implements PasseioDao {
 		return null;
 		
 	}
+
+	@Override
+	public List<Passeio> passeiosPorProfissional(Long profissional_id) {
+		
+		List<Passeio> passeios = new ArrayList<Passeio>();
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+
+			connection = ConnectionFactory.getConnection();
+			
+			String sql = "SELECT * FROM passeio where profissional_id = ?";
+			
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setLong(1, profissional_id);
+			
+			resultSet = preparedStatement.executeQuery();
+			
+			while (resultSet.next()) {
+
+				Passeio passeio = new Passeio();
+				
+				passeio.setId(resultSet.getLong("id"));
+				passeio.setStatus(resultSet.getString("status"));
+				passeio.setDatahora(resultSet.getTimestamp("datahora").toLocalDateTime());
+				passeio.setValor(resultSet.getDouble("valor"));
+				passeio.setClienteId(resultSet.getLong("cliente_id"));
+				passeio.setProfissionalId(resultSet.getLong("profissional_id"));
+
+				passeios.add(passeio);
+
+			}
+			
+			return passeios;
+			
+		} catch (Exception e) {
+			
+			System.out.println("Falha ao obter lista de passeios por profissional: " + e.getMessage());
+			
+		} finally {
+
+			ConnectionFactory.close(resultSet, preparedStatement, connection);
+
+		}
+
+		return null;
+		
+	}
 	
 }

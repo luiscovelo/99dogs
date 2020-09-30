@@ -9,19 +9,28 @@
 	<div layout:fragment="body">
 		<div class="container-box">
 		
-			<a th:href="@{/reclamacaoSugestao/cliente/registrar-feedback}" class="btn btn-success">Registrar</a>
+			<a th:href="@{/qualificacao/profissional/adicionar-qualificacao}" class="btn btn-success">Adicionar</a>
 			<hr>
 
 			<table class="table">
 				<thead>
 					<tr>
-						<th>ID</th>
-						<th>Assunto</th>
+						<th>Título</th>
+						<th>Modalidade</th>
+						<th>Descrição</th>
 						<th></th>
 					</tr>
 				</thead>
 				<tbody>
-					
+					<tr th:each="qualificacao : ${qualificacoes}">
+						<td th:text="${qualificacao.titulo}"></td>
+						<td th:text="${qualificacao.modalidade}"></td>
+						<td th:text="${qualificacao.descricao}"></td>
+						<td>
+							<a th:href="@{/qualificacao/profissional/alterar-qualificacao/{id} (id=${qualificacao.id})}" class="btn btn-warning">Alterar</a>
+							<a th:href="@{/qualificacao/profissional/deletar-qualificacao/{id} (id=${qualificacao.id})}" class="btn btn-danger">Deletar</a>
+						</td>
+					</tr>
 				</tbody>
 			</table>
 		

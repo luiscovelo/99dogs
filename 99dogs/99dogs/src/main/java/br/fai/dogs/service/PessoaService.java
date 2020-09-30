@@ -14,7 +14,7 @@ public interface PessoaService {
 	
 	Pessoa validarLogin(Pessoa entity);
 	
-	Pessoa sessaoAtual();
+	Pessoa sessaoAtual(String tipo);
 	
 	Boolean gravarSessao(HttpSession session, Pessoa entity);
 	

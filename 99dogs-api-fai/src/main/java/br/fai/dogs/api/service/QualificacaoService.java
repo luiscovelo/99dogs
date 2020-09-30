@@ -16,4 +16,6 @@ public interface QualificacaoService {
 
 	boolean deleteById(Long id);
 	
+	List<Qualificacao> readByProfissionalId(Long id);
+	
 }

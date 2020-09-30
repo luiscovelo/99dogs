@@ -16,4 +16,6 @@ public interface QualificacaoDao {
 
 	boolean deleteById(Long id);
 	
+	List<Qualificacao> readByProfissionalId(Long id);
+	
 }

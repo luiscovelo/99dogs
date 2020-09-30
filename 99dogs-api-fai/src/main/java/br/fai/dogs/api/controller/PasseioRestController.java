@@ -83,4 +83,12 @@ public class PasseioRestController {
 		
 	}
 	
+	@GetMapping("/passeiosPorProfissional/{id}")
+	public HttpEntity<List<Passeio>> passeiosPorProfissional(@PathVariable("id") Long id){
+		
+		List<Passeio> response = passeioService.passeiosPorProfissional(id);
+		return ResponseEntity.ok(response);
+		
+	}
+	
 }

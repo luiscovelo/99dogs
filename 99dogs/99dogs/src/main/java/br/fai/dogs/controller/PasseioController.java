@@ -40,7 +40,7 @@ public class PasseioController {
 	@GetMapping("/cliente/meus-passeios")
 	public String getListaDePasseiosPorCliente(Model model) {
 		
-		Long cliente_id = pessoaService.sessaoAtual().getId();
+		Long cliente_id = pessoaService.sessaoAtual("c").getId();
 		List<Passeio> passeios = new ArrayList<Passeio>();
 		
 		passeios = passeioService.passeiosPorCliente(cliente_id);
@@ -53,7 +53,7 @@ public class PasseioController {
 	@GetMapping("/cliente/solicitar-passeio")
 	public String getPageSolicitarPasseio(Model model) {
 		
-		Long cliente_id = pessoaService.sessaoAtual().getId();
+		Long cliente_id = pessoaService.sessaoAtual("c").getId();
 		
 		List<Pessoa> profissionais = pessoaService.readAllProfissional();
 		model.addAttribute("profissionais", profissionais);
@@ -71,7 +71,7 @@ public class PasseioController {
 	@PostMapping("/cliente/post-solicitar-passeio")
 	public String postSolicitarPasseio(Passeio passeio, BindingResult bindingResult) {
 		
-		Long cliente_id = pessoaService.sessaoAtual().getId();
+		Long cliente_id = pessoaService.sessaoAtual("c").getId();
 
 		passeio.setClienteId(cliente_id);
 		passeio.setStatus("Espera");
@@ -87,6 +87,19 @@ public class PasseioController {
 		
 		return "/cliente/passeio/detalhes";
 		
+	}
+	
+	@GetMapping("/profissional/meus-passeios")
+	public String getListaDePasseiosPorProfissional(Model model) {
+		
+		Long profissional = pessoaService.sessaoAtual("p").getId();
+		List<Passeio> passeios = new ArrayList<Passeio>();
+		
+		passeios = passeioService.passeiosPorProfissional(profissional);
+		
+		model.addAttribute("passeios", passeios);
+		
+		return "/profissional/passeio/meus-passeios";
 	}
 	
 }

@@ -18,4 +18,6 @@ public interface PasseioDao {
 	
 	List<Passeio> passeiosPorCliente(Long cliente_id);
 	
+	List<Passeio> passeiosPorProfissional(Long profissional_id);
+	
 }
