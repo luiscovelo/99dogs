@@ -57,6 +57,7 @@ public class PasseioCachorroDaoImpl implements PasseioCachorroDao {
 
 	@Override
 	public boolean create(PasseioCachorro entity) {
+		
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
@@ -64,26 +65,37 @@ public class PasseioCachorroDaoImpl implements PasseioCachorroDao {
 		sql += " VALUES (?, ?); ";
 
 		try {
+			
 			connection = ConnectionFactory.getConnection();
 			connection.setAutoCommit(false);
-
+			
+			preparedStatement = connection.prepareStatement(sql);
+			
 			preparedStatement.setInt(1, entity.getPasseioId());
 			preparedStatement.setInt(2, entity.getCachorroId());
 
 			preparedStatement.execute();
 
 			connection.commit();
+			
+			return true;
+			
 		} catch (Exception e) {
+			
+			System.out.println("Ocorreu um problema ao criar o passeio-cachorro em {99dogs-db-fai}: " + e.getMessage());
+			
 			try {
 				connection.rollback();
 			} catch (SQLException e1) {
-				return false;
+				e1.printStackTrace();
 			}
+			
 		} finally {
-			ConnectionFactory.close(null, preparedStatement, connection);
+			ConnectionFactory.close(preparedStatement, connection);
 		}
 
 		return false;
+		
 	}
 
 	@Override

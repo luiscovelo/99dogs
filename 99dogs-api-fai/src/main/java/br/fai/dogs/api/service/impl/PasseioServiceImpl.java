@@ -21,7 +21,7 @@ public class PasseioServiceImpl implements PasseioService {
 	}
 
 	@Override
-	public boolean create(Passeio entity) {
+	public Long create(Passeio entity) {
 		return passeioDao.create(entity);
 	}
 

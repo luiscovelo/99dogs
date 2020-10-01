@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -51,9 +52,9 @@ public class PasseioServiceImpl implements PasseioService {
 	}
 
 	@Override
-	public boolean create(Passeio entity) {
+	public Long create(Passeio entity) {
 		
-		Boolean response = false;
+		Long idPasseio = null;
 		String endpoint  = "http://localhost:8082/api/v1/passeio/create";
 
 		RestTemplate restTemplate = new RestTemplate();
@@ -70,32 +71,56 @@ public class PasseioServiceImpl implements PasseioService {
 			map.put("profissionalId", entity.getProfissionalId());
 			map.put("status", entity.getStatus());
 			map.put("valor", entity.getValor());
+			map.put("formaDePagamentoId", entity.getFormaDePagamentoId());
 						
 			HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(map, headers);
 			 
-			ResponseEntity<Void> requestResponse = restTemplate.exchange(
+			ResponseEntity<Long> requestResponse = restTemplate.exchange(
 				endpoint, 
 				HttpMethod.POST, 
 				requestEntity,
-				Void.class
+				Long.class
 			);			
 			
-			if(requestResponse.getStatusCode().equals(200)) {
-				return true;
+			if(requestResponse.getStatusCodeValue() == 200) {
+				idPasseio = requestResponse.getBody();
 			}
 			
 		} catch (Exception e) {
 			System.out.println("Caiu aqui: " + e.getMessage());
 		}
 		
-		return response;
+		return idPasseio;
 		
 	}
 
 	@Override
 	public Passeio readById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Passeio response = new Passeio();
+		String endpoint = "http://localhost:8082/api/v1/passeio/read-by-id/" + id;
+
+		RestTemplate restTemplate = new RestTemplate();
+		
+		try {
+			
+			HttpEntity<String> requestEntity = new HttpEntity<String>("");
+			
+			ResponseEntity<Passeio> requestResponse = restTemplate.exchange(
+				endpoint, 
+				HttpMethod.GET, 
+				requestEntity,
+				Passeio.class
+			);
+			
+			response = requestResponse.getBody();
+			
+		} catch (Exception e) {
+			System.out.println("Ocorreu um problema ao realizar a requisição para obter o passeio por id: " + e.getMessage());
+		}
+		
+		return response;
+		
 	}
 
 	@Override

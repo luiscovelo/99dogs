@@ -53,7 +53,7 @@ create table if not exists cachorro(
 	nome character varying(50) not null,
 	data_nascimento date,
 	raca_id integer not null references raca(id) on update cascade,
-	cliente_id integer not null references cliente(id) on update cascade
+	cliente_id integer not null references cliente(pessoa_id) on update cascade
 );
 
 create table if not exists qualificacao(
@@ -61,7 +61,7 @@ create table if not exists qualificacao(
 	titulo character varying(50) not null,
 	modalidade character varying(50) not null check(modalidade in('Graduacao', 'Tecnico', 'Pos-Graduacao', 'Mestrado')),
 	descricao character varying(100),
-	profissional_id integer not null references profissional(id) on update cascade
+	profissional_id integer not null references profissional(pessoa_id) on update cascade
 );
 
 create table if not exists forma_de_pagamento(
@@ -75,7 +75,7 @@ create table if not exists reclamacao_sugestao(
 	email character varying(100) not null,
 	assunto character varying(30) not null check(assunto in('Profissional', 'Cliente', 'Aplicacao', 'Falhas')),
 	mensagem text not null,
-	cliente_id integer not null references cliente(id) on update cascade
+	pessoa_id integer references pessoa(id) on update cascade
 );
 
 create table if not exists passeio(
@@ -83,13 +83,13 @@ create table if not exists passeio(
 	datahora timestamp without time zone not null,
 	status character varying(30) not null check(status in('Recusado', 'Aprovado', 'Finalizado', 'Espera')),
 	valor double precision default 0 not null,
-	profissional_id integer not null references profissional(id) on update cascade,
-	cliente_id integer not null references cliente(id) on update cascade,
+	profissional_id integer not null references profissional(pessoa_id) on update cascade,
+	cliente_id integer not null references cliente(pessoa_id) on update cascade,
 	forma_de_pagamento_id integer not null references forma_de_pagamento(id) on update cascade
 );
 
 create table if not exists passeio_cachorro(
 	passeio_id integer references passeio(id) on update cascade,
-	cachorro_id integer references passeio(id) on update cascade,
+	cachorro_id integer references cachorro(id) on update cascade,
 	primary key(passeio_id, cachorro_id)
 );

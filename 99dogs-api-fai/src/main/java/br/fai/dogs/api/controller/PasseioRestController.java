@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.fai.dogs.api.service.PasseioService;
@@ -41,8 +40,9 @@ public class PasseioRestController {
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<Boolean> create(@RequestBody Passeio entity){
-		boolean response = passeioService.create(entity);
+	public ResponseEntity<Long> create(@RequestBody Passeio entity){
+		Long response = passeioService.create(entity);
+		System.out.println(response);
 		return ResponseEntity.ok(response);
 		
 	}
@@ -50,7 +50,7 @@ public class PasseioRestController {
 	@GetMapping("/read-by-id/{id}")
 	public ResponseEntity<Passeio> readById(@PathVariable("id") Long id){
 		
-		Passeio passeio = (Passeio) passeioService.readById(id);
+		Passeio passeio = passeioService.readById(id);
 		
 		if(passeio == null) {
 			return ResponseEntity.notFound().build();

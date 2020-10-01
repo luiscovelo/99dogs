@@ -40,8 +40,8 @@ public class PasseioCachorroRestController {
 	
 	@PostMapping("/create")
 	public ResponseEntity<Boolean> create(@RequestBody PasseioCachorro entity){
-		boolean response = passeioCachorroService.create(entity);
 		
+		boolean response = passeioCachorroService.create(entity);
 		return ResponseEntity.ok(response);
 		
 	}

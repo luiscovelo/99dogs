@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import br.fai.dogs.model.entities.Cachorro;
 import br.fai.dogs.model.entities.FormaDePagamento;
 import br.fai.dogs.model.entities.Passeio;
+import br.fai.dogs.model.entities.PasseioCachorro;
 import br.fai.dogs.model.entities.Pessoa;
 import br.fai.dogs.service.CachorroService;
 import br.fai.dogs.service.FormaDePagamentoService;
+import br.fai.dogs.service.PasseioCachorroService;
 import br.fai.dogs.service.PasseioService;
 import br.fai.dogs.service.PessoaService;
 
@@ -40,6 +42,9 @@ public class PasseioController {
 	
 	@Autowired
 	private FormaDePagamentoService formaDePagamentoService;
+	
+	@Autowired
+	private PasseioCachorroService passeioCachorroService;
 	
 	@GetMapping("/cliente/meus-passeios")
 	public String getListaDePasseiosPorCliente(Model model) {
@@ -61,10 +66,7 @@ public class PasseioController {
 		
 		List<Pessoa> profissionais = pessoaService.readAllProfissional();
 		model.addAttribute("profissionais", profissionais);
-		
-		List<Cachorro> cachorros = cachorroService.cachorrosPorCliente(cliente_id);
-		model.addAttribute("cachorros", cachorros);
-		
+				
 		List<FormaDePagamento> formasDePagamento = formaDePagamentoService.readAll();
 		model.addAttribute("formasDePagamento", formasDePagamento);
 		
@@ -80,14 +82,48 @@ public class PasseioController {
 		passeio.setClienteId(cliente_id);
 		passeio.setStatus("Espera");
 				
-		boolean response = passeioService.create(passeio);
+		Long idPasseio = passeioService.create(passeio);
+				
+		if(idPasseio != null && idPasseio != 0) {
+			return "redirect:/passeio/cliente/adicionar-cachorro-ao-passeio/" + idPasseio;
+		}
 		
-		return "redirect:/passeio/cliente/meus-passeios";
+		return "redirect:/passeio/cliente/solicitar-passeio";
+		
+	}
+	
+	@GetMapping("/cliente/adicionar-cachorro-ao-passeio/{id}")
+	public String getPageAdicionarCachorroAoPasseio(@PathVariable("id") Long id, Model model) {
+		
+		Long cliente_id = pessoaService.sessaoAtual("c").getId();
+		
+		List<Cachorro> cachorros = cachorroService.cachorrosPorCliente(cliente_id);
+		
+		model.addAttribute("passeioId", id);
+		model.addAttribute("cachorros", cachorros);
+		
+		return "/cliente/passeio/adicionar-cachorro-ao-passeio";
+		
+	}
+	
+	@PostMapping("/cliente/post-adicionar-cachorro-ao-passeio")
+	public String postAdicionarCachorroAoPasseio(PasseioCachorro passeioCachorro) {
+		
+		boolean response = passeioCachorroService.create(passeioCachorro);
+		
+		if(response == true) {
+			return "redirect:/passeio/cliente/meus-passeios";
+		}
+		
+		return "redirect:/passeio/cliente/adicionar-cachorro-ao-passeio/" + passeioCachorro.getPasseioId();
 		
 	}
 	
 	@GetMapping("/cliente/detalhes/{id}")
 	public String getPageDetalhesDoPasseio(@PathVariable("id") Long id) {
+		
+		Passeio passeio = passeioService.readById(id);
+		System.out.println(passeio);
 		
 		return "/cliente/passeio/detalhes";
 		

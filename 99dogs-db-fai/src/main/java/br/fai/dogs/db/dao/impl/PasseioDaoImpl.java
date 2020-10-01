@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,8 @@ public class PasseioDaoImpl implements PasseioDao {
 				passeio.setStatus(resultSet.getString("status"));
 				passeio.setDatahora(resultSet.getTimestamp("datahora").toLocalDateTime());
 				passeio.setValor(resultSet.getDouble("valor"));
+				passeio.setClienteId(resultSet.getLong("cliente_id"));
+				passeio.setFormaDePagamentoId(resultSet.getLong("forma_de_pagamento_id"));
 
 				passeios.add(passeio);
 
@@ -63,47 +66,55 @@ public class PasseioDaoImpl implements PasseioDao {
 	}
 
 	@Override
-	public boolean create(Passeio entity) {
-				
+	public Long create(Passeio entity) {
+		
+		Long idPasseio = null;
+		
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
-		String sql = "INSERT INTO passeio (status, datahora, valor, cliente_id, profissional_id)";
-		sql += " VALUES (?, ?, ?, ?, ?); ";
+		String sql = "INSERT INTO passeio (status, datahora, valor, cliente_id, profissional_id, forma_de_pagamento_id)";
+		sql += " VALUES (?, ?, ?, ?, ?, ?); ";
 		
 		try {
+			
 			connection = ConnectionFactory.getConnection();
 			connection.setAutoCommit(false);
 			
-	        preparedStatement = connection.prepareStatement(sql);
+	        preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 	        
 	        preparedStatement.setString(1, entity.getStatus());
 	        preparedStatement.setTimestamp(2, Timestamp.valueOf(entity.getDatahora()));
 	        preparedStatement.setDouble(3, entity.getValor());
 	        preparedStatement.setLong(4, entity.getClienteId());
 	        preparedStatement.setLong(5, entity.getProfissionalId());
+	        preparedStatement.setLong(6, entity.getFormaDePagamentoId());
 	        	        
 			preparedStatement.execute();
-
+			
 			connection.commit();
 			
-			return true;
+			ResultSet idGerado = preparedStatement.getGeneratedKeys();
+						
+			if(idGerado.next()) {
+				idPasseio = idGerado.getLong(1);
+			}
 			
 		} catch (Exception e) {
 			
-			System.out.println("Falha ao criar o passeio {99-dogs-fai}: " + e.getMessage());
+			System.out.println("Falha ao criar o passeio {99-dogs-db-fai}: " + e.getMessage());
 			
 			try {
 				connection.rollback();
 			} catch (SQLException e1) {
-				System.out.println("Falha no query no momento de criar o passeio {99-dogs-fai}: " + e1.getMessage());
+				System.out.println("Falha no query no momento de criar o passeio {99-dogs-db-fai}: " + e1.getMessage());
 			}
 			
 		} finally {
 			ConnectionFactory.close(preparedStatement, connection);
 		}
 
-		return false;
+		return idPasseio;
 	}
 
 	@Override
@@ -126,11 +137,15 @@ public class PasseioDaoImpl implements PasseioDao {
 			resultSet = preparedStatement.executeQuery();
 
 			if (resultSet.next()) {
+				
 				passeio = new Passeio();
 				passeio.setId(resultSet.getLong("id"));
 				passeio.setStatus(resultSet.getString("status"));
 				passeio.setDatahora(resultSet.getTimestamp("datahora").toLocalDateTime());
 				passeio.setValor(resultSet.getDouble("valor"));
+				passeio.setProfissionalId(resultSet.getLong("profissional_id"));
+				passeio.setClienteId(resultSet.getLong("cliente_id"));
+				passeio.setFormaDePagamentoId(resultSet.getLong("forma_de_pagamento_id"));
 
 			}
 			

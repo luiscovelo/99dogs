@@ -71,7 +71,7 @@ insert into cachorro(id,nome, data_nascimento, raca_id, cliente_id) values(2,'Lu
 insert into cachorro(id,nome, data_nascimento, raca_id, cliente_id) values(3,'Leléo','2018-04-15',3,3);
 
 -- Inserção Qualificacao
-insert into qualificacao(id,titulo, modalidade, descricao, profissional_id) values(1,'DogWalker','Graduacao','Experiência em passeio de com caes de porte grande',1);
+insert into qualificacao(id,titulo, modalidade, descricao, profissional_id) values(1,'DogWalker','Graduacao','Experiência em passeio de com caes de porte grande',4);
 
 -- Inserção forma de pagamento
 insert into forma_de_pagamento(id,tipo) values(1,'Boleto');
@@ -81,17 +81,17 @@ insert into forma_de_pagamento(id,tipo) values(4,'Cartao de Credito');
 insert into forma_de_pagamento(id,tipo) values(5,'Cartao de Debito');
 
 -- Inserção de Reclamacao e Sugestao
-insert into reclamacao_sugestao(id,nome,email,assunto,mensagem) values(1,'Guilherme','guilherme@hotmail.com','Profissional','Sou um DogWalker nas horas vagas e gostaria de cadastrar-me na plataforma.');
-insert into reclamacao_sugestao(id,nome,email,assunto,mensagem) values(2,'Joyce','joyce@outlook.com','Cliente','Gostei muito da plataforma.');
-insert into reclamacao_sugestao(id,nome,email,assunto,mensagem) values(3,'José','jose@yahoo.com.br','Aplicacao','A aplicação encontra-se fora do ar deste sábado.');
-insert into reclamacao_sugestao(id,nome,email,assunto,mensagem) values(4,'Otávio','otavio@hotmail.com','Falhas','Estou com problemas para finalizar o pagamento utilizando o PicPay, o erro ao processar: <QRCode não está válido para a sessão ativa.>');
+insert into reclamacao_sugestao(id,nome,email,assunto,mensagem,pessoa_id) values(1,'Guilherme','guilherme@hotmail.com','Profissional','Sou um DogWalker nas horas vagas e gostaria de cadastrar-me na plataforma.',null);
+insert into reclamacao_sugestao(id,nome,email,assunto,mensagem,pessoa_id) values(2,'Joyce','joyce@outlook.com','Cliente','Gostei muito da plataforma.',null);
+insert into reclamacao_sugestao(id,nome,email,assunto,mensagem,pessoa_id) values(3,'José','jose@yahoo.com.br','Aplicacao','A aplicação encontra-se fora do ar deste sábado.',null);
+insert into reclamacao_sugestao(id,nome,email,assunto,mensagem,pessoa_id) values(4,'Otávio','otavio@hotmail.com','Falhas','Estou com problemas para finalizar o pagamento utilizando o PicPay, o erro ao processar: <QRCode não está válido para a sessão ativa.>',null);
 
 -- Inserção do Passeio 
-insert into passeio(id,datahora,status,valor,profissional_id, cliente_id, forma_de_pagamento_id) values(1,'2020-06-15 09:30','Finalizado',25.00,1,3,2);
-insert into passeio(id,datahora,status,valor,profissional_id, cliente_id, forma_de_pagamento_id) values(2,'2020-06-16 14:30','Espera',25.00,1,3,3);
-insert into passeio(id,datahora,status,valor,profissional_id, cliente_id, forma_de_pagamento_id) values(3,'2020-06-16 15:30','Espera',25.00,1,2,3);
-insert into passeio(id,datahora,status,valor,profissional_id, cliente_id, forma_de_pagamento_id) values(4,'2020-06-17 13:00','Espera',30.00,1,1,4);
-insert into passeio(id,datahora,status,valor,profissional_id, cliente_id, forma_de_pagamento_id) values(5,'2020-06-18 17:30','Espera',15.00,1,3,4);
+insert into passeio(id,datahora,status,valor,profissional_id, cliente_id, forma_de_pagamento_id) values(1,'2020-06-15 09:30','Finalizado',25.00,4,3,2);
+insert into passeio(id,datahora,status,valor,profissional_id, cliente_id, forma_de_pagamento_id) values(2,'2020-06-16 14:30','Espera',25.00,4,3,3);
+insert into passeio(id,datahora,status,valor,profissional_id, cliente_id, forma_de_pagamento_id) values(3,'2020-06-16 15:30','Espera',25.00,4,2,3);
+insert into passeio(id,datahora,status,valor,profissional_id, cliente_id, forma_de_pagamento_id) values(4,'2020-06-17 13:00','Espera',30.00,4,1,4);
+insert into passeio(id,datahora,status,valor,profissional_id, cliente_id, forma_de_pagamento_id) values(5,'2020-06-18 17:30','Espera',15.00,4,3,4);
 
 -- Inserção Passeio do cachorro
 insert into passeio_cachorro(passeio_id, cachorro_id) values(1,3);

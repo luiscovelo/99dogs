@@ -46,7 +46,7 @@ public class PessoaServiceImpl implements PessoaService {
 		
 		if(tipo == "p") {
 			
-			pessoa.setId((long) 1);
+			pessoa.setId((long) 4);
 			pessoa.setTipo("PROFISSIONAL");
 			pessoa.setEmail("profissional@hotmail.com");
 			pessoa.setNome("Dogwlaker");
@@ -55,7 +55,7 @@ public class PessoaServiceImpl implements PessoaService {
 			
 		}
 		
-		pessoa.setId((long) 3);
+		pessoa.setId((long) 2);
 		pessoa.setTipo("CLIENTE");
 		pessoa.setEmail("cliente@hotmail.com");
 		pessoa.setNome("Cliente");

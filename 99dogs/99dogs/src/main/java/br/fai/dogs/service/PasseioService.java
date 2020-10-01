@@ -8,7 +8,7 @@ public interface PasseioService {
 	
 	List<Passeio> readAll();
 
-	boolean create(Passeio entity);
+	Long create(Passeio entity);
 
 	Passeio readById(Long id);
 
