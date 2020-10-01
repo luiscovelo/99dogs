@@ -1,8 +1,12 @@
 package br.fai.dogs.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Stack;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -100,6 +104,33 @@ public class PasseioController {
 		model.addAttribute("passeios", passeios);
 		
 		return "/profissional/passeio/meus-passeios";
+	}
+	
+	@GetMapping("/profissional/minha-agenda")
+	public String getPageMinhaAgenda(Model model) {
+		
+		Long cliente_id = pessoaService.sessaoAtual("c").getId();
+		List<Passeio> passeios = new ArrayList<Passeio>();
+		
+		passeios = passeioService.passeiosPorCliente(cliente_id);
+		
+		Map<String, String> map = new HashMap<>();
+		Stack<JSONObject> jsonPasseios = new Stack<JSONObject>();
+		
+		for(Passeio passeio: passeios) {
+			
+			map.put("title", passeio.getId().toString());
+			map.put("start", passeio.getDatahora().toString());
+			
+			JSONObject json = new JSONObject(map);
+			jsonPasseios.push(json);
+			
+		}
+
+		model.addAttribute("jsonPasseios", jsonPasseios);
+		
+		return "/profissional/passeio/minha-agenda";
+		
 	}
 	
 }

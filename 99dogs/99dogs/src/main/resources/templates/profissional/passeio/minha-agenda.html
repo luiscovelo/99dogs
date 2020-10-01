@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html layout:decorate="~{/profissional/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Profissional | Minha Agenda</title>
+
+<style>
+	#agenda_de_passeios {
+    	max-width: 1100px;
+    	margin: 0 auto;
+  	}
+</style>
+
+</head>
+<body>
+	
+	<div layout:fragment="body">
+	
+		<div class="container-box">
+
+			<div id='agenda_de_passeios'></div>
+			
+		</div>
+		
+		<script th:inline="javascript">
+						
+		  document.addEventListener('DOMContentLoaded', function() {
+		    var calendario = document.getElementById('agenda_de_passeios');
+		
+		    var calendar = new FullCalendar.Calendar(calendario, {
+		      locale: 'pt-br',
+		      buttonText: {
+		    	  today:    'hoje',
+		    	  month:    'mês',
+		    	  week:     'semana',
+		    	  day:      'dia',
+		    	  list:     'lista'
+		      },
+		      headerToolbar: {
+		        left: 'prevYear,prev,next,nextYear today',
+		        center: 'title',
+		        right: 'dayGridMonth,dayGridWeek,dayGridDay'
+		      },
+		      initialDate: '2020-09-12',
+		      navLinks: true, // can click day/week names to navigate views
+		      editable: true,
+		      dayMaxEvents: true, // allow "more" link when too many events
+		      events: [(${jsonPasseios})]
+		    });
+		
+		    calendar.render();
+		  });
+		
+		</script>
+		
+	</div>
+	
+</body>
+</html>
