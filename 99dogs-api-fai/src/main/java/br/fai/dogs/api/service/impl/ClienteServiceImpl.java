@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import br.fai.dogs.api.service.ClienteService;
 import br.fai.dogs.db.dao.ClienteDao;
 import br.fai.dogs.model.entities.Cliente;
+import br.fai.dogs.model.entities.Pessoa;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
@@ -22,9 +23,9 @@ public class ClienteServiceImpl implements ClienteService {
 	}
 
 	@Override
-	public Cliente readById(Long id) {
+	public Pessoa readById(Long id) {
 		
-		return (Cliente) clienteDao.readById(id);
+		return clienteDao.readById(id);
 	}
 
 	@Override

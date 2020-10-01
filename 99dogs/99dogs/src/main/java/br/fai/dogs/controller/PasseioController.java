@@ -22,6 +22,7 @@ import br.fai.dogs.model.entities.Passeio;
 import br.fai.dogs.model.entities.PasseioCachorro;
 import br.fai.dogs.model.entities.Pessoa;
 import br.fai.dogs.service.CachorroService;
+import br.fai.dogs.service.ClienteService;
 import br.fai.dogs.service.FormaDePagamentoService;
 import br.fai.dogs.service.PasseioCachorroService;
 import br.fai.dogs.service.PasseioService;
@@ -45,6 +46,9 @@ public class PasseioController {
 	
 	@Autowired
 	private PasseioCachorroService passeioCachorroService;
+	
+	@Autowired
+	private ClienteService clienteService;
 	
 	@GetMapping("/cliente/meus-passeios")
 	public String getListaDePasseiosPorCliente(Model model) {
@@ -120,10 +124,15 @@ public class PasseioController {
 	}
 	
 	@GetMapping("/cliente/detalhes/{id}")
-	public String getPageDetalhesDoPasseio(@PathVariable("id") Long id) {
+	public String getPageDetalhesDoPasseio(@PathVariable("id") Long id, Model model) {
 		
 		Passeio passeio = passeioService.readById(id);
-		System.out.println(passeio);
+		Pessoa cliente  = clienteService.readById(passeio.getClienteId());
+		List<Cachorro> cachorros = passeioCachorroService.readByPasseioId(passeio.getId());
+		
+		model.addAttribute("passeio", passeio);
+		model.addAttribute("cliente", cliente);
+		model.addAttribute("cachorros", cachorros);
 		
 		return "/cliente/passeio/detalhes";
 		

@@ -63,7 +63,7 @@ public class ReclamacaoSugestaoDaoImpl implements ReclamacaoSugestaoDao {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
-		String sql = "INSERT INTO reclamacao_sugestao (nome, email, assunto, mensagem, cliente_id)";
+		String sql = "INSERT INTO reclamacao_sugestao (nome, email, assunto, mensagem, pessoa_id)";
 		sql += " VALUES (?, ?, ?, ?, ?); ";
 
 		try {
@@ -77,7 +77,7 @@ public class ReclamacaoSugestaoDaoImpl implements ReclamacaoSugestaoDao {
 			preparedStatement.setString(2, entity.getEmail());
 			preparedStatement.setString(3, entity.getAssunto());
 			preparedStatement.setString(4, entity.getMensagem());
-			preparedStatement.setLong(5, entity.getClienteId());
+			preparedStatement.setLong(5, entity.getPessoaId());
 
 			preparedStatement.execute();
 
@@ -217,14 +217,14 @@ public class ReclamacaoSugestaoDaoImpl implements ReclamacaoSugestaoDao {
 		try {
 			connection = ConnectionFactory.getConnection();
 
-			String sql = "SELECT * FROM reclamacao_sugestao WHERE cliente_id = ?";
+			String sql = "SELECT * FROM reclamacao_sugestao WHERE pessoa_id = ?";
 
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setLong(1, id);
 
 			resultSet = preparedStatement.executeQuery();
 
-			if (resultSet.next()) {
+			while (resultSet.next()) {
 				
 				ReclamacaoSugestao reclamacaoSugestao = new ReclamacaoSugestao();
 				
@@ -245,7 +245,9 @@ public class ReclamacaoSugestaoDaoImpl implements ReclamacaoSugestaoDao {
 			System.out.println("Ocorreu um problema ao obter lista de reclamacaoSugestao por cliente {99dogs-db}: " + e.getMessage());
 			
 		} finally {
+			
 			ConnectionFactory.close(resultSet, preparedStatement, connection);
+			
 		}
 
 		return null;

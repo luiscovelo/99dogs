@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.fai.dogs.api.service.ClienteService;
 import br.fai.dogs.model.entities.Cliente;
+import br.fai.dogs.model.entities.Pessoa;
 
 @RestController
 @RequestMapping("/api/v1/cliente")
@@ -47,9 +48,9 @@ public class ClienteRestController {
 	}
 	
 	@GetMapping("/read-by-id/{id}")
-	public ResponseEntity<Cliente> readById(@PathVariable("id") Long id){
+	public ResponseEntity<Pessoa> readById(@PathVariable("id") Long id){
 		
-		Cliente cliente = (Cliente) clienteService.readById(id);
+		Pessoa cliente = clienteService.readById(id);
 		
 		if(cliente == null) {
 			return ResponseEntity.notFound().build();

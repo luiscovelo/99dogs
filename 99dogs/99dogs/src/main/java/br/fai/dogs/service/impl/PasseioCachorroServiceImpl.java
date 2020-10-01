@@ -1,6 +1,8 @@
 package br.fai.dogs.service.impl;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpEntity;
@@ -11,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import br.fai.dogs.model.entities.Cachorro;
 import br.fai.dogs.model.entities.PasseioCachorro;
 import br.fai.dogs.service.PasseioCachorroService;
 
@@ -50,6 +53,37 @@ public class PasseioCachorroServiceImpl implements PasseioCachorroService {
 			
 		} catch (Exception e) {
 			System.out.println("Ocorreu um problema ao realizar a requisição para criar passeio-cachorro: " + e.getMessage());
+		}
+		
+		return response;
+		
+	}
+
+	@Override
+	public List<Cachorro> readByPasseioId(Long id) {
+		
+		List<Cachorro> response = null;
+		String endpoint = "http://localhost:8082/api/v1/passeio-cachorro/read-by-passeio-id/" + id;
+
+		RestTemplate restTemplate = new RestTemplate();
+		
+		try {
+			
+			HttpEntity<String> requestEntity = new HttpEntity<String>("");
+			
+			ResponseEntity<Cachorro[]> requestResponse = restTemplate.exchange(
+				endpoint, 
+				HttpMethod.GET, 
+				requestEntity,
+				Cachorro[].class
+			);
+			
+			Cachorro[] cachorros = requestResponse.getBody();
+			
+			response = Arrays.asList(cachorros);
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 		
 		return response;

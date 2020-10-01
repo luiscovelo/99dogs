@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import br.fai.dogs.db.connection.ConnectionFactory;
 import br.fai.dogs.db.dao.PasseioCachorroDao;
+import br.fai.dogs.model.entities.Cachorro;
 import br.fai.dogs.model.entities.PasseioCachorro;
 
 @Repository
@@ -168,33 +169,55 @@ public class PasseioCachorroDaoImpl implements PasseioCachorroDao {
 	}
 
 	@Override
-	public boolean deleteById(Long id) {
+	public List<Cachorro> readByPasseioId(Long id) {
+		
+		List<Cachorro> cachorros = new ArrayList<Cachorro>();
+		
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
-
-		String sql = "DELETE FROM passeio_cachorro WHERE id = ?;";
+		ResultSet resultSet = null;
 
 		try {
 
 			connection = ConnectionFactory.getConnection();
-			connection.setAutoCommit(false);
+
+			String sql = "select ca.* from passeio_cachorro pc " + 
+					"inner join cachorro ca on ca.id = pc.cachorro_id " + 
+					"where pc.passeio_id = ? " + 
+					"group by ca.id order by ca.nome asc";
 
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setLong(1, id);
-			preparedStatement.execute();
-			connection.commit();
-			return true;
 
-		} catch (Exception e) {
-			try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
+			resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) {
+
+				Cachorro cachorro = new Cachorro();
+				
+				cachorro.setId(resultSet.getLong("id"));
+				cachorro.setNome(resultSet.getString("nome"));
+				cachorro.setDataNascimento(resultSet.getDate("data_nascimento"));
+				cachorro.setRacaId(resultSet.getLong("raca_id"));
+
+				cachorros.add(cachorro);
+
 			}
-			return false;
+			
+			return cachorros;
+			
+		} catch (Exception e) {
+			
+			System.out.println("Ocorreu um problema ao buscar os cachorros do passeio: " + e.getMessage());
+			
 		} finally {
-			ConnectionFactory.close(preparedStatement, connection);
+
+			ConnectionFactory.close(resultSet, preparedStatement, connection);
+
 		}
+
+		return cachorros;
+		
 	}
 
 	

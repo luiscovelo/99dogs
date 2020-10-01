@@ -2,6 +2,7 @@ package br.fai.dogs.api.service;
 
 import java.util.List;
 
+import br.fai.dogs.model.entities.Cachorro;
 import br.fai.dogs.model.entities.PasseioCachorro;
 
 public interface PasseioCachorroService {
@@ -13,7 +14,7 @@ public interface PasseioCachorroService {
 	PasseioCachorro readById(Long id);
 
 	boolean update(PasseioCachorro entity);
-
-	boolean deleteById(Long id);
+	
+	List<Cachorro> readByPasseioId(Long id);
 	
 }

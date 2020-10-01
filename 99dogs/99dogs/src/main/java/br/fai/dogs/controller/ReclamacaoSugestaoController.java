@@ -29,7 +29,7 @@ public class ReclamacaoSugestaoController {
 	public String getListaDeReclamacaoSugestaoPorCliente(Model model) {
 		
 		Long cliente_id = pessoaService.sessaoAtual("c").getId();
-		
+
 		List<ReclamacaoSugestao> listReclamacaoSugestao = reclamacaoSugestaoService.reclamacaoSugestaoPorCliente(cliente_id);
 		model.addAttribute("listReclamacaoSugestao", listReclamacaoSugestao);
 		
@@ -65,7 +65,7 @@ public class ReclamacaoSugestaoController {
 		
 		Long cliente_id = pessoaService.sessaoAtual("c").getId();
 		
-		reclamacaoSugestao.setClienteId(cliente_id);
+		reclamacaoSugestao.setPessoaId(cliente_id);
 
 		boolean response = reclamacaoSugestaoService.create(reclamacaoSugestao);
 		

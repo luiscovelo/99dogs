@@ -72,7 +72,8 @@ public class PasseioDaoImpl implements PasseioDao {
 		
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
-
+		ResultSet resultSet = null;
+		
 		String sql = "INSERT INTO passeio (status, datahora, valor, cliente_id, profissional_id, forma_de_pagamento_id)";
 		sql += " VALUES (?, ?, ?, ?, ?, ?); ";
 		
@@ -94,10 +95,10 @@ public class PasseioDaoImpl implements PasseioDao {
 			
 			connection.commit();
 			
-			ResultSet idGerado = preparedStatement.getGeneratedKeys();
+			resultSet = preparedStatement.getGeneratedKeys();
 						
-			if(idGerado.next()) {
-				idPasseio = idGerado.getLong(1);
+			if(resultSet.next()) {
+				idPasseio = resultSet.getLong(1);
 			}
 			
 		} catch (Exception e) {
@@ -111,7 +112,7 @@ public class PasseioDaoImpl implements PasseioDao {
 			}
 			
 		} finally {
-			ConnectionFactory.close(preparedStatement, connection);
+			ConnectionFactory.close(resultSet,preparedStatement, connection);
 		}
 
 		return idPasseio;
@@ -156,6 +157,7 @@ public class PasseioDaoImpl implements PasseioDao {
 			System.out.println("Ocorreu um problema ao ler o passeio {99-dogs-fai}: " + e.getMessage());
 			
 		} finally {
+						
 			ConnectionFactory.close(resultSet, preparedStatement, connection);
 		}
 

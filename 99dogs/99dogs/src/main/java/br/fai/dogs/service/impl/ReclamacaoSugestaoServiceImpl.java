@@ -65,7 +65,7 @@ public class ReclamacaoSugestaoServiceImpl  implements ReclamacaoSugestaoService
 			
 			Map<String, Object> map = new HashMap<>();
 			
-			map.put("clienteId", entity.getClienteId());
+			map.put("pessoaId", entity.getPessoaId());
 			map.put("email", entity.getEmail());
 			map.put("nome", entity.getNome());
 			map.put("assunto", entity.getAssunto());
@@ -79,8 +79,8 @@ public class ReclamacaoSugestaoServiceImpl  implements ReclamacaoSugestaoService
 				requestEntity,
 				Void.class
 			);			
-			
-			if(requestResponse.getStatusCode().equals(200)) {
+						
+			if(requestResponse.getStatusCodeValue() == 200) {
 				return true;
 			}
 			

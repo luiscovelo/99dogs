@@ -17,6 +17,7 @@
 					<tr>
 						<th>ID</th>
 						<th>Assunto</th>
+						<th>Mensagem</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -24,9 +25,7 @@
 					<tr th:each="item : ${listReclamacaoSugestao}">
 						<td th:text=${item.id}></td>
 						<td th:text=${item.assunto}></td>
-						<td>
-							<a th:href="@{/reclamacaoSugestao/cliente/detalhes/{id} (id=${item.id})}" class="btn btn-secondary">Detalhes</a>
-						</td>
+						<td th:text=${item.mensagem}></td>
 					</tr>
 				</tbody>
 			</table>

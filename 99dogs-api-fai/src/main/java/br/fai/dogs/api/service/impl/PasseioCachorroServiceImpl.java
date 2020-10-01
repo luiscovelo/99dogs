@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import br.fai.dogs.api.service.PasseioCachorroService;
 import br.fai.dogs.db.dao.PasseioCachorroDao;
+import br.fai.dogs.model.entities.Cachorro;
 import br.fai.dogs.model.entities.PasseioCachorro;
 
 @Service
@@ -35,14 +36,15 @@ public class PasseioCachorroServiceImpl implements PasseioCachorroService {
 	}
 
 	@Override
-	public boolean deleteById(Long id) {
-		
-		return passeioCachorroDao.deleteById(id);
-	}
-
-	@Override
 	public List<PasseioCachorro> readAll() {
 		
 		return passeioCachorroDao.readAll();
+	}
+
+	@Override
+	public List<Cachorro> readByPasseioId(Long id) {
+		
+		return passeioCachorroDao.readByPasseioId(id);
+		
 	}
 }

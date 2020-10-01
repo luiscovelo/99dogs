@@ -56,17 +56,17 @@ public class ConnectionFactory {
 
 	}
 
-	public static void close(ResultSet resultSet, PreparedStatement preparedStatement, Connection connection2) {
+	public static void close(ResultSet resultSet, PreparedStatement preparedStatement, Connection connection) {
 		closeResultSet(resultSet);
 		closePreparedStatement(preparedStatement);
 		closeConnection(connection);
 
 	}
 
-	public static void close(PreparedStatement preparedStatement, Connection connection2) {
+	public static void close(PreparedStatement preparedStatement, Connection connection) {
 
 		closePreparedStatement(preparedStatement);
-		closeConnection(connection2);
+		closeConnection(connection);
 
 	}
 }

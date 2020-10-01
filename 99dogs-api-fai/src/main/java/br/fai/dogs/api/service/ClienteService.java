@@ -3,6 +3,7 @@ package br.fai.dogs.api.service;
 import java.util.List;
 
 import br.fai.dogs.model.entities.Cliente;
+import br.fai.dogs.model.entities.Pessoa;
 
 public interface ClienteService {
 	
@@ -10,7 +11,7 @@ public interface ClienteService {
 
 	boolean create(Cliente entity);
 
-	Cliente readById(Long id);
+	Pessoa readById(Long id);
 
 	boolean update(Cliente entity);
 

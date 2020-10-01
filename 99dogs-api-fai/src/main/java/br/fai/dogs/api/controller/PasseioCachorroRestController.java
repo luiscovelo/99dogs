@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.fai.dogs.api.service.PasseioCachorroService;
+import br.fai.dogs.model.entities.Cachorro;
 import br.fai.dogs.model.entities.PasseioCachorro;
 
 @RestController
@@ -46,16 +47,16 @@ public class PasseioCachorroRestController {
 		
 	}
 	
-	@GetMapping("/read-by-id/{id}")
-	public ResponseEntity<PasseioCachorro> readById(@PathVariable("id") Long id){
+	@GetMapping("/read-by-passeio-id/{id}")
+	public ResponseEntity<List<Cachorro>> readById(@PathVariable("id") Long id){
 		
-		PasseioCachorro passeioCachorro = (PasseioCachorro) passeioCachorroService.readById(id);
+		List<Cachorro> cachorros = passeioCachorroService.readByPasseioId(id);
 		
-		if(passeioCachorro == null) {
+		if(cachorros == null) {
 			return ResponseEntity.notFound().build();
 		}
 		
-		return ResponseEntity.ok(passeioCachorro);
+		return ResponseEntity.ok(cachorros);
 	}
 	
 	@PutMapping("/update")
@@ -66,11 +67,4 @@ public class PasseioCachorroRestController {
 		return ResponseEntity.ok(response);
 	}
 	
-	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Boolean> delete(@PathVariable("id") Long id){
-		
-		boolean response = passeioCachorroService.deleteById(id);
-		
-		return ResponseEntity.ok(response);
-	}
 }

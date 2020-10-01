@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import br.fai.dogs.db.connection.ConnectionFactory;
 import br.fai.dogs.db.dao.ClienteDao;
 import br.fai.dogs.model.entities.Cliente;
+import br.fai.dogs.model.entities.Pessoa;
 
 @Repository
 public class ClienteDaoImpl implements ClienteDao {
@@ -85,8 +86,9 @@ public class ClienteDaoImpl implements ClienteDao {
 	}
 
 	@Override
-	public Cliente readById(Long id) {
-		Cliente cliente = null;
+	public Pessoa readById(Long id) {
+		
+		Pessoa cliente = new Pessoa();
 
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -95,7 +97,9 @@ public class ClienteDaoImpl implements ClienteDao {
 		try {
 			connection = ConnectionFactory.getConnection();
 
-			String sql = "SELECT * FROM cliente WHERE id = ?";
+			String sql = "select pe.* from cliente cli " + 
+					"inner join pessoa pe on pe.id = cli.pessoa_id " + 
+					"where cli.pessoa_id = ?";
 
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setLong(1, id);
@@ -103,16 +107,30 @@ public class ClienteDaoImpl implements ClienteDao {
 			resultSet = preparedStatement.executeQuery();
 
 			if (resultSet.next()) {
-				cliente = new Cliente();
+				
 				cliente.setId(resultSet.getLong("id"));
-				cliente.setPessoaId(resultSet.getInt("pessoa_id"));
+				cliente.setNome(resultSet.getString("nome"));
+				cliente.setTelefone(resultSet.getString("telefone"));
+				cliente.setEmail(resultSet.getString("email"));
+				cliente.setRua(resultSet.getString("rua"));
+				cliente.setBairro(resultSet.getString("bairro"));
+				cliente.setCidade(resultSet.getString("cidade"));
+				cliente.setEstado(resultSet.getString("estado"));
+				cliente.setPais(resultSet.getString("pais"));
+				cliente.setNumero(resultSet.getInt("numero"));
+				cliente.setFoto(resultSet.getString("foto"));
+				cliente.setTipo(resultSet.getString("tipo"));
 
 			}
-
+			
+			return cliente;
+			
 		} catch (Exception e) {
-			// TODO: handle exception
+			
+			System.out.println("Ocorreu um problema ao obter o cliente do banco de dados: " + e.getMessage());
+			
 		} finally {
-			ConnectionFactory.close(resultSet, preparedStatement, connection);
+			ConnectionFactory.close(preparedStatement, connection);
 		}
 
 		return cliente;
