@@ -55,7 +55,7 @@ public class DashboardController {
 			
 		}
 		
-		String diaPrimeiroDoMes = Helper.getPrimeiroDiaDoMes();
+		String diaPrimeiroDoMes = Helper.getDataAtual("yyyy-MM-dd");
 		
 		model.addAttribute("jsonPasseios", jsonPasseios);
 		model.addAttribute("diaPrimeiroDoMes", diaPrimeiroDoMes);

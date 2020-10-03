@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class Helper {
@@ -12,15 +13,11 @@ public class Helper {
 	private static final DecimalFormatSymbols REAL = new DecimalFormatSymbols(BRAZIL);
 	public static final DecimalFormat DINHEIRO_REAL = new DecimalFormat("¤ ###,###,##0.00",REAL);
 	
-	public static String getPrimeiroDiaDoMes() {
+	public static String getDataAtual(String mascara) {
 		
-		Calendar c = Calendar.getInstance();
-		c.add(Calendar.MONTH, 0);
-		c.set(Calendar.DAY_OF_MONTH, 1);
+		Date data = new Date(System.currentTimeMillis()); SimpleDateFormat formatarDate = new SimpleDateFormat(mascara);
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		
-		return sdf.format(c.getTime());
+		return formatarDate.format(data);
 		
 	}
 	

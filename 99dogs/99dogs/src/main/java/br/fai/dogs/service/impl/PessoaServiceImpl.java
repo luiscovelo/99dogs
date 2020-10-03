@@ -1,18 +1,22 @@
 package br.fai.dogs.service.impl;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import br.fai.dogs.db.dao.PessoaDao;
-import br.fai.dogs.model.entities.Passeio;
 import br.fai.dogs.model.entities.Pessoa;
 import br.fai.dogs.service.PessoaService;
 
@@ -21,14 +25,36 @@ public class PessoaServiceImpl implements PessoaService {
 	
 	@Autowired
 	HttpSession session;
-	
-	@Autowired
-	private PessoaDao pessoaDao;
-	
+		
 	@Override
 	public List<Pessoa> readAll() {
 		
-		return pessoaDao.readAll();
+		List<Pessoa> response = null;
+		String endpoint = "http://localhost:8082/api/v1/pessoa/read-all";
+
+		RestTemplate restTemplate = new RestTemplate();
+		
+		try {
+			
+			HttpEntity<String> requestEntity = new HttpEntity<String>("");
+			
+			ResponseEntity<Pessoa[]> requestResponse = restTemplate.exchange(
+				endpoint, 
+				HttpMethod.GET, 
+				requestEntity,
+				Pessoa[].class
+			);
+			
+			Pessoa[] pessoas = requestResponse.getBody();
+			
+			response = Arrays.asList(pessoas);
+			
+		} catch (Exception e) {
+			System.out.println("Ocorreu um problema ao realizar a requisição para obter as pessoas: " + e.getMessage());
+		}
+		
+		return response;
+		
 	}
 
 	@Override
@@ -40,7 +66,39 @@ public class PessoaServiceImpl implements PessoaService {
 	@Override
 	public Pessoa validarLogin(Pessoa entity) {
 		
-		return pessoaDao.validarLogin(entity);
+		Pessoa pessoa = null;
+		String endpoint  = "http://localhost:8082/api/v1/pessoa/validarLogin";
+
+		RestTemplate restTemplate = new RestTemplate();
+		
+		try {
+						
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			
+			Map<String, Object> map = new HashMap<>();
+			
+			map.put("email", entity.getEmail());
+			map.put("senha", entity.getSenha());
+						
+			HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(map, headers);
+			 
+			ResponseEntity<Pessoa> requestResponse = restTemplate.exchange(
+				endpoint, 
+				HttpMethod.POST, 
+				requestEntity,
+				Pessoa.class
+			);			
+			
+			if(requestResponse.getStatusCodeValue() == 200) {
+				pessoa = requestResponse.getBody();
+			}
+			
+		} catch (Exception e) {
+			System.out.println("Caiu aqui: " + e.getMessage());
+		}
+		
+		return pessoa;
 		
 	}
 
@@ -49,21 +107,28 @@ public class PessoaServiceImpl implements PessoaService {
 		
 		Pessoa pessoa = new Pessoa();
 		
-		if(tipo == "p") {
+		if(session.getAttribute("pessoa") != null) {
+			pessoa = (Pessoa) session.getAttribute("pessoa");
+
+		}else {
 			
-			pessoa.setId((long) 4);
-			pessoa.setTipo("PROFISSIONAL");
-			pessoa.setEmail("dogwalker@gmail.com");
-			pessoa.setNome("Dogwlaker");
-			
-			return pessoa;
+			if(tipo == "p") {
+				
+				pessoa.setId((long) 4);
+				pessoa.setTipo("PROFISSIONAL");
+				pessoa.setEmail("dogwalker@gmail.com");
+				pessoa.setNome("Dogwlaker");
+				
+			}else {
+				
+				pessoa.setId((long) 2); 
+				pessoa.setTipo("CLIENTE");
+				pessoa.setEmail("cliente@hotmail.com");
+				pessoa.setNome("Cliente");
+				
+			}
 			
 		}
-		
-		pessoa.setId((long) 2);
-		pessoa.setTipo("CLIENTE");
-		pessoa.setEmail("cliente@hotmail.com");
-		pessoa.setNome("Cliente");
 		
 		return pessoa;
 		
@@ -91,7 +156,31 @@ public class PessoaServiceImpl implements PessoaService {
 	@Override
 	public List<Pessoa> readAllProfissional() {
 		
-		return pessoaDao.readAllProfissional();
+		List<Pessoa> response = null;
+		String endpoint = "http://localhost:8082/api/v1/pessoa/read-all-profissional";
+
+		RestTemplate restTemplate = new RestTemplate();
+		
+		try {
+			
+			HttpEntity<String> requestEntity = new HttpEntity<String>("");
+			
+			ResponseEntity<Pessoa[]> requestResponse = restTemplate.exchange(
+				endpoint, 
+				HttpMethod.GET, 
+				requestEntity,
+				Pessoa[].class
+			);
+			
+			Pessoa[] profissionais = requestResponse.getBody();
+			
+			response = Arrays.asList(profissionais);
+			
+		} catch (Exception e) {
+			System.out.println("Ocorreu um problema ao realizar a requisição para obter os profissionais: " + e.getMessage());
+		}
+		
+		return response;
 		
 	}
 

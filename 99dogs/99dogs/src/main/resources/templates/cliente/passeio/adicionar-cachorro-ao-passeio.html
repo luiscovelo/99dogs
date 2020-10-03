@@ -15,7 +15,7 @@
 				
 				<div class="form-group">
 				  	<label for="formGroupExampleInput2">Este passeio é para qual cão?</label>
-				  	<select class="form-control chosen-select" th:name="cachorroId">
+				  	<select class="form-control chosen-select" th:name="cachorroId" required>
 				  		<option th:each="cachorro: ${cachorros}" th:value="${cachorro.id}" th:text="${cachorro.nome}"></option>
 				  	</select>
 				</div>

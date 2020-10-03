@@ -20,13 +20,13 @@
 	</properties>
 
 	<dependencies>
-	
+
 		<dependency>
 			<groupId>99dogs.model.fai</groupId>
 			<artifactId>99dogs-model-fai</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-	
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -54,8 +54,6 @@
 			</exclusions>
 		</dependency>
 
-
-
 		<dependency>
 			<groupId>nz.net.ultraq.thymeleaf</groupId>
 			<artifactId>thymeleaf-layout-dialect</artifactId>
@@ -71,13 +69,13 @@
 			<artifactId>99dogs-db-fai</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		
+
 		<dependency>
-		    <groupId>org.json</groupId>
-		    <artifactId>json</artifactId>
-		    <version>20180130</version>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20180130</version>
 		</dependency>
-		
+
 	</dependencies>
 
 	<build>

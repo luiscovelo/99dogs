@@ -21,10 +21,9 @@ public class LoginController {
 	@PostMapping("/autenticacao")
 	public String autenticacao(Pessoa dadosForm, HttpSession session) {
 		
-		Pessoa pessoa = new Pessoa();
+		Pessoa pessoa = new Pessoa();   
 		
 		pessoa = pessoaService.validarLogin(dadosForm);
-		
 
 		if(pessoa != null) {
 			

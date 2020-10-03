@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import br.fai.dogs.model.entities.Cachorro;
-import br.fai.dogs.model.entities.Passeio;
 import br.fai.dogs.service.CachorroService;
 
 @Service

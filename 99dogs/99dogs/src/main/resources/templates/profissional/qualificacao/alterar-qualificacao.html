@@ -16,19 +16,19 @@
 				
 				<div class="form-group">
 				  	<label for="formGroupExampleInput">Título:</label>
-				  	<input type="text" class="form-control" placeholder="" th:name="titulo" th:value="${qualificacao.titulo}">
+				  	<input type="text" class="form-control" placeholder="" th:name="titulo" th:value="${qualificacao.titulo}" required>
 				</div>
 				
 				<div class="form-group">
 				  	<label for="formGroupExampleInput2">Modalidade:</label>
-				  	<select class="form-control" th:name="modalidade">
+				  	<select class="form-control" th:name="modalidade" required>
 				  		<option th:each="modalidade: ${modalidades}" th:value="${modalidade}" th:text="${modalidade}"></option>
 				  	</select>
 				</div>
 				
 				<div class="form-group">
 				  	<label for="formGroupExampleInput2">Descrição:</label>
-				  	<input type="text" class="form-control" placeholder="" th:name="descricao" th:value="${qualificacao.descricao}">
+				  	<input type="text" class="form-control" placeholder="" th:name="descricao" th:value="${qualificacao.descricao}" required>
 				</div>
 
 				<div class="form-group">
