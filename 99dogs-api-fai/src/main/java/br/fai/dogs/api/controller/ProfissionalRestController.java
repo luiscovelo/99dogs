@@ -1,6 +1,8 @@
 package br.fai.dogs.api.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -74,4 +76,14 @@ public class ProfissionalRestController {
 		
 		return ResponseEntity.ok(response);
 	}
+	
+	@GetMapping("/passeios-agrupado-por-mes/{id}")
+	public ResponseEntity<Map<String,String>> passeiosAgrupadoPorMes(@PathVariable("id") Long id){
+				
+		Map<String,String> passeios = profissionalService.passeiosAgrupadoPorMes(id);
+		
+		return ResponseEntity.ok(passeios);
+		
+	}
+	
 }

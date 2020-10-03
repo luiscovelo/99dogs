@@ -12,6 +12,8 @@ public interface PessoaService {
 	
 	boolean create(Pessoa entity);
 	
+	Pessoa readById(Long id);
+	
 	Pessoa validarLogin(Pessoa entity);
 	
 	Pessoa sessaoAtual(String tipo);

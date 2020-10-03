@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import br.fai.dogs.helper.Helper;
 import br.fai.dogs.model.entities.Cachorro;
 import br.fai.dogs.model.entities.FormaDePagamento;
 import br.fai.dogs.model.entities.Passeio;
@@ -65,9 +66,7 @@ public class PasseioController {
 	
 	@GetMapping("/cliente/solicitar-passeio")
 	public String getPageSolicitarPasseio(Model model) {
-		
-		Long cliente_id = pessoaService.sessaoAtual("c").getId();
-		
+				
 		List<Pessoa> profissionais = pessoaService.readAllProfissional();
 		model.addAttribute("profissionais", profissionais);
 				
@@ -124,7 +123,7 @@ public class PasseioController {
 	}
 	
 	@GetMapping("/cliente/detalhes/{id}")
-	public String getPageDetalhesDoPasseio(@PathVariable("id") Long id, Model model) {
+	public String getPageDetalhesDoPasseioCliente(@PathVariable("id") Long id, Model model) {
 		
 		Passeio passeio = passeioService.readById(id);
 		Pessoa cliente  = clienteService.readById(passeio.getClienteId());
@@ -154,10 +153,10 @@ public class PasseioController {
 	@GetMapping("/profissional/minha-agenda")
 	public String getPageMinhaAgenda(Model model) {
 		
-		Long cliente_id = pessoaService.sessaoAtual("c").getId();
+		Long profissional = pessoaService.sessaoAtual("p").getId();
 		List<Passeio> passeios = new ArrayList<Passeio>();
-		
-		passeios = passeioService.passeiosPorCliente(cliente_id);
+				
+		passeios = passeioService.passeiosPorProfissional(profissional);
 		
 		Map<String, String> map = new HashMap<>();
 		Stack<JSONObject> jsonPasseios = new Stack<JSONObject>();
@@ -166,16 +165,35 @@ public class PasseioController {
 			
 			map.put("title", passeio.getId().toString());
 			map.put("start", passeio.getDatahora().toString());
+			map.put("url", "/passeio/profissional/detalhes/" + passeio.getId());
 			
 			JSONObject json = new JSONObject(map);
 			jsonPasseios.push(json);
 			
 		}
-
+		
+		String diaPrimeiroDoMes = Helper.getPrimeiroDiaDoMes();
+		
 		model.addAttribute("jsonPasseios", jsonPasseios);
+		model.addAttribute("diaPrimeiroDoMes", diaPrimeiroDoMes);
 		
 		return "/profissional/passeio/minha-agenda";
 		
 	}
 	
+	@GetMapping("/profissional/detalhes/{id}")
+	public String getPageDetalhesDoPasseioProfissional(@PathVariable("id") Long id, Model model) {
+		
+		Passeio passeio = passeioService.readById(id);
+		Pessoa cliente  = clienteService.readById(passeio.getClienteId());
+		List<Cachorro> cachorros = passeioCachorroService.readByPasseioId(passeio.getId());
+		
+		model.addAttribute("passeio", passeio);
+		model.addAttribute("cliente", cliente);
+		model.addAttribute("cachorros", cachorros);
+		
+		return "/profissional/passeio/detalhes";
+		
+	}
+		
 }

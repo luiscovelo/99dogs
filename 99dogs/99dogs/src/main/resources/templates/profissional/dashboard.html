@@ -8,7 +8,38 @@
 	
 	<div layout:fragment="body">
 		<div class="container-box">
+			<canvas id="passeiosAgrupadoPorMes"></canvas>
 		</div>
+		
+		<script>
+			
+			let passeiosAgrupadoPorMes = document.querySelector("#passeiosAgrupadoPorMes")
+		
+			var myChart = new Chart(passeiosAgrupadoPorMes, {
+			    type: 'bar',
+			    data: {
+			        labels: [(${jsonNomesMeses})],
+			        datasets: [{
+			            label: '# Número de passeios',
+			            data: [(${jsonValoresMeses})],
+			            backgroundColor: [(${jsonCores})],
+			            borderWidth: 1
+			        }]
+			    },
+			    options: {
+			        scales: {
+			            yAxes: [{
+			                ticks: {
+			                    beginAtZero: true
+			                }
+			            }]
+			        }
+			    }
+			});
+			</script>
+			
+		</script>
+		
 	</div>
 	
 </body>

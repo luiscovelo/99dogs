@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html layout:decorate="~{/profissional/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Profissional | Detalhes do Passeio</title>
+</head>
+<body>
+	
+	<div layout:fragment="body">
+	
+		<div class="container-box">
+			
+			<table class="table">
+				<thead>
+					<tr>
+						<th colspan="4">Informações do passeio</th>
+					</tr>
+					<tr>
+						<th>ID</th>
+						<th>Data e Hora</th>
+						<th>Status</th>
+						<th>Valor</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td th:text="${passeio.id}"></td>
+						<td th:text="${passeio.datahora}"></td>
+						<td th:text="${passeio.status}"></td>
+						<td th:text="${passeio.valor}"></td>
+					</tr>
+				</tbody>
+			</table>
+			
+		</div>
+		
+		<div class="container-box">
+		
+			<table class="table">
+				<thead>
+					<tr>
+						<th colspan="5">Cliente responsável pelos cachorros</th>
+					</tr>
+					<tr>
+						<th>Foto</th>
+						<th>Nome</th>
+						<th>E-mail</th>
+						<th>Telefone</th>
+						<th>Cidade/UF</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img class="rounded-circle" th:src="${cliente.foto}" width="50">
+						</td>
+						<td th:text="${cliente.nome}"></td>
+						<td th:text="${cliente.email}"></td>
+						<td th:text="${cliente.telefone}"></td>
+						<td th:text="${cliente.cidade} + '/' + ${cliente.estado}"></td>
+					</tr>
+				</tbody>
+			</table>
+			
+		</div>
+		
+		<div class="container-box">
+			
+			<table class="table">
+				<thead>
+					<tr>
+						<th colspan="2">Cachorros para o passeio</th>
+					</tr>
+					<tr>
+						<th>Nome</th>
+						<th>Data Nascimento</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="cachorro: ${cachorros}">
+						<td th:text="${cachorro.nome}"></td>
+						<td th:text="${cachorro.dataNascimento}"></td>
+					</tr>
+				</tbody>
+			</table>
+			
+		</div>
+	</div>
+	
+</body>
+</html>

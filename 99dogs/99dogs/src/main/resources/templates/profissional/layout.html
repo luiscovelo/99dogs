@@ -14,7 +14,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		
 	<link href='/assets/fullcalendar/lib/main.css' rel='stylesheet' />
-		
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script>
+	
+	<link rel="icon" href="/assets/favicon.ico">
+	
 </head>
 <body>
 <div class="wrapper">
@@ -70,10 +74,11 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="nav navbar-nav ml-auto">
                             <li class="nav-item active">
-                                <a class="nav-link" href="#">Dashboard</a>
+                                <a class="nav-link" th:href="@{/perfil/profissional/meu-perfil}">Meu Perfil</a>
                             </li>
                         </ul>
                     </div>
+                    
                 </div>
             </nav>
 			

@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -197,6 +199,65 @@ public class ProfissionalDaoImpl implements ProfissionalDao {
 		} finally {
 			ConnectionFactory.close(preparedStatement, connection);
 		}
+	}
+
+	@Override
+	public Map<String,String> passeiosAgrupadoPorMes(Long id) {
+		
+		Map<String,String> passeios = new HashMap<>();
+		
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		
+		String sql = "select " + 
+				"	count(id) as passeios, " + 
+				"	case " + 
+				"		when (EXTRACT(MONTH FROM datahora)= 1) then 'janeiro' " + 
+				"		when (EXTRACT(MONTH FROM datahora)= 2) then 'fevereiro' " + 
+				"		when (EXTRACT(MONTH FROM datahora)= 3) then 'marco' " + 
+				"		when (EXTRACT(MONTH FROM datahora)= 4) then 'abril' " + 
+				"		when (EXTRACT(MONTH FROM datahora)= 5) then 'maio' " + 
+				"		when (EXTRACT(MONTH FROM datahora)= 6) then 'junho' " + 
+				"		when (EXTRACT(MONTH FROM datahora)= 7) then 'julho' " + 
+				"		when (EXTRACT(MONTH FROM datahora)= 8) then 'agosto' " + 
+				"		when (EXTRACT(MONTH FROM datahora)= 9) then 'setembro' " + 
+				"		when (EXTRACT(MONTH FROM datahora)= 10) then 'outubro' " + 
+				"		when (EXTRACT(MONTH FROM datahora)= 11) then 'novembro' " + 
+				"		when (EXTRACT(MONTH FROM datahora)= 12) then 'dezembro' " + 
+				"	end as mes " + 
+				"from passeio " + 
+				"where profissional_id = ? " + 
+				"group by EXTRACT(MONTH FROM datahora) " + 
+				"order by mes asc";
+		
+		try {
+			
+			connection = ConnectionFactory.getConnection();
+			
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setLong(1, id);
+			
+			resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) {
+				
+				passeios.put(resultSet.getString("mes"), resultSet.getString("passeios"));
+				
+			}
+			
+			return passeios;
+			
+		} catch (Exception e) {
+			
+			System.out.println(e.getMessage());
+			
+		} finally {
+			ConnectionFactory.close(resultSet, preparedStatement, connection);
+		}
+		
+		return null;
+		
 	}
 
 }

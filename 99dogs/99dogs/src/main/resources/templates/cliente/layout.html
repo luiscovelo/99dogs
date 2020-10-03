@@ -14,12 +14,20 @@
 	
 	<link rel="stylesheet" href="/assets/chosen/chosen.min.css">
 	
+	<link href='/assets/fullcalendar/lib/main.css' rel='stylesheet' />
+	
+	<link rel="icon" href="/assets/favicon.ico">
+	
 	<style>
 		th, td {
 		    vertical-align: middle!important;
 		}
+		#agenda_de_passeios {
+	    	max-width: 1100px;
+	    	margin: 0 auto;
+	  	}
 	</style>
-	
+
 </head>
 <body>
 <div class="wrapper">
@@ -80,10 +88,11 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="nav navbar-nav ml-auto">
                             <li class="nav-item active">
-                                <a class="nav-link" href="#">Dashboard</a>
+                                <a class="nav-link" th:href="@{/perfil/cliente/meu-perfil}">Meu Perfil</a>
                             </li>
                         </ul>
                     </div>
+                    
                 </div>
             </nav>
 			
@@ -100,6 +109,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 	
 	<script src="/assets/chosen/chosen.jquery.min.js"></script>
+	
+	<script src='/assets/fullcalendar/lib/main.js'></script>
 	
     <script type="text/javascript">
         $(document).ready(function() {

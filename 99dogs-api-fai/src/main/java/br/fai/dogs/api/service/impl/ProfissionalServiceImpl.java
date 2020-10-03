@@ -1,6 +1,7 @@
 package br.fai.dogs.api.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,13 @@ public class ProfissionalServiceImpl implements ProfissionalService {
 	public List<Pessoa> readAll() {
 		
 		return profissionalDao.readAll();
+	}
+
+	@Override
+	public Map<String,String> passeiosAgrupadoPorMes(Long id) {
+		
+		return profissionalDao.passeiosAgrupadoPorMes(id);
+		
 	}
 
 }
