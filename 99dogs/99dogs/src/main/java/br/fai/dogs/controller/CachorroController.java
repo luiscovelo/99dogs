@@ -37,7 +37,7 @@ public class CachorroController {
 		List<Cachorro> cachorros = new ArrayList<Cachorro>();
 		
 		cachorros = cachorroService.cachorrosPorCliente(cliente_id);
-
+		
 		model.addAttribute("cachorros", cachorros);
 		
 		return "/cliente/cachorro/meus-caes";

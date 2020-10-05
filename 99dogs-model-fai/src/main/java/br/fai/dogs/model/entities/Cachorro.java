@@ -8,6 +8,7 @@ public class Cachorro extends BasePojo{
 	private Date dataNascimento;
 	private Long racaId;
 	private Long clienteId;
+	private Raca raca;
 	
 	public String getNome() {
 		return nome;
@@ -33,12 +34,16 @@ public class Cachorro extends BasePojo{
 	public void setClienteId(Long clienteId) {
 		this.clienteId = clienteId;
 	}
+	public Raca getRaca() {
+		return raca;
+	}
+	public void setRaca(Raca raca) {
+		this.raca = raca;
+	}
 	@Override
 	public String toString() {
 		return "Cachorro [nome=" + nome + ", dataNascimento=" + dataNascimento + ", racaId=" + racaId + ", clienteId="
-				+ clienteId + "]";
+				+ clienteId + ", raca=" + raca + "]";
 	}
-	
-	
 
 }

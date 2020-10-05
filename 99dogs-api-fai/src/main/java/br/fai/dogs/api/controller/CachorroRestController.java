@@ -48,8 +48,8 @@ public class CachorroRestController {
 	
 	@GetMapping("/read-by-id/{id}")
 	public ResponseEntity<Cachorro> readById(@PathVariable("id") Long id){
-		
-		Cachorro cachorro = (Cachorro) cachorroService.readById(id);
+				
+		Cachorro cachorro = cachorroService.readById(id);
 		
 		if(cachorro == null) {
 			return ResponseEntity.notFound().build();

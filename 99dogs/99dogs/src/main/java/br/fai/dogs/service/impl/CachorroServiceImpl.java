@@ -111,7 +111,7 @@ public class CachorroServiceImpl implements CachorroService {
 				requestEntity,
 				Cachorro.class
 			);
-			
+						
 			response = requestResponse.getBody();
 			
 		} catch (Exception e) {

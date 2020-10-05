@@ -12,13 +12,16 @@ import org.springframework.stereotype.Repository;
 import br.fai.dogs.db.connection.ConnectionFactory;
 import br.fai.dogs.db.dao.CachorroDao;
 import br.fai.dogs.model.entities.Cachorro;
+import br.fai.dogs.model.entities.Raca;
 
 @Repository
 public class CachorroDaoImpl implements CachorroDao {
 
 	@Override
 	public List<Cachorro> readAll() {
+		
 		List<Cachorro> cachorros = new ArrayList<Cachorro>();
+		
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -27,7 +30,14 @@ public class CachorroDaoImpl implements CachorroDao {
 
 			connection = ConnectionFactory.getConnection();
 
-			String sql = "SELECT * FROM cachorro;";
+			String sql = " select " + 
+					"	C.*, " + 
+					"	R.id as raca_id, " + 
+					"	R.nome as raca_nome, " + 
+					"	R.comportamento_id as raca_comportamento_id, " + 
+					"	R.porte_id as raca_porte_id " + 
+					"from cachorro C " + 
+					"inner join raca R on R.id = C.raca_id ";
 
 			preparedStatement = connection.prepareStatement(sql);
 
@@ -36,25 +46,36 @@ public class CachorroDaoImpl implements CachorroDao {
 			while (resultSet.next()) {
 
 				Cachorro cachorro = new Cachorro();
+				Raca raca = new Raca();
+				
 				cachorro.setId(resultSet.getLong("id"));
 				cachorro.setNome(resultSet.getString("nome"));
 				cachorro.setDataNascimento(resultSet.getDate("data_nascimento"));
 				cachorro.setRacaId(resultSet.getLong("raca_id"));
 				cachorro.setClienteId(resultSet.getLong("cliente_id"));
-
+				
+				raca.setId(resultSet.getLong("raca_id"));
+				raca.setNome(resultSet.getString("raca_nome"));
+				raca.setComportamentoId(resultSet.getInt("raca_comportamento_id"));
+				raca.setPorteId(resultSet.getInt("raca_porte_id"));
+				
+				cachorro.setRaca(raca);
+				
 				cachorros.add(cachorro);
 
 			}
 
 		} catch (Exception e) {
-
+			
+			System.out.println("Ocorreu um problema ao requisitar os cachorros {99dogs-db-fai}: " + e.getMessage());
+			
 		} finally {
 
 			ConnectionFactory.close(resultSet, preparedStatement, connection);
 
 		}
 
-		return null;
+		return cachorros;
 	}
 
 	@Override
@@ -105,8 +126,10 @@ public class CachorroDaoImpl implements CachorroDao {
 
 	@Override
 	public Cachorro readById(Long id) {
-		Cachorro cachorro = null;
-
+		
+		Cachorro cachorro = new Cachorro();
+		Raca raca = new Raca();
+		
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -114,7 +137,15 @@ public class CachorroDaoImpl implements CachorroDao {
 		try {
 			connection = ConnectionFactory.getConnection();
 
-			String sql = "SELECT * FROM cachorro WHERE id = ?";
+			String sql = " select " + 
+					"	C.*, " + 
+					"	R.id as raca_id, " + 
+					"	R.nome as raca_nome, " + 
+					"	R.comportamento_id as raca_comportamento_id, " + 
+					"	R.porte_id as raca_porte_id " + 
+					"from cachorro C " + 
+					"inner join raca R on R.id = C.raca_id "
+					+ " where C.id = ? ";
 
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setLong(1, id);
@@ -122,17 +153,26 @@ public class CachorroDaoImpl implements CachorroDao {
 			resultSet = preparedStatement.executeQuery();
 
 			if (resultSet.next()) {
-				cachorro = new Cachorro();
+				
 				cachorro.setId(resultSet.getLong("id"));
 				cachorro.setNome(resultSet.getString("nome"));
 				cachorro.setDataNascimento(resultSet.getDate("data_nascimento"));
 				cachorro.setRacaId(resultSet.getLong("raca_id"));
 				cachorro.setClienteId(resultSet.getLong("cliente_id"));
-
+				
+				raca.setId(resultSet.getLong("raca_id"));
+				raca.setNome(resultSet.getString("raca_nome"));
+				raca.setComportamentoId(resultSet.getInt("raca_comportamento_id"));
+				raca.setPorteId(resultSet.getInt("raca_porte_id"));
+				
+				cachorro.setRaca(raca);
+				
 			}
 
 		} catch (Exception e) {
-			// TODO: handle exception
+			
+			System.out.println("Ocorreu um problema ao requisitar o cachorro por id {99dogs-db-fai}: " + e.getMessage());
+			
 		} finally {
 			ConnectionFactory.close(resultSet, preparedStatement, connection);
 		}
@@ -219,7 +259,15 @@ public class CachorroDaoImpl implements CachorroDao {
 
 			connection = ConnectionFactory.getConnection();
 			
-			String sql = "SELECT * FROM cachorro where cliente_id = ?";
+			String sql = " select " + 
+					"	C.*, " + 
+					"	R.id as raca_id, " + 
+					"	R.nome as raca_nome, " + 
+					"	R.comportamento_id as raca_comportamento_id, " + 
+					"	R.porte_id as raca_porte_id " + 
+					"from cachorro C " + 
+					"inner join raca R on R.id = C.raca_id "
+					+ " where C.cliente_id = ? ";
 			
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setLong(1, cliente_id);
@@ -229,11 +277,19 @@ public class CachorroDaoImpl implements CachorroDao {
 			while (resultSet.next()) {
 								
 				Cachorro cachorro = new Cachorro();
+				Raca raca = new Raca();
 				
 				cachorro.setId(resultSet.getLong("id"));
 				cachorro.setNome(resultSet.getString("nome"));
 				cachorro.setDataNascimento(resultSet.getDate("data_nascimento"));
 				cachorro.setRacaId(resultSet.getLong("raca_id"));
+				
+				raca.setId(resultSet.getLong("raca_id"));
+				raca.setNome(resultSet.getString("raca_nome"));
+				raca.setComportamentoId(resultSet.getInt("raca_comportamento_id"));
+				raca.setPorteId(resultSet.getInt("raca_porte_id"));
+				
+				cachorro.setRaca(raca);
 				
 				cachorros.add(cachorro);
 

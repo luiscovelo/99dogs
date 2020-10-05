@@ -26,9 +26,9 @@
 					
 					<tr th:each="cachorro: ${cachorros}">
 						<td th:text="${cachorro.id}">1</td>
-						<td th:text="${cachorro.dataNascimento}">1</td>
+						<td th:text="${#dates.format(cachorro.dataNascimento, 'dd/MM/yyyy')}">1</td>
 						<td th:text="${cachorro.nome}">1</td>
-						<td th:text="${cachorro.racaId}">1</td>
+						<td th:text="${cachorro.raca.nome}">1</td>
 						<td>
 							<a th:href="@{/cachorro/cliente/alterar-cachorro/{id} (id=${cachorro.id})}" class="btn btn-warning">Alterar</a>
 							<a th:href="@{/cachorro/cliente/deletar-cachorro/{id} (id=${cachorro.id})}" class="btn btn-danger">Excluir</a>
