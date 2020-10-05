@@ -25,9 +25,9 @@
 				<tbody>
 					<tr>
 						<td th:text="${passeio.id}"></td>
-						<td th:text="${passeio.datahora}"></td>
+						<td th:text="${#temporals.format(passeio.datahora, 'dd/MM/yyyy HH:mm')}"></td>
 						<td th:text="${passeio.status}"></td>
-						<td th:text="${passeio.valor}"></td>
+						<td th:text="${#numbers.formatCurrency(passeio.valor)}"></td>
 					</tr>
 				</tbody>
 			</table>
@@ -79,7 +79,7 @@
 				<tbody>
 					<tr th:each="cachorro: ${cachorros}">
 						<td th:text="${cachorro.nome}"></td>
-						<td th:text="${cachorro.dataNascimento}"></td>
+						<td th:text="${#dates.format(cachorro.dataNascimento, 'dd/MM/yyyy')}"></td>
 					</tr>
 				</tbody>
 			</table>

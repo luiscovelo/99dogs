@@ -23,7 +23,7 @@
 					
 					<tr th:each="passeio: ${passeios}">
 						<td th:text="${passeio.id}">1</td>
-						<td th:text="${#calendars.format(passeio.datahora, 'dd-MM-yyyy HH:mm')}">1</td>
+						<td th:text="${#temporals.format(passeio.datahora, 'dd/MM/yyyy HH:mm')}">1</td>
 						<td th:text="${passeio.status}">1</td>
 						<td th:text="${#numbers.formatCurrency(passeio.valor)}">1</td>
 						<td>
