@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -190,6 +191,38 @@ public class PasseioServiceImpl implements PasseioService {
 			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
+		}
+		
+		return response;
+		
+	}
+
+	@Override
+	public Map<String, Object> detalhes(Long id) {
+		
+		Map<String, Object> response = new HashMap<String, Object>();
+		String endpoint = "http://localhost:8082/api/v1/passeio/detalhes/" + id;
+
+		RestTemplate restTemplate = new RestTemplate();
+		
+		ParameterizedTypeReference<Map<String, Object>> responseType = 
+	               new ParameterizedTypeReference<Map<String, Object>>() {};
+		
+		try {
+			
+			HttpEntity<String> requestEntity = new HttpEntity<String>("");
+			
+			ResponseEntity<Map<String, Object>> requestResponse = restTemplate.exchange(
+				endpoint, 
+				HttpMethod.GET, 
+				requestEntity,
+				responseType
+			);
+			
+			response = requestResponse.getBody();
+			
+		} catch (Exception e) {
+			System.out.println("Ocorreu um problema ao realizar a requisição para obter o passeio por id: " + e.getMessage());
 		}
 		
 		return response;

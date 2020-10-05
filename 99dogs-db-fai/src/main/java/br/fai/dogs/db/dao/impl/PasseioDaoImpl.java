@@ -7,8 +7,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.json.JSONObject;
 import org.springframework.stereotype.Repository;
 
 import br.fai.dogs.db.connection.ConnectionFactory;
@@ -344,6 +347,122 @@ public class PasseioDaoImpl implements PasseioDao {
 		}
 
 		return null;
+		
+	}
+
+	@Override
+	public JSONObject detalhes(Long id) {
+		
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		
+		JSONObject response = new JSONObject();
+		JSONObject passeio = new JSONObject();
+		JSONObject cliente = new JSONObject();
+		JSONObject formaPagamento = new JSONObject();
+		
+		String sql = "";
+		
+		try {
+			
+			connection = ConnectionFactory.getConnection();
+			
+			sql = " select \r\n" + 
+					"	PA.id as passeio_id,\r\n" + 
+					"	PA.datahora as datahora,\r\n" + 
+					"	PA.status as status,\r\n" + 
+					"	PA.valor as valor,\r\n" + 
+					"	PE.nome as cliente_nome,\r\n" + 
+					"	PE.telefone as cliente_telefone,\r\n" + 
+					"	PE.email as cliente_email,\r\n" + 
+					"	PE.rua as cliente_endereco,\r\n" + 
+					"	PE.bairro as cliente_bairro,\r\n" + 
+					"	PE.cidade||'/'||PE.estado as cliente_cidade_estado,\r\n" + 
+					"	PE.numero as cliente_numero,\r\n" + 
+					"	PE.foto as cliente_foto,\r\n" + 
+					"	FP.tipo as forma_de_pagamento\r\n" + 
+					"from passeio PA\r\n" + 
+					"inner join cliente CLI on CLI.id = PA.cliente_id\r\n" + 
+					"inner join pessoa PE on PE.id = CLI.pessoa_id\r\n" + 
+					"inner join forma_de_pagamento FP on FP.id = PA.forma_de_pagamento_id\r\n" + 
+					"where PA.id = ? ";
+			
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setLong(1, id);
+			
+			resultSet = preparedStatement.executeQuery();
+			
+			if(resultSet.next()) {
+				
+				passeio.put("id", resultSet.getString("passeio_id"));
+				passeio.put("datahora", resultSet.getString("datahora"));
+				passeio.put("status", resultSet.getString("status"));
+				passeio.put("valor", resultSet.getString("valor"));
+				
+				cliente.put("nome", resultSet.getString("cliente_nome"));
+				cliente.put("telefone", resultSet.getString("cliente_telefone"));
+				cliente.put("email", resultSet.getString("cliente_email"));
+				cliente.put("endereco", resultSet.getString("cliente_endereco"));
+				cliente.put("bairro", resultSet.getString("cliente_bairro"));
+				cliente.put("cidade", resultSet.getString("cliente_cidade_estado"));
+				cliente.put("numero", resultSet.getString("cliente_numero"));
+				cliente.put("foto", resultSet.getString("cliente_foto"));
+				
+				formaPagamento.put("nome", resultSet.getString("forma_de_pagamento"));
+				
+			}
+			
+			response.put("passeio", passeio);
+			response.put("cliente", cliente);
+			response.put("formaDePagamento", formaPagamento);
+			
+			/* ----- query para listar os cachorros do passeio */
+			
+			sql = " select \r\n" + 
+					"	CA.id as id,\r\n" + 
+					"	CA.nome as nome,\r\n" + 
+					"	CA.data_nascimento as datanascimento,\r\n" + 
+					"	POR.descricao as porte,\r\n" + 
+					"	R.nome as raca,\r\n" + 
+					"	COMP.descricao as comportamento\r\n" + 
+					"from passeio_cachorro PC\r\n" + 
+					"inner join cachorro CA on CA.id = PC.cachorro_id\r\n" + 
+					"inner join raca R on R.id = CA.raca_id\r\n" + 
+					"inner join porte POR on POR.id = R.porte_id\r\n" + 
+					"inner join comportamento COMP on COMP.id = R.comportamento_id\r\n" + 
+					"where PC.passeio_id = ? ";
+			
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setLong(1, id);
+			
+			resultSet = preparedStatement.executeQuery();
+			
+			JSONObject cachorros = new JSONObject();
+			
+			while (resultSet.next()) {
+				
+				JSONObject cachorro = new JSONObject();
+				
+				cachorro.put("id", resultSet.getString("id"));
+				cachorro.put("datanascimento", resultSet.getString("datanascimento"));
+				cachorro.put("porte", resultSet.getString("porte"));
+				cachorro.put("raca", resultSet.getString("raca"));
+				cachorro.put("comportamento", resultSet.getString("comportamento"));
+				
+				cachorros.append("cachorro", cachorro);
+				
+			}
+			
+			response.put("cachorros", cachorros);
+			
+			return response;
+			
+		} catch (Exception e) {
+			e.getMessage();
+		}
+		
+		return new JSONObject();
 		
 	}
 	

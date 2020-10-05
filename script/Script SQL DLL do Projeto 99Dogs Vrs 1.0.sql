@@ -93,3 +93,13 @@ create table if not exists passeio_cachorro(
 	cachorro_id integer references cachorro(id) on update cascade,
 	primary key(passeio_id, cachorro_id)
 );
+
+create table configuracao_agenda(
+	id serial primary key,
+	dia_semana integer not null,
+	hora_inicio time without time zone not null,
+	hora_final time without time zone not null,
+	tempo_de_passeio integer default 1 not null,
+	valor_passeio double precision default 0 not null,
+	profissional_id integer not null references profissional(pessoa_id) on update cascade
+);

@@ -129,6 +129,8 @@ public class PasseioController {
 		Pessoa cliente  = clienteService.readById(passeio.getClienteId());
 		List<Cachorro> cachorros = passeioCachorroService.readByPasseioId(passeio.getId());
 		
+		//Map<String, Object> detalhes = passeioService.detalhes(id);
+		
 		model.addAttribute("passeio", passeio);
 		model.addAttribute("cliente", cliente);
 		model.addAttribute("cachorros", cachorros);

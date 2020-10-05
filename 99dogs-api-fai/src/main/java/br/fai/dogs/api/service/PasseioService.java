@@ -2,6 +2,8 @@ package br.fai.dogs.api.service;
 
 import java.util.List;
 
+import org.json.JSONObject;
+
 import br.fai.dogs.model.entities.Passeio;
 
 public interface PasseioService {
@@ -19,5 +21,7 @@ public interface PasseioService {
 	List<Passeio> passeiosPorCliente(Long cliente_id);
 	
 	List<Passeio> passeiosPorProfissional(Long profissional);
+	
+	JSONObject detalhe(Long id);
 	
 }

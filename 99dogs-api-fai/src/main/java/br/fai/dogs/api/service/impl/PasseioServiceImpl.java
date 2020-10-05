@@ -2,6 +2,7 @@ package br.fai.dogs.api.service.impl;
 
 import java.util.List;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +49,11 @@ public class PasseioServiceImpl implements PasseioService {
 	@Override
 	public List<Passeio> passeiosPorProfissional(Long profissional) {
 		return passeioDao.passeiosPorProfissional(profissional);
+	}
+
+	@Override
+	public JSONObject detalhe(Long id) {
+		return passeioDao.detalhes(id);
 	}
 
 }

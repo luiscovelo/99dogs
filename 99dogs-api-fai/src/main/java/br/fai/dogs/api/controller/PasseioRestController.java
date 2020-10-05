@@ -1,7 +1,11 @@
 package br.fai.dogs.api.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -87,6 +91,18 @@ public class PasseioRestController {
 	public HttpEntity<List<Passeio>> passeiosPorProfissional(@PathVariable("id") Long id){
 		
 		List<Passeio> response = passeioService.passeiosPorProfissional(id);
+		return ResponseEntity.ok(response);
+		
+	}
+	
+	@GetMapping("/detalhes/{id}")
+	public ResponseEntity<Map<String, Object>> detalhes(@PathVariable("id") Long id) {
+		
+		JSONObject passeio = passeioService.detalhe(id);
+		Map<String, Object> response = new HashMap<String, Object>();
+		
+		response.put("response", passeio.toMap());
+		
 		return ResponseEntity.ok(response);
 		
 	}

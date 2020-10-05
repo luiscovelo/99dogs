@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html layout:decorate="~{/profissional/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Profissional | Adicionar Configuração</title>
+</head>
+<body>
+	
+	<div layout:fragment="body">
+	
+		<div class="container-box">
+		
+			<form method="POST" th:object="${configuracaoDaAgenda}" th:action="@{/configuracao-da-agenda/profissional/post-adicionar-configuracao-da-agenda}">
+				
+				<input type="hidden" th:name="profissionalId" th:value="${profissional_id}">
+				
+				<div class="form-group">
+				  	<label for="formGroupExampleInput">Dia da semana:</label>
+				  	<select class="form-control" th:name="diaSemana" required>
+				  		<option th:each="diaSemana: ${diasDaSemana}" th:value="${diaSemana.key}" th:text="${diaSemana.value}"></option>
+				  	</select>
+				</div>
+				
+				<div class="row">
+				
+					<div class="form-group col-lg-4">
+					  	<label for="formGroupExampleInput">Inicio do expediente:</label>
+					  	<input type="time" class="form-control" id="formGroupExampleInput" th:name="horaInicio" required>
+					</div>
+					
+					<div class="form-group col-lg-4">
+					  	<label for="formGroupExampleInput">Final do expediente:</label>
+					  	<input type="time" class="form-control" id="formGroupExampleInput" th:name="horaFinal" required>
+					</div>
+					
+					<div class="form-group col-lg-4">
+					  	<label for="formGroupExampleInput">Tempo de Passeio (Mín 1 hora)</label>
+					  	<input type="number" class="form-control" id="formGroupExampleInput" th:name="tempoDePasseio" required value="1">
+					</div>
+					
+				</div>
+				
+				<div class="form-group">
+					 <label for="formGroupExampleInput">Valor do passeio:</label>
+					 <input type="text" class="form-control" id="formGroupExampleInput" th:name="valorPasseio" required>
+				</div>
+				
+				<div class="form-group">
+				  	<button type="submit" class="btn btn-success btn-block">Salvar <i class="fa fa-save" aria-hidden="true"></i></button>
+				</div>
+			  </form>
+		
+		</div>
+		
+	</div>
+	
+</body>
+</html>

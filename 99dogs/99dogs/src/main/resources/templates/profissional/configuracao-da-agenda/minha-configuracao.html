@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html layout:decorate="~{/profissional/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Profissional | Minha Configuração</title>
+</head>
+<body>
+	
+	<div layout:fragment="body">
+	
+		<div class="container-box">
+		
+			<a th:href="@{/configuracao-da-agenda/profissional/adicionar-configuracao}" class="btn btn-success">Adicionar Configuração</a>
+			<hr>
+			
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Dia da semana</th>
+						<th>Início do expediente</th>
+						<th>Final do expediente</th>
+						<th>Tempo de passeio</th>
+						<th>Valor</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					
+					<tr th:each="config: ${configs}">
+						<td th:each="diaSemana: ${diasDaSemana}" th:if="${diaSemana.key == config.diaSemana}" th:text="${diaSemana.value}">1</td>
+						<td th:text="${config.horaInicio}">1</td>
+						<td th:text="${config.horaFinal}">1</td>
+						<td th:text="${config.tempoDePasseio} + ' hora(s)'">1</td>
+						<td th:text="${#numbers.formatCurrency(config.valorPasseio)}"></td>
+						<td>
+							<a th:href="@{/configuracao-da-agenda/profissional/alterar-configuracao/{id} (id=${config.id})}" class="btn btn-warning">Alterar</a>
+							<a th:href="@{/configuracao-da-agenda/profissional/deletar-configuracao/{id} (id=${config.id})}" class="btn btn-danger">Excluir</a>
+						</td>
+					</tr>
+				
+				</tbody>
+			</table>
+			
+		</div>
+	
+	</div>
+
+</body>
+</html>
