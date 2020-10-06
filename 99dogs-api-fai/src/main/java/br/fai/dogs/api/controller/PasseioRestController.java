@@ -94,17 +94,5 @@ public class PasseioRestController {
 		return ResponseEntity.ok(response);
 		
 	}
-	
-	@GetMapping("/detalhes/{id}")
-	public ResponseEntity<Map<String, Object>> detalhes(@PathVariable("id") Long id) {
 		
-		JSONObject passeio = passeioService.detalhe(id);
-		Map<String, Object> response = new HashMap<String, Object>();
-		
-		response.put("response", passeio.toMap());
-		
-		return ResponseEntity.ok(response);
-		
-	}
-	
 }

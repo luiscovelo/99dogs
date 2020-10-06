@@ -51,9 +51,4 @@ public class PasseioServiceImpl implements PasseioService {
 		return passeioDao.passeiosPorProfissional(profissional);
 	}
 
-	@Override
-	public JSONObject detalhe(Long id) {
-		return passeioDao.detalhes(id);
-	}
-
 }

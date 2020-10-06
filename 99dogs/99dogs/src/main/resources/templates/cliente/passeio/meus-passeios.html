@@ -16,9 +16,12 @@
 				<thead>
 					<tr>
 						<th>ID</th>
+						<th>Logo</th>
+						<th>Profissional</th>
 						<th>Data/Hora</th>
 						<th>Status</th>
 						<th>Valor</th>
+						<th>Forma de Pagamento</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -26,9 +29,14 @@
 					
 					<tr th:each="passeio: ${passeios}">
 						<td th:text="${passeio.id}">1</td>
+						<td>
+							<img class="rounded-circle" th:src="${passeio.profissional.pessoa.foto}" width="50">
+						</td>
+						<td th:text="${passeio.profissional.pessoa.nome}">1</td>
 						<td th:text="${#temporals.format(passeio.datahora, 'dd/MM/yyyy HH:mm')}">1</td>
 						<td th:text="${passeio.status}">1</td>
 						<td th:text="${#numbers.formatCurrency(passeio.valor)}">1</td>
+						<td th:text="${passeio.formaDePagamento.tipo}">1</td>
 						<td>
 							<a th:href="@{/passeio/cliente/detalhes/{id} (id=${passeio.id})}" class="btn btn-secondary">Detalhes</a>
 						</td>

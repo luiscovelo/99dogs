@@ -7,16 +7,18 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.json.JSONObject;
 import org.springframework.stereotype.Repository;
 
 import br.fai.dogs.db.connection.ConnectionFactory;
 import br.fai.dogs.db.dao.PasseioDao;
+import br.fai.dogs.model.entities.Cliente;
+import br.fai.dogs.model.entities.FormaDePagamento;
 import br.fai.dogs.model.entities.Passeio;
+import br.fai.dogs.model.entities.Pessoa;
+import br.fai.dogs.model.entities.Profissional;
 
 @Repository
 public class PasseioDaoImpl implements PasseioDao {
@@ -24,7 +26,8 @@ public class PasseioDaoImpl implements PasseioDao {
 	@Override
 	public List<Passeio> readAll() {
 		
-		List<Passeio> passeios = new ArrayList<Passeio>();
+List<Passeio> passeios = new ArrayList<Passeio>();
+		
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -32,39 +35,120 @@ public class PasseioDaoImpl implements PasseioDao {
 		try {
 
 			connection = ConnectionFactory.getConnection();
-			
-			String sql = "SELECT * FROM passeio;";
-			preparedStatement = connection.prepareStatement(sql);
+						
+			String sql = " select " + 
+					"	PA.*, " + 
+					"	FP.tipo as fp_tipo, " + 
+					"   CLI.id as cliente_id, " +
+					"	PE_CLI.id as cliente_pessoa_id, " + 
+					"	PE_CLI.nome as cliente_nome, " + 
+					"	PE_CLI.email as cliente_email, " + 
+					"	PE_CLI.telefone as cliente_telefone, " + 
+					"	PE_CLI.rua as cliente_rua, " + 
+					"	PE_CLI.bairro as cliente_bairro, " + 
+					"	PE_CLI.cidade as cliente_cidade, " + 
+					"	PE_CLI.estado as cliente_estado, " + 
+					"	PE_CLI.pais as cliente_pais, " + 
+					"	PE_CLI.numero as cliente_numero, " + 
+					"	PE_CLI.foto as cliente_foto, " + 
+					"	PE_CLI.tipo as cliente_tipo, " + 
+					"	PRO.id as profissional_id, " + 
+					"	PE_PRO.id as profissional_pessoa_id, " + 
+					"	PE_PRO.nome as profissional_nome, " + 
+					"	PE_PRO.email as profissional_email, " + 
+					"	PE_PRO.telefone as profissional_telefone, " + 
+					"	PE_PRO.rua as profissional_rua, " + 
+					"	PE_PRO.bairro as profissional_bairro, " + 
+					"	PE_PRO.cidade as profissional_cidade, " + 
+					"	PE_PRO.estado as profissional_estado, " + 
+					"	PE_PRO.pais as profissional_pais, " + 
+					"	PE_PRO.numero as profissional_numero, " + 
+					"	PE_PRO.foto as profissional_foto, " + 
+					"	PE_PRO.tipo as profissional_tipo " + 
+					"from passeio PA " + 
+					"inner join forma_de_pagamento FP on FP.id = PA.forma_de_pagamento_id " + 
+					"inner join cliente CLI on CLI.pessoa_id = PA.cliente_id " + 
+					"inner join profissional PRO on PRO.pessoa_id = PA.profissional_id " + 
+					"inner join pessoa PE_CLI on PE_CLI.id = CLI.pessoa_id " + 
+					"inner join pessoa PE_PRO on PE_PRO.id = PRO.pessoa_id ";
+								
+				preparedStatement = connection.prepareStatement(sql);
 
-			resultSet = preparedStatement.executeQuery();
-			
-			while (resultSet.next()) {
+				resultSet = preparedStatement.executeQuery();
 
-				Passeio passeio = new Passeio();
-				passeio.setId(resultSet.getLong("id"));
-				passeio.setStatus(resultSet.getString("status"));
-				passeio.setDatahora(resultSet.getTimestamp("datahora").toLocalDateTime());
-				passeio.setValor(resultSet.getDouble("valor"));
-				passeio.setClienteId(resultSet.getLong("cliente_id"));
-				passeio.setFormaDePagamentoId(resultSet.getLong("forma_de_pagamento_id"));
-
-				passeios.add(passeio);
-
-			}
-			
-			return passeios;
+				while (resultSet.next()) {
+					
+					Passeio passeio 					= new Passeio();
+					Cliente cliente 					= new Cliente();
+					Profissional profissional 			= new Profissional();
+					Pessoa pessoa_cliente 				= new Pessoa();
+					Pessoa pessoa_profissional 			= new Pessoa();
+					FormaDePagamento formaDePagamento 	= new FormaDePagamento();
+					
+					passeio.setId(resultSet.getLong("id"));
+					passeio.setStatus(resultSet.getString("status"));
+					passeio.setDatahora(resultSet.getTimestamp("datahora").toLocalDateTime());
+					passeio.setValor(resultSet.getDouble("valor"));
+					passeio.setProfissionalId(resultSet.getLong("profissional_id"));
+					passeio.setClienteId(resultSet.getLong("cliente_id"));
+					passeio.setFormaDePagamentoId(resultSet.getLong("forma_de_pagamento_id"));
+					
+					pessoa_cliente.setId(resultSet.getLong("cliente_pessoa_id"));
+					pessoa_cliente.setNome(resultSet.getString("cliente_nome"));
+					pessoa_cliente.setEmail(resultSet.getString("cliente_email"));
+					pessoa_cliente.setTelefone(resultSet.getString("cliente_telefone"));
+					pessoa_cliente.setRua(resultSet.getString("cliente_rua"));
+					pessoa_cliente.setBairro(resultSet.getString("cliente_bairro"));
+					pessoa_cliente.setCidade(resultSet.getString("cliente_cidade"));
+					pessoa_cliente.setEstado(resultSet.getString("cliente_estado"));
+					pessoa_cliente.setPais(resultSet.getString("cliente_pais"));
+					pessoa_cliente.setNumero(resultSet.getInt("cliente_numero"));
+					pessoa_cliente.setFoto(resultSet.getString("cliente_foto"));
+					pessoa_cliente.setTipo(resultSet.getString("cliente_tipo"));
+					
+					cliente.setId(resultSet.getLong("cliente_id"));
+					cliente.setPessoaId(resultSet.getInt("cliente_pessoa_id"));
+					cliente.setPessoa(pessoa_cliente);
+					
+					pessoa_profissional.setId(resultSet.getLong("profissional_pessoa_id"));
+					pessoa_profissional.setNome(resultSet.getString("profissional_nome"));
+					pessoa_profissional.setEmail(resultSet.getString("profissional_email"));
+					pessoa_profissional.setTelefone(resultSet.getString("profissional_telefone"));
+					pessoa_profissional.setRua(resultSet.getString("profissional_rua"));
+					pessoa_profissional.setBairro(resultSet.getString("profissional_bairro"));
+					pessoa_profissional.setCidade(resultSet.getString("profissional_cidade"));
+					pessoa_profissional.setEstado(resultSet.getString("profissional_estado"));
+					pessoa_profissional.setPais(resultSet.getString("profissional_pais"));
+					pessoa_profissional.setNumero(resultSet.getInt("profissional_numero"));
+					pessoa_profissional.setFoto(resultSet.getString("profissional_foto"));
+					pessoa_profissional.setTipo(resultSet.getString("profissional_tipo"));
+					
+					profissional.setId(resultSet.getLong("profissional_id"));
+					profissional.setPessoaId(resultSet.getInt("profissional_pessoa_id"));
+					profissional.setPessoa(pessoa_profissional);
+					
+					formaDePagamento.setId(resultSet.getLong("forma_de_pagamento_id"));
+					formaDePagamento.setTipo(resultSet.getString("fp_tipo"));
+					
+					passeio.setCliente(cliente);
+					passeio.setProfissional(profissional);
+					passeio.setFormaDePagamento(formaDePagamento);
+					
+					passeios.add(passeio);
+					
+				}
 			
 		} catch (Exception e) {
 			
-			System.out.println("Falha ao obter lista de passeios {99-dogs-fai}: " + e.getMessage());
+			System.out.println("Falha ao obter lista de passeios por cliente: " + e.getMessage());
 			
 		} finally {
 
 			ConnectionFactory.close(resultSet, preparedStatement, connection);
 
 		}
-		
-		return null;
+
+		return passeios;
 		
 	}
 
@@ -124,17 +208,58 @@ public class PasseioDaoImpl implements PasseioDao {
 	@Override
 	public Passeio readById(Long id) {
 		
-		Passeio passeio = null;
-
+		Passeio passeio = new Passeio();
+		Cliente cliente = new Cliente();
+		Profissional profissional = new Profissional();
+		Pessoa pessoa_cliente = new Pessoa();
+		Pessoa pessoa_profissional = new Pessoa();
+		FormaDePagamento formaDePagamento = new FormaDePagamento();
+		
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-
+		
+		String sql = " select " + 
+				"	PA.*, " + 
+				"	FP.tipo as fp_tipo, " + 
+				"   CLI.id as cliente_id, " +
+				"	PE_CLI.id as cliente_pessoa_id, " + 
+				"	PE_CLI.nome as cliente_nome, " + 
+				"	PE_CLI.email as cliente_email, " + 
+				"	PE_CLI.telefone as cliente_telefone, " + 
+				"	PE_CLI.rua as cliente_rua, " + 
+				"	PE_CLI.bairro as cliente_bairro, " + 
+				"	PE_CLI.cidade as cliente_cidade, " + 
+				"	PE_CLI.estado as cliente_estado, " + 
+				"	PE_CLI.pais as cliente_pais, " + 
+				"	PE_CLI.numero as cliente_numero, " + 
+				"	PE_CLI.foto as cliente_foto, " + 
+				"	PE_CLI.tipo as cliente_tipo, " + 
+				"	PRO.id as profissional_id, " + 
+				"	PE_PRO.id as profissional_pessoa_id, " + 
+				"	PE_PRO.nome as profissional_nome, " + 
+				"	PE_PRO.email as profissional_email, " + 
+				"	PE_PRO.telefone as profissional_telefone, " + 
+				"	PE_PRO.rua as profissional_rua, " + 
+				"	PE_PRO.bairro as profissional_bairro, " + 
+				"	PE_PRO.cidade as profissional_cidade, " + 
+				"	PE_PRO.estado as profissional_estado, " + 
+				"	PE_PRO.pais as profissional_pais, " + 
+				"	PE_PRO.numero as profissional_numero, " + 
+				"	PE_PRO.foto as profissional_foto, " + 
+				"	PE_PRO.tipo as profissional_tipo " + 
+				"from passeio PA " + 
+				"inner join forma_de_pagamento FP on FP.id = PA.forma_de_pagamento_id " + 
+				"inner join cliente CLI on CLI.pessoa_id = PA.cliente_id " + 
+				"inner join profissional PRO on PRO.pessoa_id = PA.profissional_id " + 
+				"inner join pessoa PE_CLI on PE_CLI.id = CLI.pessoa_id " + 
+				"inner join pessoa PE_PRO on PE_PRO.id = PRO.pessoa_id " + 
+				"where PA.id = ? ";
+				
 		try {
+			
 			connection = ConnectionFactory.getConnection();
-
-			String sql = "SELECT * FROM passeio WHERE id = ?";
-
+			
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setLong(1, id);
 
@@ -150,10 +275,49 @@ public class PasseioDaoImpl implements PasseioDao {
 				passeio.setProfissionalId(resultSet.getLong("profissional_id"));
 				passeio.setClienteId(resultSet.getLong("cliente_id"));
 				passeio.setFormaDePagamentoId(resultSet.getLong("forma_de_pagamento_id"));
-
+				
+				pessoa_cliente.setId(resultSet.getLong("cliente_pessoa_id"));
+				pessoa_cliente.setNome(resultSet.getString("cliente_nome"));
+				pessoa_cliente.setEmail(resultSet.getString("cliente_email"));
+				pessoa_cliente.setTelefone(resultSet.getString("cliente_telefone"));
+				pessoa_cliente.setRua(resultSet.getString("cliente_rua"));
+				pessoa_cliente.setBairro(resultSet.getString("cliente_bairro"));
+				pessoa_cliente.setCidade(resultSet.getString("cliente_cidade"));
+				pessoa_cliente.setEstado(resultSet.getString("cliente_estado"));
+				pessoa_cliente.setPais(resultSet.getString("cliente_pais"));
+				pessoa_cliente.setNumero(resultSet.getInt("cliente_numero"));
+				pessoa_cliente.setFoto(resultSet.getString("cliente_foto"));
+				pessoa_cliente.setTipo(resultSet.getString("cliente_tipo"));
+				
+				cliente.setId(resultSet.getLong("cliente_id"));
+				cliente.setPessoaId(resultSet.getInt("cliente_pessoa_id"));
+				cliente.setPessoa(pessoa_cliente);
+				
+				pessoa_profissional.setId(resultSet.getLong("profissional_pessoa_id"));
+				pessoa_profissional.setNome(resultSet.getString("profissional_nome"));
+				pessoa_profissional.setEmail(resultSet.getString("profissional_email"));
+				pessoa_profissional.setTelefone(resultSet.getString("profissional_telefone"));
+				pessoa_profissional.setRua(resultSet.getString("profissional_rua"));
+				pessoa_profissional.setBairro(resultSet.getString("profissional_bairro"));
+				pessoa_profissional.setCidade(resultSet.getString("profissional_cidade"));
+				pessoa_profissional.setEstado(resultSet.getString("profissional_estado"));
+				pessoa_profissional.setPais(resultSet.getString("profissional_pais"));
+				pessoa_profissional.setNumero(resultSet.getInt("profissional_numero"));
+				pessoa_profissional.setFoto(resultSet.getString("profissional_foto"));
+				pessoa_profissional.setTipo(resultSet.getString("profissional_tipo"));
+				
+				profissional.setId(resultSet.getLong("profissional_id"));
+				profissional.setPessoaId(resultSet.getInt("profissional_pessoa_id"));
+				profissional.setPessoa(pessoa_profissional);
+				
+				formaDePagamento.setId(resultSet.getLong("forma_de_pagamento_id"));
+				formaDePagamento.setTipo(resultSet.getString("fp_tipo"));
+				
+				passeio.setCliente(cliente);
+				passeio.setProfissional(profissional);
+				passeio.setFormaDePagamento(formaDePagamento);
+				
 			}
-			
-			return passeio;
 			
 		} catch (Exception e) {
 			
@@ -254,6 +418,7 @@ public class PasseioDaoImpl implements PasseioDao {
 	public List<Passeio> passeiosPorCliente(Long cliente_id) {
 		
 		List<Passeio> passeios = new ArrayList<Passeio>();
+		
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -261,30 +426,110 @@ public class PasseioDaoImpl implements PasseioDao {
 		try {
 
 			connection = ConnectionFactory.getConnection();
-			
-			String sql = "SELECT * FROM passeio where cliente_id = ?";
-			
-			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setLong(1, cliente_id);
-			
-			resultSet = preparedStatement.executeQuery();
-			
-			while (resultSet.next()) {
+						
+			String sql = " select " + 
+					"	PA.*, " + 
+					"	FP.tipo as fp_tipo, " + 
+					"   CLI.id as cliente_id, " +
+					"	PE_CLI.id as cliente_pessoa_id, " + 
+					"	PE_CLI.nome as cliente_nome, " + 
+					"	PE_CLI.email as cliente_email, " + 
+					"	PE_CLI.telefone as cliente_telefone, " + 
+					"	PE_CLI.rua as cliente_rua, " + 
+					"	PE_CLI.bairro as cliente_bairro, " + 
+					"	PE_CLI.cidade as cliente_cidade, " + 
+					"	PE_CLI.estado as cliente_estado, " + 
+					"	PE_CLI.pais as cliente_pais, " + 
+					"	PE_CLI.numero as cliente_numero, " + 
+					"	PE_CLI.foto as cliente_foto, " + 
+					"	PE_CLI.tipo as cliente_tipo, " + 
+					"	PRO.id as profissional_id, " + 
+					"	PE_PRO.id as profissional_pessoa_id, " + 
+					"	PE_PRO.nome as profissional_nome, " + 
+					"	PE_PRO.email as profissional_email, " + 
+					"	PE_PRO.telefone as profissional_telefone, " + 
+					"	PE_PRO.rua as profissional_rua, " + 
+					"	PE_PRO.bairro as profissional_bairro, " + 
+					"	PE_PRO.cidade as profissional_cidade, " + 
+					"	PE_PRO.estado as profissional_estado, " + 
+					"	PE_PRO.pais as profissional_pais, " + 
+					"	PE_PRO.numero as profissional_numero, " + 
+					"	PE_PRO.foto as profissional_foto, " + 
+					"	PE_PRO.tipo as profissional_tipo " + 
+					"from passeio PA " + 
+					"inner join forma_de_pagamento FP on FP.id = PA.forma_de_pagamento_id " + 
+					"inner join cliente CLI on CLI.pessoa_id = PA.cliente_id " + 
+					"inner join profissional PRO on PRO.pessoa_id = PA.profissional_id " + 
+					"inner join pessoa PE_CLI on PE_CLI.id = CLI.pessoa_id " + 
+					"inner join pessoa PE_PRO on PE_PRO.id = PRO.pessoa_id " + 
+					"where PA.cliente_id = ? ";
+								
+				preparedStatement = connection.prepareStatement(sql);
+				preparedStatement.setLong(1, cliente_id);
 
-				Passeio passeio = new Passeio();
-				
-				passeio.setId(resultSet.getLong("id"));
-				passeio.setStatus(resultSet.getString("status"));
-				passeio.setDatahora(resultSet.getTimestamp("datahora").toLocalDateTime());
-				passeio.setValor(resultSet.getDouble("valor"));
-				passeio.setClienteId(resultSet.getLong("cliente_id"));
-				passeio.setProfissionalId(resultSet.getLong("profissional_id"));
+				resultSet = preparedStatement.executeQuery();
 
-				passeios.add(passeio);
-
-			}
-			
-			return passeios;
+				while (resultSet.next()) {
+					
+					Passeio passeio 					= new Passeio();
+					Cliente cliente 					= new Cliente();
+					Profissional profissional 			= new Profissional();
+					Pessoa pessoa_cliente 				= new Pessoa();
+					Pessoa pessoa_profissional 			= new Pessoa();
+					FormaDePagamento formaDePagamento 	= new FormaDePagamento();
+					
+					passeio.setId(resultSet.getLong("id"));
+					passeio.setStatus(resultSet.getString("status"));
+					passeio.setDatahora(resultSet.getTimestamp("datahora").toLocalDateTime());
+					passeio.setValor(resultSet.getDouble("valor"));
+					passeio.setProfissionalId(resultSet.getLong("profissional_id"));
+					passeio.setClienteId(resultSet.getLong("cliente_id"));
+					passeio.setFormaDePagamentoId(resultSet.getLong("forma_de_pagamento_id"));
+					
+					pessoa_cliente.setId(resultSet.getLong("cliente_pessoa_id"));
+					pessoa_cliente.setNome(resultSet.getString("cliente_nome"));
+					pessoa_cliente.setEmail(resultSet.getString("cliente_email"));
+					pessoa_cliente.setTelefone(resultSet.getString("cliente_telefone"));
+					pessoa_cliente.setRua(resultSet.getString("cliente_rua"));
+					pessoa_cliente.setBairro(resultSet.getString("cliente_bairro"));
+					pessoa_cliente.setCidade(resultSet.getString("cliente_cidade"));
+					pessoa_cliente.setEstado(resultSet.getString("cliente_estado"));
+					pessoa_cliente.setPais(resultSet.getString("cliente_pais"));
+					pessoa_cliente.setNumero(resultSet.getInt("cliente_numero"));
+					pessoa_cliente.setFoto(resultSet.getString("cliente_foto"));
+					pessoa_cliente.setTipo(resultSet.getString("cliente_tipo"));
+					
+					cliente.setId(resultSet.getLong("cliente_id"));
+					cliente.setPessoaId(resultSet.getInt("cliente_pessoa_id"));
+					cliente.setPessoa(pessoa_cliente);
+					
+					pessoa_profissional.setId(resultSet.getLong("profissional_pessoa_id"));
+					pessoa_profissional.setNome(resultSet.getString("profissional_nome"));
+					pessoa_profissional.setEmail(resultSet.getString("profissional_email"));
+					pessoa_profissional.setTelefone(resultSet.getString("profissional_telefone"));
+					pessoa_profissional.setRua(resultSet.getString("profissional_rua"));
+					pessoa_profissional.setBairro(resultSet.getString("profissional_bairro"));
+					pessoa_profissional.setCidade(resultSet.getString("profissional_cidade"));
+					pessoa_profissional.setEstado(resultSet.getString("profissional_estado"));
+					pessoa_profissional.setPais(resultSet.getString("profissional_pais"));
+					pessoa_profissional.setNumero(resultSet.getInt("profissional_numero"));
+					pessoa_profissional.setFoto(resultSet.getString("profissional_foto"));
+					pessoa_profissional.setTipo(resultSet.getString("profissional_tipo"));
+					
+					profissional.setId(resultSet.getLong("profissional_id"));
+					profissional.setPessoaId(resultSet.getInt("profissional_pessoa_id"));
+					profissional.setPessoa(pessoa_profissional);
+					
+					formaDePagamento.setId(resultSet.getLong("forma_de_pagamento_id"));
+					formaDePagamento.setTipo(resultSet.getString("fp_tipo"));
+					
+					passeio.setCliente(cliente);
+					passeio.setProfissional(profissional);
+					passeio.setFormaDePagamento(formaDePagamento);
+					
+					passeios.add(passeio);
+					
+				}
 			
 		} catch (Exception e) {
 			
@@ -296,7 +541,7 @@ public class PasseioDaoImpl implements PasseioDao {
 
 		}
 
-		return null;
+		return passeios;
 		
 	}
 
@@ -304,6 +549,7 @@ public class PasseioDaoImpl implements PasseioDao {
 	public List<Passeio> passeiosPorProfissional(Long profissional_id) {
 		
 		List<Passeio> passeios = new ArrayList<Passeio>();
+		
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -311,34 +557,114 @@ public class PasseioDaoImpl implements PasseioDao {
 		try {
 
 			connection = ConnectionFactory.getConnection();
-			
-			String sql = "SELECT * FROM passeio where profissional_id = ?";
-			
-			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setLong(1, profissional_id);
-			
-			resultSet = preparedStatement.executeQuery();
-			
-			while (resultSet.next()) {
+						
+			String sql = " select " + 
+					"	PA.*, " + 
+					"	FP.tipo as fp_tipo, " + 
+					"   CLI.id as cliente_id, " +
+					"	PE_CLI.id as cliente_pessoa_id, " + 
+					"	PE_CLI.nome as cliente_nome, " + 
+					"	PE_CLI.email as cliente_email, " + 
+					"	PE_CLI.telefone as cliente_telefone, " + 
+					"	PE_CLI.rua as cliente_rua, " + 
+					"	PE_CLI.bairro as cliente_bairro, " + 
+					"	PE_CLI.cidade as cliente_cidade, " + 
+					"	PE_CLI.estado as cliente_estado, " + 
+					"	PE_CLI.pais as cliente_pais, " + 
+					"	PE_CLI.numero as cliente_numero, " + 
+					"	PE_CLI.foto as cliente_foto, " + 
+					"	PE_CLI.tipo as cliente_tipo, " + 
+					"	PRO.id as profissional_id, " + 
+					"	PE_PRO.id as profissional_pessoa_id, " + 
+					"	PE_PRO.nome as profissional_nome, " + 
+					"	PE_PRO.email as profissional_email, " + 
+					"	PE_PRO.telefone as profissional_telefone, " + 
+					"	PE_PRO.rua as profissional_rua, " + 
+					"	PE_PRO.bairro as profissional_bairro, " + 
+					"	PE_PRO.cidade as profissional_cidade, " + 
+					"	PE_PRO.estado as profissional_estado, " + 
+					"	PE_PRO.pais as profissional_pais, " + 
+					"	PE_PRO.numero as profissional_numero, " + 
+					"	PE_PRO.foto as profissional_foto, " + 
+					"	PE_PRO.tipo as profissional_tipo " + 
+					"from passeio PA " + 
+					"inner join forma_de_pagamento FP on FP.id = PA.forma_de_pagamento_id " + 
+					"inner join cliente CLI on CLI.pessoa_id = PA.cliente_id " + 
+					"inner join profissional PRO on PRO.pessoa_id = PA.profissional_id " + 
+					"inner join pessoa PE_CLI on PE_CLI.id = CLI.pessoa_id " + 
+					"inner join pessoa PE_PRO on PE_PRO.id = PRO.pessoa_id " + 
+					"where PA.profissional_id = ? ";
+								
+				preparedStatement = connection.prepareStatement(sql);
+				preparedStatement.setLong(1, profissional_id);
 
-				Passeio passeio = new Passeio();
-				
-				passeio.setId(resultSet.getLong("id"));
-				passeio.setStatus(resultSet.getString("status"));
-				passeio.setDatahora(resultSet.getTimestamp("datahora").toLocalDateTime());
-				passeio.setValor(resultSet.getDouble("valor"));
-				passeio.setClienteId(resultSet.getLong("cliente_id"));
-				passeio.setProfissionalId(resultSet.getLong("profissional_id"));
+				resultSet = preparedStatement.executeQuery();
 
-				passeios.add(passeio);
-
-			}
-			
-			return passeios;
+				while (resultSet.next()) {
+					
+					Passeio passeio 					= new Passeio();
+					Cliente cliente 					= new Cliente();
+					Profissional profissional 			= new Profissional();
+					Pessoa pessoa_cliente 				= new Pessoa();
+					Pessoa pessoa_profissional 			= new Pessoa();
+					FormaDePagamento formaDePagamento 	= new FormaDePagamento();
+					
+					passeio.setId(resultSet.getLong("id"));
+					passeio.setStatus(resultSet.getString("status"));
+					passeio.setDatahora(resultSet.getTimestamp("datahora").toLocalDateTime());
+					passeio.setValor(resultSet.getDouble("valor"));
+					passeio.setProfissionalId(resultSet.getLong("profissional_id"));
+					passeio.setClienteId(resultSet.getLong("cliente_id"));
+					passeio.setFormaDePagamentoId(resultSet.getLong("forma_de_pagamento_id"));
+					
+					pessoa_cliente.setId(resultSet.getLong("cliente_pessoa_id"));
+					pessoa_cliente.setNome(resultSet.getString("cliente_nome"));
+					pessoa_cliente.setEmail(resultSet.getString("cliente_email"));
+					pessoa_cliente.setTelefone(resultSet.getString("cliente_telefone"));
+					pessoa_cliente.setRua(resultSet.getString("cliente_rua"));
+					pessoa_cliente.setBairro(resultSet.getString("cliente_bairro"));
+					pessoa_cliente.setCidade(resultSet.getString("cliente_cidade"));
+					pessoa_cliente.setEstado(resultSet.getString("cliente_estado"));
+					pessoa_cliente.setPais(resultSet.getString("cliente_pais"));
+					pessoa_cliente.setNumero(resultSet.getInt("cliente_numero"));
+					pessoa_cliente.setFoto(resultSet.getString("cliente_foto"));
+					pessoa_cliente.setTipo(resultSet.getString("cliente_tipo"));
+					
+					cliente.setId(resultSet.getLong("cliente_id"));
+					cliente.setPessoaId(resultSet.getInt("cliente_pessoa_id"));
+					cliente.setPessoa(pessoa_cliente);
+					
+					pessoa_profissional.setId(resultSet.getLong("profissional_pessoa_id"));
+					pessoa_profissional.setNome(resultSet.getString("profissional_nome"));
+					pessoa_profissional.setEmail(resultSet.getString("profissional_email"));
+					pessoa_profissional.setTelefone(resultSet.getString("profissional_telefone"));
+					pessoa_profissional.setRua(resultSet.getString("profissional_rua"));
+					pessoa_profissional.setBairro(resultSet.getString("profissional_bairro"));
+					pessoa_profissional.setCidade(resultSet.getString("profissional_cidade"));
+					pessoa_profissional.setEstado(resultSet.getString("profissional_estado"));
+					pessoa_profissional.setPais(resultSet.getString("profissional_pais"));
+					pessoa_profissional.setNumero(resultSet.getInt("profissional_numero"));
+					pessoa_profissional.setFoto(resultSet.getString("profissional_foto"));
+					pessoa_profissional.setTipo(resultSet.getString("profissional_tipo"));
+					
+					profissional.setId(resultSet.getLong("profissional_id"));
+					profissional.setPessoaId(resultSet.getInt("profissional_pessoa_id"));
+					profissional.setPessoa(pessoa_profissional);
+					
+					formaDePagamento.setId(resultSet.getLong("forma_de_pagamento_id"));
+					formaDePagamento.setTipo(resultSet.getString("fp_tipo"));
+					
+					passeio.setCliente(cliente);
+					passeio.setProfissional(profissional);
+					passeio.setFormaDePagamento(formaDePagamento);
+					
+					passeios.add(passeio);
+					
+				}
 			
 		} catch (Exception e) {
 			
-			System.out.println("Falha ao obter lista de passeios por profissional: " + e.getMessage());
+			System.out.println("Falha ao obter lista de passeios por cliente: " + e.getMessage());
 			
 		} finally {
 
@@ -346,123 +672,7 @@ public class PasseioDaoImpl implements PasseioDao {
 
 		}
 
-		return null;
-		
-	}
-
-	@Override
-	public JSONObject detalhes(Long id) {
-		
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-		
-		JSONObject response = new JSONObject();
-		JSONObject passeio = new JSONObject();
-		JSONObject cliente = new JSONObject();
-		JSONObject formaPagamento = new JSONObject();
-		
-		String sql = "";
-		
-		try {
-			
-			connection = ConnectionFactory.getConnection();
-			
-			sql = " select \r\n" + 
-					"	PA.id as passeio_id,\r\n" + 
-					"	PA.datahora as datahora,\r\n" + 
-					"	PA.status as status,\r\n" + 
-					"	PA.valor as valor,\r\n" + 
-					"	PE.nome as cliente_nome,\r\n" + 
-					"	PE.telefone as cliente_telefone,\r\n" + 
-					"	PE.email as cliente_email,\r\n" + 
-					"	PE.rua as cliente_endereco,\r\n" + 
-					"	PE.bairro as cliente_bairro,\r\n" + 
-					"	PE.cidade||'/'||PE.estado as cliente_cidade_estado,\r\n" + 
-					"	PE.numero as cliente_numero,\r\n" + 
-					"	PE.foto as cliente_foto,\r\n" + 
-					"	FP.tipo as forma_de_pagamento\r\n" + 
-					"from passeio PA\r\n" + 
-					"inner join cliente CLI on CLI.id = PA.cliente_id\r\n" + 
-					"inner join pessoa PE on PE.id = CLI.pessoa_id\r\n" + 
-					"inner join forma_de_pagamento FP on FP.id = PA.forma_de_pagamento_id\r\n" + 
-					"where PA.id = ? ";
-			
-			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setLong(1, id);
-			
-			resultSet = preparedStatement.executeQuery();
-			
-			if(resultSet.next()) {
-				
-				passeio.put("id", resultSet.getString("passeio_id"));
-				passeio.put("datahora", resultSet.getString("datahora"));
-				passeio.put("status", resultSet.getString("status"));
-				passeio.put("valor", resultSet.getString("valor"));
-				
-				cliente.put("nome", resultSet.getString("cliente_nome"));
-				cliente.put("telefone", resultSet.getString("cliente_telefone"));
-				cliente.put("email", resultSet.getString("cliente_email"));
-				cliente.put("endereco", resultSet.getString("cliente_endereco"));
-				cliente.put("bairro", resultSet.getString("cliente_bairro"));
-				cliente.put("cidade", resultSet.getString("cliente_cidade_estado"));
-				cliente.put("numero", resultSet.getString("cliente_numero"));
-				cliente.put("foto", resultSet.getString("cliente_foto"));
-				
-				formaPagamento.put("nome", resultSet.getString("forma_de_pagamento"));
-				
-			}
-			
-			response.put("passeio", passeio);
-			response.put("cliente", cliente);
-			response.put("formaDePagamento", formaPagamento);
-			
-			/* ----- query para listar os cachorros do passeio */
-			
-			sql = " select \r\n" + 
-					"	CA.id as id,\r\n" + 
-					"	CA.nome as nome,\r\n" + 
-					"	CA.data_nascimento as datanascimento,\r\n" + 
-					"	POR.descricao as porte,\r\n" + 
-					"	R.nome as raca,\r\n" + 
-					"	COMP.descricao as comportamento\r\n" + 
-					"from passeio_cachorro PC\r\n" + 
-					"inner join cachorro CA on CA.id = PC.cachorro_id\r\n" + 
-					"inner join raca R on R.id = CA.raca_id\r\n" + 
-					"inner join porte POR on POR.id = R.porte_id\r\n" + 
-					"inner join comportamento COMP on COMP.id = R.comportamento_id\r\n" + 
-					"where PC.passeio_id = ? ";
-			
-			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setLong(1, id);
-			
-			resultSet = preparedStatement.executeQuery();
-			
-			JSONObject cachorros = new JSONObject();
-			
-			while (resultSet.next()) {
-				
-				JSONObject cachorro = new JSONObject();
-				
-				cachorro.put("id", resultSet.getString("id"));
-				cachorro.put("datanascimento", resultSet.getString("datanascimento"));
-				cachorro.put("porte", resultSet.getString("porte"));
-				cachorro.put("raca", resultSet.getString("raca"));
-				cachorro.put("comportamento", resultSet.getString("comportamento"));
-				
-				cachorros.append("cachorro", cachorro);
-				
-			}
-			
-			response.put("cachorros", cachorros);
-			
-			return response;
-			
-		} catch (Exception e) {
-			e.getMessage();
-		}
-		
-		return new JSONObject();
+		return passeios;
 		
 	}
 	

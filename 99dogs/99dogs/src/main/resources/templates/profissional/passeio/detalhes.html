@@ -13,13 +13,14 @@
 			<table class="table">
 				<thead>
 					<tr>
-						<th colspan="4">Informações do passeio</th>
+						<th colspan="5">Informações do passeio</th>
 					</tr>
 					<tr>
 						<th>ID</th>
 						<th>Data e Hora</th>
 						<th>Status</th>
 						<th>Valor</th>
+						<th>Forma de Pagamento</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -28,6 +29,37 @@
 						<td th:text="${#temporals.format(passeio.datahora, 'dd/MM/yyyy HH:mm')}"></td>
 						<td th:text="${passeio.status}"></td>
 						<td th:text="${#numbers.formatCurrency(passeio.valor)}"></td>
+						<td th:text="${passeio.formaDePagamento.tipo}"></td>
+					</tr>
+				</tbody>
+			</table>
+			
+		</div>
+		
+		<div class="container-box">
+		
+			<table class="table">
+				<thead>
+					<tr>
+						<th colspan="5">Profissional responsável pelo passeio</th>
+					</tr>
+					<tr>
+						<th>Foto</th>
+						<th>Nome</th>
+						<th>E-mail</th>
+						<th>Telefone</th>
+						<th>Cidade/UF</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img class="rounded-circle" th:src="${passeio.profissional.pessoa.foto}" width="50">
+						</td>
+						<td th:text="${passeio.profissional.pessoa.nome}"></td>
+						<td th:text="${passeio.profissional.pessoa.email}"></td>
+						<td th:text="${passeio.profissional.pessoa.telefone}"></td>
+						<td th:text="${passeio.profissional.pessoa.cidade} + '/' + ${passeio.profissional.pessoa.estado}"></td>
 					</tr>
 				</tbody>
 			</table>
@@ -52,12 +84,12 @@
 				<tbody>
 					<tr>
 						<td>
-							<img class="rounded-circle" th:src="${cliente.foto}" width="50">
+							<img class="rounded-circle" th:src="${passeio.profissional.pessoa.foto}" width="50">
 						</td>
-						<td th:text="${cliente.nome}"></td>
-						<td th:text="${cliente.email}"></td>
-						<td th:text="${cliente.telefone}"></td>
-						<td th:text="${cliente.cidade} + '/' + ${cliente.estado}"></td>
+						<td th:text="${passeio.cliente.pessoa.nome}"></td>
+						<td th:text="${passeio.cliente.pessoa.email}"></td>
+						<td th:text="${passeio.cliente.pessoa.telefone}"></td>
+						<td th:text="${passeio.cliente.pessoa.cidade} + '/' + ${passeio.cliente.pessoa.estado}"></td>
 					</tr>
 				</tbody>
 			</table>

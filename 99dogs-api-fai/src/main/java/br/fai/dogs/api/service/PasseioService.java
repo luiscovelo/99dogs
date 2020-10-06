@@ -22,6 +22,4 @@ public interface PasseioService {
 	
 	List<Passeio> passeiosPorProfissional(Long profissional);
 	
-	JSONObject detalhe(Long id);
-	
 }
