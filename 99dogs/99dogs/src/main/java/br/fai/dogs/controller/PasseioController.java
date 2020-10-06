@@ -161,7 +161,7 @@ public class PasseioController {
 		
 		for(Passeio passeio: passeios) {
 			
-			map.put("title", passeio.getId().toString());
+			map.put("title", passeio.getCliente().getPessoa().getNome().toString());
 			map.put("start", passeio.getDatahora().toString());
 			map.put("url", "/passeio/profissional/detalhes/" + passeio.getId());
 			

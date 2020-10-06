@@ -46,7 +46,7 @@ public class DashboardController {
 		
 		for(Passeio passeio: passeios) {
 			
-			map.put("title", passeio.getId().toString());
+			map.put("title", passeio.getCliente().getPessoa().getNome().toString());
 			map.put("start", passeio.getDatahora().toString());
 			map.put("url", "/passeio/cliente/detalhes/" + passeio.getId());
 			
