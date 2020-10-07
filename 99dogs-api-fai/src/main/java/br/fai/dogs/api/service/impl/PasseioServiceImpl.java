@@ -56,4 +56,9 @@ public class PasseioServiceImpl implements PasseioService {
 		return passeioDao.verificarDisponibilidade(datahora, id);
 	}
 
+	@Override
+	public boolean alterarStatus(Passeio entity) {
+		return passeioDao.alterarStatus(entity);
+	}
+
 }

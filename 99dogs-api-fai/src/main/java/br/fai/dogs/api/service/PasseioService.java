@@ -24,4 +24,6 @@ public interface PasseioService {
 	
 	boolean verificarDisponibilidade(String datahora, Long id);
 	
+	boolean alterarStatus(Passeio entity);
+	
 }

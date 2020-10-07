@@ -193,5 +193,47 @@ public class PasseioController {
 		return "/profissional/passeio/detalhes";
 		
 	}
+	
+	@GetMapping("/profissional/aprovar-passeio/{id}")
+	public String aprovarPasseio(@PathVariable("id") Long id) {
 		
+		Passeio passeio = new Passeio();
+		
+		passeio.setId(id);
+		passeio.setStatus("Aprovado");
+		
+		boolean response = passeioService.alterarStatus(passeio);
+		
+		return "redirect:/passeio/profissional/detalhes/" + id;
+				
+	}
+	
+	@GetMapping("/profissional/recusar-passeio/{id}")
+	public String recusarPasseio(@PathVariable("id") Long id) {
+		
+		Passeio passeio = new Passeio();
+		
+		passeio.setId(id);
+		passeio.setStatus("Recusado");
+		
+		boolean response = passeioService.alterarStatus(passeio);
+		
+		return "redirect:/passeio/profissional/detalhes/" + id;
+				
+	}
+	
+	@GetMapping("/profissional/finalizar-passeio/{id}")
+	public String finaliarPasseio(@PathVariable("id") Long id) {
+		
+		Passeio passeio = new Passeio();
+		
+		passeio.setId(id);
+		passeio.setStatus("Finalizado");
+		
+		boolean response = passeioService.alterarStatus(passeio);
+		
+		return "redirect:/passeio/profissional/detalhes/" + id;
+				
+	}
+	
 }

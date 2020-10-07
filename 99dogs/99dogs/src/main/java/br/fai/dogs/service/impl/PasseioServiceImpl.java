@@ -261,4 +261,43 @@ public class PasseioServiceImpl implements PasseioService {
 		
 	}
 
+	@Override
+	public boolean alterarStatus(Passeio entity) {
+		
+		boolean response = false;
+		String endpoint  = "http://localhost:8082/api/v1/passeio/alterar-status";
+
+		RestTemplate restTemplate = new RestTemplate();
+		
+		try {
+						
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			
+			Map<String, Object> map = new HashMap<>();
+			
+			map.put("id", entity.getId());
+			map.put("status", entity.getStatus());
+						
+			HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(map, headers);
+			 
+			ResponseEntity<Long> requestResponse = restTemplate.exchange(
+				endpoint, 
+				HttpMethod.PUT, 
+				requestEntity,
+				Long.class
+			);			
+			
+			if(requestResponse.getStatusCodeValue() == 200) {
+				response = true;
+			}
+			
+		} catch (Exception e) {
+			System.out.println("Ocorreu um problema ao realizar a requisição para aprovar o passeio: " + e.getMessage());
+		}
+		
+		return response;
+		
+	}
+
 }

@@ -8,6 +8,9 @@ public class Passeio extends BasePojo{
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private LocalDateTime datahora;
 	
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+	private LocalDateTime datahorafinalizacao;
+	
 	private String status;
 	private double valor;
 	private Long profissionalId;
@@ -23,6 +26,12 @@ public class Passeio extends BasePojo{
 	}
 	public void setDatahora(LocalDateTime datahora) {
 		this.datahora = datahora;
+	}
+	public LocalDateTime getDatahorafinalizacao() {
+		return datahorafinalizacao;
+	}
+	public void setDatahorafinalizacao(LocalDateTime datahorafinalizacao) {
+		this.datahorafinalizacao = datahorafinalizacao;
 	}
 	public String getStatus() {
 		return status;
@@ -75,10 +84,10 @@ public class Passeio extends BasePojo{
 	
 	@Override
 	public String toString() {
-		return "Passeio [datahora=" + datahora + ", status=" + status + ", valor=" + valor + ", profissionalId="
-				+ profissionalId + ", clienteId=" + clienteId + ", formaDePagamentoId=" + formaDePagamentoId
-				+ ", cliente=" + cliente + ", profissional=" + profissional + ", formaDePagamento=" + formaDePagamento
-				+ "]";
+		return "Passeio [datahora=" + datahora + ", datahorafinalizacao=" + datahorafinalizacao + ", status=" + status
+				+ ", valor=" + valor + ", profissionalId=" + profissionalId + ", clienteId=" + clienteId
+				+ ", formaDePagamentoId=" + formaDePagamentoId + ", cliente=" + cliente + ", profissional="
+				+ profissional + ", formaDePagamento=" + formaDePagamento + "]";
 	}
 	
 }

@@ -6,10 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import org.json.JSONObject;
 import org.springframework.stereotype.Repository;
 
 import br.fai.dogs.db.connection.ConnectionFactory;
@@ -92,6 +93,10 @@ public class PasseioDaoImpl implements PasseioDao {
 					passeio.setProfissionalId(resultSet.getLong("profissional_id"));
 					passeio.setClienteId(resultSet.getLong("cliente_id"));
 					passeio.setFormaDePagamentoId(resultSet.getLong("forma_de_pagamento_id"));
+					
+					if(resultSet.getTimestamp("datahorafinalizacao") != null){
+						passeio.setDatahorafinalizacao(resultSet.getTimestamp("datahorafinalizacao").toLocalDateTime());
+					}
 					
 					pessoa_cliente.setId(resultSet.getLong("cliente_pessoa_id"));
 					pessoa_cliente.setNome(resultSet.getString("cliente_nome"));
@@ -275,6 +280,10 @@ public class PasseioDaoImpl implements PasseioDao {
 				passeio.setProfissionalId(resultSet.getLong("profissional_id"));
 				passeio.setClienteId(resultSet.getLong("cliente_id"));
 				passeio.setFormaDePagamentoId(resultSet.getLong("forma_de_pagamento_id"));
+				
+				if(resultSet.getTimestamp("datahorafinalizacao") != null){
+					passeio.setDatahorafinalizacao(resultSet.getTimestamp("datahorafinalizacao").toLocalDateTime());
+				}
 				
 				pessoa_cliente.setId(resultSet.getLong("cliente_pessoa_id"));
 				pessoa_cliente.setNome(resultSet.getString("cliente_nome"));
@@ -486,6 +495,10 @@ public class PasseioDaoImpl implements PasseioDao {
 					passeio.setClienteId(resultSet.getLong("cliente_id"));
 					passeio.setFormaDePagamentoId(resultSet.getLong("forma_de_pagamento_id"));
 					
+					if(resultSet.getTimestamp("datahorafinalizacao") != null){
+						passeio.setDatahorafinalizacao(resultSet.getTimestamp("datahorafinalizacao").toLocalDateTime());
+					}
+					
 					pessoa_cliente.setId(resultSet.getLong("cliente_pessoa_id"));
 					pessoa_cliente.setNome(resultSet.getString("cliente_nome"));
 					pessoa_cliente.setEmail(resultSet.getString("cliente_email"));
@@ -594,7 +607,7 @@ public class PasseioDaoImpl implements PasseioDao {
 					"inner join pessoa PE_CLI on PE_CLI.id = CLI.pessoa_id " + 
 					"inner join pessoa PE_PRO on PE_PRO.id = PRO.pessoa_id " + 
 					"where PA.profissional_id = ? ";
-								
+
 				preparedStatement = connection.prepareStatement(sql);
 				preparedStatement.setLong(1, profissional_id);
 
@@ -616,6 +629,10 @@ public class PasseioDaoImpl implements PasseioDao {
 					passeio.setProfissionalId(resultSet.getLong("profissional_id"));
 					passeio.setClienteId(resultSet.getLong("cliente_id"));
 					passeio.setFormaDePagamentoId(resultSet.getLong("forma_de_pagamento_id"));
+					
+					if(resultSet.getTimestamp("datahorafinalizacao") != null){
+						passeio.setDatahorafinalizacao(resultSet.getTimestamp("datahorafinalizacao").toLocalDateTime());
+					}
 					
 					pessoa_cliente.setId(resultSet.getLong("cliente_pessoa_id"));
 					pessoa_cliente.setNome(resultSet.getString("cliente_nome"));
@@ -664,7 +681,7 @@ public class PasseioDaoImpl implements PasseioDao {
 			
 		} catch (Exception e) {
 			
-			System.out.println("Falha ao obter lista de passeios por cliente: " + e.getMessage());
+			System.out.println("Falha ao obter lista de passeios por profissional: " + e.getMessage());
 			
 		} finally {
 
@@ -724,6 +741,70 @@ public class PasseioDaoImpl implements PasseioDao {
 		}
 		
 		return disponivel;
+		
+	}
+
+	@Override
+	public boolean alterarStatus(Passeio entity) {
+		
+		boolean response = false;
+		
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		
+		String sql = "";
+		
+		if(entity.getStatus().equals("Finalizado")) {			
+			sql = " update passeio set status = ?, datahorafinalizacao = ? where id = ? ";
+		}else {
+			sql = " update passeio set status = ? where id = ? ";
+		}
+		
+		System.out.println(entity.getStatus());
+		try {
+			
+			Date dataAtual = new Date();
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			
+			connection = ConnectionFactory.getConnection();
+			connection.setAutoCommit(false);
+			
+	        preparedStatement = connection.prepareStatement(sql);
+	        
+	        if(entity.getStatus().equals("Finalizado")) {	
+	        	
+	        	preparedStatement.setString(1, entity.getStatus());
+	        	preparedStatement.setTimestamp(2, Timestamp.valueOf(formatter.format(dataAtual)));
+	        	preparedStatement.setLong(3, entity.getId());
+	        	
+	        }else {
+	        	
+	        	preparedStatement.setString(1, entity.getStatus());
+	        	preparedStatement.setLong(2, entity.getId());
+	        	
+	        }
+	        		        	        
+			preparedStatement.execute();
+			
+			connection.commit();
+			
+			response = true;
+			
+		} catch (Exception e) {
+			
+			System.out.println("Falha ao aprovar o passeio {99-dogs-db-fai}: " + e.getMessage());
+			
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				System.out.println("Falha no query no momento de aprovar o passeio {99-dogs-db-fai}: " + e1.getMessage());
+			}
+			
+		} finally {
+			ConnectionFactory.close(preparedStatement, connection);
+		}
+		
+		return response;
 		
 	}
 	

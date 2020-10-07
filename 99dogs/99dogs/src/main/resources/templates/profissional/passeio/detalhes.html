@@ -13,7 +13,7 @@
 			<table class="table">
 				<thead>
 					<tr>
-						<th colspan="5">Informações do passeio</th>
+						<th colspan="6">Informações do passeio</th>
 					</tr>
 					<tr>
 						<th>ID</th>
@@ -21,6 +21,8 @@
 						<th>Status</th>
 						<th>Valor</th>
 						<th>Forma de Pagamento</th>
+						<th th:if="${passeio.status != 'Finalizado'}"></th>
+						<th th:if="${passeio.status == 'Finalizado'}">Finalizado dia</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -30,6 +32,12 @@
 						<td th:text="${passeio.status}"></td>
 						<td th:text="${#numbers.formatCurrency(passeio.valor)}"></td>
 						<td th:text="${passeio.formaDePagamento.tipo}"></td>
+						<td class="text-center" th:if="${passeio.status != 'Finalizado'}">
+							<button th:if="${passeio.status == 'Espera'}" class="btn btn-success" onclick="alterarStatus('aprovar')" id="btn_aprovar_passeio">Aprovar</button>
+							<button th:if="${passeio.status == 'Espera'}" class="btn btn-danger" onclick="alterarStatus('recusar')" id="btn_recusar_passeio">Recusar</button>
+							<button th:if="${passeio.status == 'Aprovado'}" class="btn btn-secondary" onclick="alterarStatus('finalizar')" id="btn_finalizar_passeio">Finalizar</button>
+						</td>
+						<td th:if="${passeio.status == 'Finalizado'}" th:text="${#temporals.format(passeio.datahorafinalizacao, 'dd/MM/yyyy HH:mm')}"></td>
 					</tr>
 				</tbody>
 			</table>
@@ -117,6 +125,60 @@
 			</table>
 			
 		</div>
+		
+		<script>
+					
+			function alterarStatus(status){
+				
+				let msg = "";
+				let funcao = "";
+				let btn = "";
+				let ok = true;
+				
+				if(status == "aprovar"){
+					
+					msg = "Confirma a aprovação do passeio?";
+					funcao = "aprovar-passeio";
+					btn = "btn_aprovar_passeio";
+					
+				}else if(status == "recusar"){
+					
+					msg = "Confirma a recusa do passeio?";
+					funcao = "recusar-passeio";
+					btn = "btn_recusar_passeio";
+					
+				}else if(status == "finalizar"){
+					
+					msg = "Confirma a finalização do passeio?";
+					funcao = "finalizar-passeio";
+					btn = "btn_finalizar_passeio";
+					
+				}else{
+					ok = false;
+				}
+				
+				if(ok){
+					
+					swal({
+						  title: "Atenção.",
+						  text: msg,
+						  icon: "warning",
+						  buttons: true,
+						  dangerMode: false,
+					})
+					.then((confirma) => {
+						  if (confirma) {
+								document.querySelector("#" + btn).disabled = true;
+						    	window.location = "/passeio/profissional/" + funcao + "/" + [(${passeio.id})]
+						  }
+					});
+					
+				}
+				
+			}	
+		
+		</script>
+		
 	</div>
 	
 </body>

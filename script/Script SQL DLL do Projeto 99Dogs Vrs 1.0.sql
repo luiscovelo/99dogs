@@ -83,6 +83,7 @@ create table if not exists passeio(
 	datahora timestamp without time zone not null,
 	status character varying(30) not null check(status in('Recusado', 'Aprovado', 'Finalizado', 'Espera')),
 	valor double precision default 0 not null,
+	datahorafinalizacao timestamp without time zone default '0000-00-00 00:00:00',
 	profissional_id integer not null references profissional(pessoa_id) on update cascade,
 	cliente_id integer not null references cliente(pessoa_id) on update cascade,
 	forma_de_pagamento_id integer not null references forma_de_pagamento(id) on update cascade

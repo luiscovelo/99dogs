@@ -100,4 +100,12 @@ public class PasseioRestController {
 		
 	}
 	
+	@PutMapping("/alterar-status")
+	public HttpEntity<Boolean> alterarStatus(@RequestBody Passeio entity){
+		
+		boolean response = passeioService.alterarStatus(entity);
+		return ResponseEntity.ok(response);
+		
+	}
+	
 }
