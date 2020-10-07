@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import br.fai.dogs.model.entities.Cachorro;
 import br.fai.dogs.model.entities.Passeio;
 import br.fai.dogs.service.PasseioService;
 
@@ -226,6 +227,37 @@ public class PasseioServiceImpl implements PasseioService {
 		}
 		
 		return response;
+		
+	}
+
+	@Override
+	public boolean verificarDisponibilidade(String datahora, Long id) {
+		
+		String endpoint = "http://localhost:8082/api/v1/passeio/verificar-disponibilidade?datahora={datahora}&id={id}";
+		System.out.println(endpoint);
+
+		RestTemplate restTemplate = new RestTemplate();
+		
+		try {
+			
+			HttpEntity<String> requestEntity = new HttpEntity<String>("");
+			
+			ResponseEntity<Boolean> requestResponse = restTemplate.exchange(
+				endpoint, 
+				HttpMethod.GET, 
+				requestEntity,
+				Boolean.class
+			);
+			
+			if(requestResponse.getStatusCodeValue() == 200) {
+				return true;
+			}
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return false;
 		
 	}
 

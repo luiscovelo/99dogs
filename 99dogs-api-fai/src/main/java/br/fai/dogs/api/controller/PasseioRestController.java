@@ -1,11 +1,7 @@
 package br.fai.dogs.api.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.fai.dogs.api.service.PasseioService;
@@ -94,5 +91,13 @@ public class PasseioRestController {
 		return ResponseEntity.ok(response);
 		
 	}
+	
+	@GetMapping("/verificar-disponibilidade")
+	public HttpEntity<Boolean> verificarDisponibilidade(@RequestParam(name = "datahora") String datahora, @RequestParam(name = "id") Long id){
+				
+		boolean response = passeioService.verificarDisponibilidade(datahora, id);
+		return ResponseEntity.ok(response);
 		
+	}
+	
 }

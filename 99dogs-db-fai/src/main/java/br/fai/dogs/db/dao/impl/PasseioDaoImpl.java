@@ -26,7 +26,7 @@ public class PasseioDaoImpl implements PasseioDao {
 	@Override
 	public List<Passeio> readAll() {
 		
-List<Passeio> passeios = new ArrayList<Passeio>();
+		List<Passeio> passeios = new ArrayList<Passeio>();
 		
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -673,6 +673,57 @@ List<Passeio> passeios = new ArrayList<Passeio>();
 		}
 
 		return passeios;
+		
+	}
+
+	@Override
+	public boolean verificarDisponibilidade(String datahora, Long id) {
+		
+		Boolean disponivel = false;
+		Long numeroDePasseios = Long.valueOf(0);
+		
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+			
+			datahora = datahora.replace("T", " ");
+						
+			connection = ConnectionFactory.getConnection();
+						
+			String sql = "select " + 
+					"	count(id) as numero_de_passeios " + 
+					"from passeio " + 
+					"where to_char(datahora,'YYYY-MM-DD HH24:MI') = '" + datahora + "' " + 
+					"and profissional_id = ? and status <> 'Finalizado' ";
+			
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setLong(1, id);
+
+			resultSet = preparedStatement.executeQuery();
+			
+			if(resultSet.next()) {
+				
+				numeroDePasseios = resultSet.getLong("numero_de_passeios");
+
+				if(numeroDePasseios == 0) {
+					disponivel = true;
+				}
+				
+			}
+			
+		} catch (Exception e) {
+			
+			System.out.println("Ocorreu um problema ao executar a disponibilidade de horario: " + e.getMessage());
+			
+		} finally {
+			
+			ConnectionFactory.close(resultSet, preparedStatement, connection);
+			
+		}
+		
+		return disponivel;
 		
 	}
 	

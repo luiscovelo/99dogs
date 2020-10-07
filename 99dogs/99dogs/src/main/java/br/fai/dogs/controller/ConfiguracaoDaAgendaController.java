@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,13 +35,13 @@ public class ConfiguracaoDaAgendaController {
 		List<ConfiguracaoDaAgenda> configs = configuracaoDaAgendaService.readByProfissionalId(profissional_id);
 		Map<Integer,String> diasDaSemana = new HashMap<Integer,String>();
 		
-		diasDaSemana.put(0, "Segunda-feira");
-		diasDaSemana.put(1, "Terça-feira");
-		diasDaSemana.put(2, "Quarta-feira");
-		diasDaSemana.put(3, "Quinta-feira");
-		diasDaSemana.put(4, "Sexta-feira");
-		diasDaSemana.put(5, "Sábado");
-		diasDaSemana.put(6, "Domingo");
+		diasDaSemana.put(2, "Segunda-feira");
+		diasDaSemana.put(3, "Terça-feira");
+		diasDaSemana.put(4, "Quarta-feira");
+		diasDaSemana.put(5, "Quinta-feira");
+		diasDaSemana.put(6, "Sexta-feira");
+		diasDaSemana.put(7, "Sábado");
+		diasDaSemana.put(1, "Domingo");
 		
 		model.addAttribute("configs", configs);
 		model.addAttribute("diasDaSemana", diasDaSemana);
@@ -56,13 +57,13 @@ public class ConfiguracaoDaAgendaController {
 				
 		Map<Integer,String> diasDaSemana = new HashMap<Integer,String>();
 		
-		diasDaSemana.put(0, "Segunda-feira");
-		diasDaSemana.put(1, "Terça-feira");
-		diasDaSemana.put(2, "Quarta-feira");
-		diasDaSemana.put(3, "Quinta-feira");
-		diasDaSemana.put(4, "Sexta-feira");
-		diasDaSemana.put(5, "Sábado");
-		diasDaSemana.put(6, "Domingo");
+		diasDaSemana.put(2, "Segunda-feira");
+		diasDaSemana.put(3, "Terça-feira");
+		diasDaSemana.put(4, "Quarta-feira");
+		diasDaSemana.put(5, "Quinta-feira");
+		diasDaSemana.put(6, "Sexta-feira");
+		diasDaSemana.put(7, "Sábado");
+		diasDaSemana.put(1, "Domingo");
 		
 		model.addAttribute("diasDaSemana", diasDaSemana);
 		model.addAttribute("profissional_id", profissional_id);
@@ -87,13 +88,13 @@ public class ConfiguracaoDaAgendaController {
 		
 		Map<Integer,String> diasDaSemana = new HashMap<Integer,String>();
 		
-		diasDaSemana.put(0, "Segunda-feira");
-		diasDaSemana.put(1, "Terça-feira");
-		diasDaSemana.put(2, "Quarta-feira");
-		diasDaSemana.put(3, "Quinta-feira");
-		diasDaSemana.put(4, "Sexta-feira");
-		diasDaSemana.put(5, "Sábado");
-		diasDaSemana.put(6, "Domingo");
+		diasDaSemana.put(2, "Segunda-feira");
+		diasDaSemana.put(3, "Terça-feira");
+		diasDaSemana.put(4, "Quarta-feira");
+		diasDaSemana.put(5, "Quinta-feira");
+		diasDaSemana.put(6, "Sexta-feira");
+		diasDaSemana.put(7, "Sábado");
+		diasDaSemana.put(1, "Domingo");
 		
 		model.addAttribute("diasDaSemana", diasDaSemana);
 		model.addAttribute("config", config);
@@ -107,17 +108,16 @@ public class ConfiguracaoDaAgendaController {
 	public String putConfiguracaoDaAgenda(ConfiguracaoDaAgenda configuracaoDaAgenda) {
 		
 		boolean response = configuracaoDaAgendaService.update(configuracaoDaAgenda);
-		
 		return "redirect:/configuracao-da-agenda/profissional/minha-configuracao";
 		
 	}
 	
-	@GetMapping("profissional/deletar-configuracao/{id}")
+	@GetMapping("/profissional/deletar-configuracao/{id}")
 	public String deletarConfiguracaoDaAgenda(@PathVariable("id") Long id) {
 		
 		boolean response = configuracaoDaAgendaService.delete(id);
 		return "redirect:/configuracao-da-agenda/profissional/minha-configuracao";
 		
 	}
-	
+		
 }

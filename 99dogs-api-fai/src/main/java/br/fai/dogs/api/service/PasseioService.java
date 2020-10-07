@@ -22,4 +22,6 @@ public interface PasseioService {
 	
 	List<Passeio> passeiosPorProfissional(Long profissional);
 	
+	boolean verificarDisponibilidade(String datahora, Long id);
+	
 }

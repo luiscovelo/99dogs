@@ -1,6 +1,7 @@
 package br.fai.dogs.api.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import br.fai.dogs.db.dao.ConfiguracaoDaAgendaDao;
+import br.fai.dogs.api.service.ConfiguracaoDaAgendaService;
 import br.fai.dogs.model.entities.ConfiguracaoDaAgenda;
 
 @Controller
@@ -24,12 +25,12 @@ import br.fai.dogs.model.entities.ConfiguracaoDaAgenda;
 public class ConfiguracaoDaAgendaRestController {
 	
 	@Autowired
-	private ConfiguracaoDaAgendaDao configuracaoDaAgendaDao;
+	private ConfiguracaoDaAgendaService configuracaoDaAgendaService;
 	
 	@PostMapping("/create")
 	public HttpEntity<Boolean> create(@RequestBody ConfiguracaoDaAgenda configuracaoDaAgenda){
 		
-		boolean response = configuracaoDaAgendaDao.create(configuracaoDaAgenda);
+		boolean response = configuracaoDaAgendaService.create(configuracaoDaAgenda);
 		return ResponseEntity.ok(response);
 		
 	}
@@ -37,7 +38,7 @@ public class ConfiguracaoDaAgendaRestController {
 	@GetMapping("/read-by-profissional-id/{id}")
 	public HttpEntity<List<ConfiguracaoDaAgenda>> readByProfissionalId(@PathVariable("id") Long id){
 		
-		List<ConfiguracaoDaAgenda> response = configuracaoDaAgendaDao.readByProfissionalId(id);
+		List<ConfiguracaoDaAgenda> response = configuracaoDaAgendaService.readByProfissionalId(id);
 		return ResponseEntity.ok(response);
 		
 	}
@@ -45,7 +46,7 @@ public class ConfiguracaoDaAgendaRestController {
 	@GetMapping("/read-by-id/{id}")
 	public HttpEntity<ConfiguracaoDaAgenda> readById(@PathVariable("id") Long id){
 		
-		ConfiguracaoDaAgenda response = configuracaoDaAgendaDao.readById(id);
+		ConfiguracaoDaAgenda response = configuracaoDaAgendaService.readById(id);
 		return ResponseEntity.ok(response);
 		
 	}
@@ -53,7 +54,7 @@ public class ConfiguracaoDaAgendaRestController {
 	@PutMapping("/update")
 	public HttpEntity<Boolean> update(@RequestBody ConfiguracaoDaAgenda configuracaoDaAgenda){
 		
-		boolean response = configuracaoDaAgendaDao.update(configuracaoDaAgenda);
+		boolean response = configuracaoDaAgendaService.update(configuracaoDaAgenda);
 		return ResponseEntity.ok(response);
 		
 	}
@@ -61,7 +62,15 @@ public class ConfiguracaoDaAgendaRestController {
 	@DeleteMapping("/delete/{id}")
 	public HttpEntity<Boolean> update(@PathVariable("id") Long id){
 		
-		boolean response = configuracaoDaAgendaDao.delete(id);
+		boolean response = configuracaoDaAgendaService.delete(id);
+		return ResponseEntity.ok(response);
+		
+	}
+	
+	@GetMapping("/horarios-disponveis-por-data/{data}/{id}")
+	public HttpEntity<Map<String,String>> horariosDisponiveisPorData(@PathVariable("data") String data, @PathVariable("id") Long id){
+		
+		Map<String,String> response = configuracaoDaAgendaService.horariosDisponiveisPorData(data, id);
 		return ResponseEntity.ok(response);
 		
 	}

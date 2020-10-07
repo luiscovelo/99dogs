@@ -51,4 +51,9 @@ public class PasseioServiceImpl implements PasseioService {
 		return passeioDao.passeiosPorProfissional(profissional);
 	}
 
+	@Override
+	public boolean verificarDisponibilidade(String datahora, Long id) {
+		return passeioDao.verificarDisponibilidade(datahora, id);
+	}
+
 }

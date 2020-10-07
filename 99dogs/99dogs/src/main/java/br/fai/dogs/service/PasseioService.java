@@ -23,4 +23,6 @@ public interface PasseioService {
 	
 	Map<String, Object> detalhes(Long id);
 	
+	boolean verificarDisponibilidade(String datahora, Long id);
+	
 }
