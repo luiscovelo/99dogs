@@ -78,8 +78,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>br.fai.99dogs</groupId>
-			<artifactId>99dogs-fai</artifactId>
+			<groupId>99dogs.db.fai</groupId>
+			<artifactId>99dogs-db-fai</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 

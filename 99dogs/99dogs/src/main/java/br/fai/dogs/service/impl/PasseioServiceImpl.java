@@ -164,7 +164,7 @@ public class PasseioServiceImpl implements PasseioService {
 				
 			HttpHeaders headers = new HttpHeaders();
 			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
-			
+			System.out.println(headers.toString());
 			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
 			ResponseEntity<Passeio[]> requestResponse = restTemplate.exchange(
