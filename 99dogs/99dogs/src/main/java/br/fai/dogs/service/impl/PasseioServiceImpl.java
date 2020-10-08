@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +16,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.WebUtils;
 
 import br.fai.dogs.helper.Helper;
-import br.fai.dogs.model.entities.Cachorro;
 import br.fai.dogs.model.entities.Passeio;
 import br.fai.dogs.service.PasseioService;
 
@@ -164,7 +161,7 @@ public class PasseioServiceImpl implements PasseioService {
 				
 			HttpHeaders headers = new HttpHeaders();
 			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
-			System.out.println(headers.toString());
+
 			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
 			ResponseEntity<Passeio[]> requestResponse = restTemplate.exchange(

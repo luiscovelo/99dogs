@@ -4,16 +4,8 @@ import java.util.List;
 
 import br.fai.dogs.model.entities.Qualificacao;
 
-public interface QualificacaoService {
+public interface QualificacaoService extends BaseCrudService<Qualificacao> {
 	
 	List<Qualificacao> readByProfissionalId(Long id);
-	
-	Qualificacao readById(Long id);
-	
-	boolean update (Qualificacao entity);
-	
-	boolean create (Qualificacao entity);
-	
-	boolean deleteById(Long id);
-	
+		
 }

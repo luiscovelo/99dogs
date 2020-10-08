@@ -6,13 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import br.fai.dogs.model.entities.Pessoa;
 
-public interface PessoaService {
-
-	List<Pessoa> readAll();
-	
-	boolean create(Pessoa entity);
-	
-	Pessoa readById(Long id);
+public interface PessoaService extends BaseCrudService<Pessoa> {
 	
 	Pessoa validarLogin(Pessoa entity);
 	

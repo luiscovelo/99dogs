@@ -214,5 +214,11 @@ public class QualificacaoServiceImpl implements QualificacaoService {
 		return false;
 		
 	}
+
+	@Override
+	public List<Qualificacao> readAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

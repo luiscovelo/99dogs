@@ -47,4 +47,11 @@ public class PasseioCachorroServiceImpl implements PasseioCachorroService {
 		return passeioCachorroDao.readByPasseioId(id);
 		
 	}
+
+	@Override
+	public boolean deleteById(Long id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

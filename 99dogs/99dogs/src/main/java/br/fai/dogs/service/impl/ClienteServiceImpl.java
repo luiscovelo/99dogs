@@ -1,5 +1,7 @@
 package br.fai.dogs.service.impl;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +52,30 @@ public class ClienteServiceImpl implements ClienteService {
 		
 		return response;
 		
+	}
+
+	@Override
+	public List<Pessoa> readAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean create(Pessoa entity) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean update(Pessoa entity) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean deleteById(Long id) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

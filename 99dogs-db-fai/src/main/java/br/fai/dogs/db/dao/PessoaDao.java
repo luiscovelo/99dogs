@@ -4,18 +4,8 @@ import java.util.List;
 
 import br.fai.dogs.model.entities.Pessoa;
 
-public interface PessoaDao {
-	
-	List<Pessoa> readAll();
-
-	boolean create(Pessoa entity);
-
-	Pessoa readById(Long id);
-
-	boolean update(Pessoa entity);
-
-	boolean deleteById(Long id);
-	
+public interface PessoaDao extends BaseCrudDao<Pessoa> {
+		
 	Pessoa validarLogin(Pessoa entity);
 	
 	List<Pessoa> readAllProfissional();

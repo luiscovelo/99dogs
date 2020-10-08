@@ -57,4 +57,28 @@ public class RacaServiceImpl implements RacaService {
 		
 	}
 
+	@Override
+	public boolean create(Raca entity) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Raca readById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean update(Raca entity) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean deleteById(Long id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

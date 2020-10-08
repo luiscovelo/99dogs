@@ -4,10 +4,8 @@ import java.util.List;
 
 import br.fai.dogs.model.entities.ReclamacaoSugestao;
 
-public interface ReclamacaoSugestaoService {
+public interface ReclamacaoSugestaoService extends BaseCrudService<ReclamacaoSugestao> {
 	
 	List<ReclamacaoSugestao> reclamacaoSugestaoPorCliente(Long id);
-	
-	boolean create(ReclamacaoSugestao entity);
-	
+		
 }

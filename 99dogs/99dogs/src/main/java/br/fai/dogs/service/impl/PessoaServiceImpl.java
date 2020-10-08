@@ -5,9 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.WebUtils;
 
-import br.fai.dogs.db.dao.PessoaDao;
 import br.fai.dogs.helper.Helper;
 import br.fai.dogs.model.entities.Pessoa;
 import br.fai.dogs.service.PessoaService;
@@ -229,6 +225,18 @@ public class PessoaServiceImpl implements PessoaService {
 		
 		return response;
 		
+	}
+
+	@Override
+	public boolean update(Pessoa entity) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean deleteById(Long id) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }

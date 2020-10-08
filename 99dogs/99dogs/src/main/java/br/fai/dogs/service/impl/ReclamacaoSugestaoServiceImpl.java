@@ -103,4 +103,28 @@ public class ReclamacaoSugestaoServiceImpl  implements ReclamacaoSugestaoService
 		
 	}
 
+	@Override
+	public List<ReclamacaoSugestao> readAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ReclamacaoSugestao readById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean update(ReclamacaoSugestao entity) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean deleteById(Long id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

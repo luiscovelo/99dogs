@@ -213,4 +213,10 @@ public class CachorroServiceImpl implements CachorroService {
 		
 	}
 
+	@Override
+	public List<Cachorro> readAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
