@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -14,23 +17,30 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import br.fai.dogs.helper.Helper;
 import br.fai.dogs.model.entities.Qualificacao;
 import br.fai.dogs.service.QualificacaoService;
 
 @Service
 public class QualificacaoServiceImpl implements QualificacaoService {
-
+	
+	@Autowired
+	HttpServletRequest httpRequest;
+	
 	@Override
 	public List<Qualificacao> readByProfissionalId(Long id) {
 		
 		List<Qualificacao> response = null;
 		String endpoint = "http://localhost:8082/api/v1/qualificacao/read-by-profissional-id/" + id;
-	
+
 		RestTemplate restTemplate = new RestTemplate();
 		
 		try {
 			
-			HttpEntity<String> requestEntity = new HttpEntity<String>("");
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+						
+			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
 			ResponseEntity<Qualificacao[]> requestResponse = restTemplate.exchange(
 				endpoint, 
@@ -61,7 +71,10 @@ public class QualificacaoServiceImpl implements QualificacaoService {
 		
 		try {
 			
-			HttpEntity<String> requestEntity = new HttpEntity<String>("");
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			
+			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
 			ResponseEntity<Qualificacao> requestResponse = restTemplate.exchange(
 				endpoint, 
@@ -95,6 +108,7 @@ public class QualificacaoServiceImpl implements QualificacaoService {
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON);
 			headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
 			
 			Map<String, Object> map = new HashMap<>();
 			
@@ -138,6 +152,7 @@ public class QualificacaoServiceImpl implements QualificacaoService {
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON);
 			headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
 			
 			Map<String, Object> map = new HashMap<>();
 			
@@ -176,7 +191,10 @@ public class QualificacaoServiceImpl implements QualificacaoService {
 		
 		try {
 			
-			HttpEntity<String> requestEntity = new HttpEntity<String>("");
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			
+			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
 			ResponseEntity<Void> requestResponse = restTemplate.exchange(
 				endpoint, 

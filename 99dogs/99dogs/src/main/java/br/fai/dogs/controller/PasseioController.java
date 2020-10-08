@@ -8,6 +8,8 @@ import java.util.Stack;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -234,6 +236,14 @@ public class PasseioController {
 		
 		return "redirect:/passeio/profissional/detalhes/" + id;
 				
+	}
+	
+	@GetMapping("/cliente/verificar-disponibilidade/{datahora}/{id}")
+	public HttpEntity<Boolean> verificarDisponibilidade(@PathVariable("datahora") String datahora, @PathVariable("id") Long id){
+				
+		boolean response = passeioService.verificarDisponibilidade(datahora, id);
+		return ResponseEntity.ok(response);
+		
 	}
 	
 }

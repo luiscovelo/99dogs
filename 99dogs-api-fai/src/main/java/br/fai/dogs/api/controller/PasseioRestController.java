@@ -42,8 +42,8 @@ public class PasseioRestController {
 	
 	@PostMapping("/create")
 	public ResponseEntity<Long> create(@RequestBody Passeio entity){
+		
 		Long response = passeioService.create(entity);
-		System.out.println(response);
 		return ResponseEntity.ok(response);
 		
 	}
@@ -92,8 +92,8 @@ public class PasseioRestController {
 		
 	}
 	
-	@GetMapping("/verificar-disponibilidade")
-	public HttpEntity<Boolean> verificarDisponibilidade(@RequestParam(name = "datahora") String datahora, @RequestParam(name = "id") Long id){
+	@GetMapping("/verificar-disponibilidade/{datahora}/{id}")
+	public HttpEntity<Boolean> verificarDisponibilidade(@PathVariable("datahora") String datahora, @PathVariable("id") Long id){
 				
 		boolean response = passeioService.verificarDisponibilidade(datahora, id);
 		return ResponseEntity.ok(response);

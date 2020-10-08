@@ -4,19 +4,27 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import br.fai.dogs.helper.Helper;
 import br.fai.dogs.model.entities.Pessoa;
 import br.fai.dogs.service.ProfissionalService;
 
 @Service
 public class ProfissionalServiceImpl implements ProfissionalService {
-
+	
+	@Autowired
+	HttpServletRequest httpRequest;
+	
 	@Override
 	public List<Pessoa> readAll() {
 		
@@ -27,7 +35,10 @@ public class ProfissionalServiceImpl implements ProfissionalService {
 		
 		try {
 			
-			HttpEntity<String> requestEntity = new HttpEntity<String>("");
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			
+			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
 			ResponseEntity<Pessoa[]> requestResponse = restTemplate.exchange(
 				endpoint, 
@@ -59,7 +70,10 @@ public class ProfissionalServiceImpl implements ProfissionalService {
 			
 			ParameterizedTypeReference<Map<String, String>> typeRef = new ParameterizedTypeReference<Map<String, String>>() {};
 			
-			HttpEntity<String> requestEntity = new HttpEntity<String>("");
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			
+			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
 			ResponseEntity<Map<String, String>> requestResponse = restTemplate.exchange(
 				endpoint, 

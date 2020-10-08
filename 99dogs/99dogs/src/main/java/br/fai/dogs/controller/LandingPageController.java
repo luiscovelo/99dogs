@@ -22,7 +22,13 @@ public class LandingPageController {
 	}
 	
 	@GetMapping("/login")
-	public String getLoginPage() {
+	public String getLoginPage() {		
 		return "login";
 	}
+	
+	@GetMapping("/logout")
+	public String logout() {
+		return "redirect:/";
+	}
+	
 }

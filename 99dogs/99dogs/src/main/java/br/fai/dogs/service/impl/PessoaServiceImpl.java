@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +18,18 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.WebUtils;
 
 import br.fai.dogs.db.dao.PessoaDao;
+import br.fai.dogs.helper.Helper;
 import br.fai.dogs.model.entities.Pessoa;
 import br.fai.dogs.service.PessoaService;
 
 @Service
 public class PessoaServiceImpl implements PessoaService {
+	
+	@Autowired
+	HttpServletRequest httpRequest;
 	
 	@Autowired
 	HttpSession session;
@@ -36,7 +44,10 @@ public class PessoaServiceImpl implements PessoaService {
 		
 		try {
 			
-			HttpEntity<String> requestEntity = new HttpEntity<String>("");
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			
+			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
 			ResponseEntity<Pessoa[]> requestResponse = restTemplate.exchange(
 				endpoint, 
@@ -75,6 +86,7 @@ public class PessoaServiceImpl implements PessoaService {
 						
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON);
+			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
 			
 			Map<String, Object> map = new HashMap<>();
 			
@@ -89,13 +101,13 @@ public class PessoaServiceImpl implements PessoaService {
 				requestEntity,
 				Pessoa.class
 			);			
-			
-			if(requestResponse.getStatusCodeValue() == 200) {
+						
+			if(requestResponse.getStatusCodeValue() == 200) {				
 				pessoa = requestResponse.getBody();
 			}
 			
 		} catch (Exception e) {
-			System.out.println("Caiu aqui: " + e.getMessage());
+			System.out.println("Problema na requisição de validação pessoa: " + e.getMessage());
 		}
 		
 		return pessoa;
@@ -163,7 +175,10 @@ public class PessoaServiceImpl implements PessoaService {
 		
 		try {
 			
-			HttpEntity<String> requestEntity = new HttpEntity<String>("");
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			
+			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
 			ResponseEntity<Pessoa[]> requestResponse = restTemplate.exchange(
 				endpoint, 
@@ -194,7 +209,10 @@ public class PessoaServiceImpl implements PessoaService {
 		
 		try {
 			
-			HttpEntity<String> requestEntity = new HttpEntity<String>("");
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			
+			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
 			ResponseEntity<Pessoa> requestResponse = restTemplate.exchange(
 				endpoint, 

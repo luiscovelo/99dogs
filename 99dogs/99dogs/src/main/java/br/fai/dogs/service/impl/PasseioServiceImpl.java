@@ -5,6 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -13,13 +17,18 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.WebUtils;
 
+import br.fai.dogs.helper.Helper;
 import br.fai.dogs.model.entities.Cachorro;
 import br.fai.dogs.model.entities.Passeio;
 import br.fai.dogs.service.PasseioService;
 
 @Service
 public class PasseioServiceImpl implements PasseioService {
+	
+	@Autowired
+	HttpServletRequest httpRequest;
 	
 	@Override
 	public List<Passeio> readAll() {
@@ -31,7 +40,10 @@ public class PasseioServiceImpl implements PasseioService {
 		
 		try {
 			
-			HttpEntity<String> requestEntity = new HttpEntity<String>("");
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			
+			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
 			ResponseEntity<Passeio[]> requestResponse = restTemplate.exchange(
 				endpoint, 
@@ -64,6 +76,7 @@ public class PasseioServiceImpl implements PasseioService {
 						
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON);
+			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
 			
 			Map<String, Object> map = new HashMap<>();
 			
@@ -88,7 +101,7 @@ public class PasseioServiceImpl implements PasseioService {
 			}
 			
 		} catch (Exception e) {
-			System.out.println("Caiu aqui: " + e.getMessage());
+			System.out.println("Ocorreu um problema na requisição de criar o passeio: " + e.getMessage());
 		}
 		
 		return idPasseio;
@@ -105,7 +118,10 @@ public class PasseioServiceImpl implements PasseioService {
 		
 		try {
 			
-			HttpEntity<String> requestEntity = new HttpEntity<String>("");
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			
+			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
 			ResponseEntity<Passeio> requestResponse = restTemplate.exchange(
 				endpoint, 
@@ -145,8 +161,11 @@ public class PasseioServiceImpl implements PasseioService {
 		RestTemplate restTemplate = new RestTemplate();
 		
 		try {
+				
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
 			
-			HttpEntity<String> requestEntity = new HttpEntity<String>("");
+			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
 			ResponseEntity<Passeio[]> requestResponse = restTemplate.exchange(
 				endpoint, 
@@ -177,7 +196,10 @@ public class PasseioServiceImpl implements PasseioService {
 		
 		try {
 			
-			HttpEntity<String> requestEntity = new HttpEntity<String>("");
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			
+			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
 			ResponseEntity<Passeio[]> requestResponse = restTemplate.exchange(
 				endpoint, 
@@ -211,7 +233,10 @@ public class PasseioServiceImpl implements PasseioService {
 		
 		try {
 			
-			HttpEntity<String> requestEntity = new HttpEntity<String>("");
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			
+			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
 			ResponseEntity<Map<String, Object>> requestResponse = restTemplate.exchange(
 				endpoint, 
@@ -233,14 +258,16 @@ public class PasseioServiceImpl implements PasseioService {
 	@Override
 	public boolean verificarDisponibilidade(String datahora, Long id) {
 		
-		String endpoint = "http://localhost:8082/api/v1/passeio/verificar-disponibilidade?datahora={datahora}&id={id}";
-		System.out.println(endpoint);
+		String endpoint = "http://localhost:8082/api/v1/passeio/verificar-disponibilidade/" + datahora + "/" + id;
 
 		RestTemplate restTemplate = new RestTemplate();
 		
 		try {
 			
-			HttpEntity<String> requestEntity = new HttpEntity<String>("");
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			
+			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
 			ResponseEntity<Boolean> requestResponse = restTemplate.exchange(
 				endpoint, 
@@ -273,6 +300,7 @@ public class PasseioServiceImpl implements PasseioService {
 						
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON);
+			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
 			
 			Map<String, Object> map = new HashMap<>();
 			

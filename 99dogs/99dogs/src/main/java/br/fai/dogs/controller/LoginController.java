@@ -1,18 +1,28 @@
 package br.fai.dogs.controller;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+
 import br.fai.dogs.model.entities.Pessoa;
 import br.fai.dogs.service.PessoaService;
 
 @Controller
-@RequestMapping("login")
+@RequestMapping("/login")
 public class LoginController {
 	
 	@Autowired
@@ -45,15 +55,43 @@ public class LoginController {
 		
 		return "redirect:/login";
 		
-		
 	}
 	
-	@GetMapping("/deslogar")
-	public String deslogar(HttpSession session) {
+	@Value("${jwt.secret}")
+	private String SECRET_KEY_JWT;
+	
+	@GetMapping("/token")
+	public String geraTokenJwt(HttpServletResponse httpResponse, HttpServletRequest httpRequest) {
 		
-		session.invalidate();
+		try {
+			
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			
+			String username = auth.getName();
+						
+			String jwt = JWT.create()
+					.withClaim("username", username)
+					.sign(Algorithm.HMAC256(SECRET_KEY_JWT));
+
+			Cookie cookie = new Cookie("token", jwt);
+			
+			cookie.setHttpOnly(true);
+			cookie.setPath("/");
+			cookie.setMaxAge(60 * 30);
+			
+			httpResponse.addCookie(cookie);
+			
+			if (httpRequest.isUserInRole("CLIENTE")) {
+			    return "redirect:/dashboard/cliente";
+			}else if(httpRequest.isUserInRole("PROFISSIONAL")) {
+				return "redirect:/dashboard/profissional";
+			}
+			
+		} catch (Exception e) {
+			return "redirect:/logout?error=" + e.getMessage();
+		}
 		
-		return "redirect:/login";
+		return "redirect:/logout";
 		
 	}
 	

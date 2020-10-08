@@ -3,18 +3,26 @@ package br.fai.dogs.service.impl;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import br.fai.dogs.helper.Helper;
 import br.fai.dogs.model.entities.Raca;
 import br.fai.dogs.service.RacaService;
 
 @Service
 public class RacaServiceImpl implements RacaService {
-
+	
+	@Autowired
+	HttpServletRequest httpRequest;
+	
 	@Override
 	public List<Raca> readAll() {
 		
@@ -25,7 +33,10 @@ public class RacaServiceImpl implements RacaService {
 		
 		try {
 			
-			HttpEntity<String> requestEntity = new HttpEntity<String>("");
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			
+			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
 			ResponseEntity<Raca[]> requestResponse = restTemplate.exchange(
 				endpoint, 

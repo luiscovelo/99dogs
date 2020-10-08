@@ -27,8 +27,7 @@ public class SwaggerConfig {
 	}
 
 	private ApiInfo getAppInfo() {
-
 		return new ApiInfoBuilder().title("FAI - DOGS - API").description("API do projeto").version("1.0").build();
 	}
-//	http://localhost:8082/swagger-ui.html
+	
 }

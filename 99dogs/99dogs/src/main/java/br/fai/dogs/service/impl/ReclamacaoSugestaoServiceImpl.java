@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -13,12 +16,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import br.fai.dogs.helper.Helper;
 import br.fai.dogs.model.entities.ReclamacaoSugestao;
 import br.fai.dogs.service.ReclamacaoSugestaoService;
 
 @Service
 public class ReclamacaoSugestaoServiceImpl  implements ReclamacaoSugestaoService {
-
+	
+	@Autowired
+	HttpServletRequest httpRequest;
+	
 	@Override
 	public List<ReclamacaoSugestao> reclamacaoSugestaoPorCliente(Long id) {
 		
@@ -29,7 +36,10 @@ public class ReclamacaoSugestaoServiceImpl  implements ReclamacaoSugestaoService
 		
 		try {
 			
-			HttpEntity<String> requestEntity = new HttpEntity<String>("");
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			
+			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
 			ResponseEntity<ReclamacaoSugestao[]> requestResponse = restTemplate.exchange(
 				endpoint, 
@@ -62,6 +72,7 @@ public class ReclamacaoSugestaoServiceImpl  implements ReclamacaoSugestaoService
 						
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON);
+			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
 			
 			Map<String, Object> map = new HashMap<>();
 			

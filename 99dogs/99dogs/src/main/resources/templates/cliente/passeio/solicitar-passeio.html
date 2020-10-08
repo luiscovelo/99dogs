@@ -67,9 +67,9 @@
 				let selectProfissional = document.querySelector("#profissional_id");
 				let profissional_id = selectProfissional.options[selectProfissional.selectedIndex].value;
 				
-				axios.get("http://localhost:8082/api/v1/configuracao-da-agenda/horarios-disponveis-por-data/" + data + "/" + profissional_id)
+				axios.get("http://localhost:8081/configuracao-da-agenda/cliente/horarios-disponveis-por-data/" + data + "/" + profissional_id)
 				  .then(function (response) {
-
+					  
 					 if(response.status === 200) {
 						 
 						 if(Object.keys(response.data).length === 0){
@@ -107,7 +107,7 @@
 					return;
 				}
 				
-				axios.get("http://localhost:8082/api/v1/passeio/verificar-disponibilidade?datahora=" + horario + "&id=" + profissional_id)
+				axios.get("http://localhost:8081/passeio/cliente/verificar-disponibilidade/" + horario + "/" + profissional_id)
 				  .then(function (response) {
 
 					  if(response.status === 200){

@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -14,12 +17,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import br.fai.dogs.helper.Helper;
 import br.fai.dogs.model.entities.Cachorro;
 import br.fai.dogs.service.CachorroService;
 
 @Service
 public class CachorroServiceImpl implements CachorroService {
-
+	
+	@Autowired
+	HttpServletRequest httpRequest;
+	
 	@Override
 	public List<Cachorro> cachorrosPorCliente(Long cliente_id) {
 		
@@ -30,7 +37,10 @@ public class CachorroServiceImpl implements CachorroService {
 		
 		try {
 			
-			HttpEntity<String> requestEntity = new HttpEntity<String>("");
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			
+			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
 			ResponseEntity<Cachorro[]> requestResponse = restTemplate.exchange(
 				endpoint, 
@@ -64,6 +74,7 @@ public class CachorroServiceImpl implements CachorroService {
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON);
 			headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
 			
 			Map<String, Object> map = new HashMap<>();
 			
@@ -103,7 +114,10 @@ public class CachorroServiceImpl implements CachorroService {
 		
 		try {
 			
-			HttpEntity<String> requestEntity = new HttpEntity<String>("");
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			
+			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
 			ResponseEntity<Cachorro> requestResponse = restTemplate.exchange(
 				endpoint, 
@@ -135,6 +149,7 @@ public class CachorroServiceImpl implements CachorroService {
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON);
 			headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
 			
 			Map<String, Object> map = new HashMap<>();
 			
@@ -174,7 +189,10 @@ public class CachorroServiceImpl implements CachorroService {
 		
 		try {
 			
-			HttpEntity<String> requestEntity = new HttpEntity<String>("");
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			
+			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
 			ResponseEntity<Cachorro> requestResponse = restTemplate.exchange(
 				endpoint, 

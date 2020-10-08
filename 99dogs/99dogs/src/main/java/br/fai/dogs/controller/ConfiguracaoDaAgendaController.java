@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -119,5 +121,13 @@ public class ConfiguracaoDaAgendaController {
 		return "redirect:/configuracao-da-agenda/profissional/minha-configuracao";
 		
 	}
+	
+	@GetMapping("/cliente/horarios-disponveis-por-data/{data}/{id}")
+	public HttpEntity<Map<String,String>> horariosDisponiveisPorData(@PathVariable("data") String data, @PathVariable("id") Long id){
 		
+		Map<String,String> response = configuracaoDaAgendaService.horariosDisponiveisPorData(data, id);
+		return ResponseEntity.ok(response);
+		
+	}
+	
 }

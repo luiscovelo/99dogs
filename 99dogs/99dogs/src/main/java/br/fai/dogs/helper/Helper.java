@@ -7,8 +7,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.util.WebUtils;
+
 public class Helper {
-	
+		
 	private static final Locale BRAZIL = new Locale("pt","BR");
 	private static final DecimalFormatSymbols REAL = new DecimalFormatSymbols(BRAZIL);
 	public static final DecimalFormat DINHEIRO_REAL = new DecimalFormat("¤ ###,###,##0.00",REAL);
@@ -26,6 +32,13 @@ public class Helper {
 		String valorFormatado = DINHEIRO_REAL.format(valor);
 		
 		return valorFormatado;
+		
+	}
+	
+	public static String getUserTokenJwt(HttpServletRequest httpRequest) {
+		
+		Cookie token = WebUtils.getCookie(httpRequest, "token");
+		return token.getValue();
 		
 	}
 	
