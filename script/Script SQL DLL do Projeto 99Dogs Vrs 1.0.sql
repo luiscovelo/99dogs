@@ -104,3 +104,12 @@ create table configuracao_agenda(
 	valor_passeio double precision default 0 not null,
 	profissional_id integer not null references profissional(pessoa_id) on update cascade
 );
+
+create table recebimento(
+	id serial primary key,
+	data_recebimento date not null,
+	valor double precision default 0 not null,
+	forma_de_pagamento_id integer not null references forma_de_pagamento(id) on update cascade,
+	profissional_id integer not null references profissional(pessoa_id) on update cascade,
+	passeio_id integer references passeio(id) on update cascade
+);

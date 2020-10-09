@@ -108,4 +108,12 @@ public class PasseioRestController {
 		
 	}
 	
+	@GetMapping("/read-all-by-profissional-id-and-status/{id}/{status}")
+	public HttpEntity<List<Passeio>> readAllByProfissionalIdAndStatus(@PathVariable("id") Long id, @PathVariable("status") String status){
+		
+		List<Passeio> response = passeioService.readAllByProfissionalIdAndStatus(id,status);
+		return ResponseEntity.ok(response);
+		
+	}
+	
 }

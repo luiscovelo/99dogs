@@ -325,4 +325,38 @@ public class PasseioServiceImpl implements PasseioService {
 		
 	}
 
+	@Override
+	public List<Passeio> readAllByProfissionalIdAndStatus(Long id, String status) {
+		
+		List<Passeio> response = null;
+		String endpoint = "http://localhost:8082/api/v1/passeio/read-all-by-profissional-id-and-status/" + id + "/" + status;
+
+		RestTemplate restTemplate = new RestTemplate();
+		
+		try {
+			
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			
+			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
+			
+			ResponseEntity<Passeio[]> requestResponse = restTemplate.exchange(
+				endpoint, 
+				HttpMethod.GET, 
+				requestEntity,
+				Passeio[].class
+			);
+			
+			Passeio[] passeios = requestResponse.getBody();
+			
+			response = Arrays.asList(passeios);
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return response;
+		
+	}
+
 }

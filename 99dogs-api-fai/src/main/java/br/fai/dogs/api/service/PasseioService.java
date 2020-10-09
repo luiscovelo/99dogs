@@ -26,4 +26,6 @@ public interface PasseioService {
 	
 	boolean alterarStatus(Passeio entity);
 	
+	List<Passeio> readAllByProfissionalIdAndStatus(Long id, String status);
+	
 }

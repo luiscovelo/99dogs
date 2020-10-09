@@ -61,4 +61,9 @@ public class PasseioServiceImpl implements PasseioService {
 		return passeioDao.alterarStatus(entity);
 	}
 
+	@Override
+	public List<Passeio> readAllByProfissionalIdAndStatus(Long id, String status) {
+		return passeioDao.readAllByProfissionalIdAndStatus(id,status);
+	}
+
 }

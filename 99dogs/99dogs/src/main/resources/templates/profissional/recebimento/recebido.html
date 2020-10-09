@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html layout:decorate="~{/profissional/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Profissional | Passeios Recebidos</title>
+</head>
+<body>
+	
+	<div layout:fragment="body">
+		<div class="container-box">
+		
+			<table class="table">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Data</th>
+						<th>Valor</th>
+						<th>Forma de Pagamento</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="recebimento : ${recebimentos}">
+						<td th:text="${recebimento.id}"></td>
+						<td th:text="${#dates.format(recebimento.dataRecebimento, 'dd/MM/yyyy')}"></td>
+						<td th:text="${#numbers.formatCurrency(recebimento.valor)}"></td>
+						<td th:text="${recebimento.formaDePagamento.tipo}"></td>
+					</tr>
+				</tbody>
+			</table>
+		
+		</div>
+	</div>
+	
+</body>
+</html>

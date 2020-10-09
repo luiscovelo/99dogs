@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html layout:decorate="~{/profissional/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Profissional | Passeios a Receber</title>
+</head>
+<body>
+
+	<div layout:fragment="body">
+		<div class="container-box">
+			
+			<div class="alert alert-primary alert-dismissible fade show" role="alert" th:if="${message != null}">
+  				<span th:text="${message}"></span>
+  				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    				<span aria-hidden="true">&times;</span>
+  				</button>
+			</div>
+			
+			<table class="table">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Cliente</th>
+						<th>Data/Hora</th>
+						<th>Status</th>
+						<th>Valor</th>
+						<th>Forma de Pagamento</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+
+					<tr th:each="passeio: ${passeios}">
+						<td th:text="${passeio.id}">1</td>
+						<td th:text="${passeio.cliente.pessoa.nome}">1</td>
+						<td
+							th:text="${#temporals.format(passeio.datahora, 'dd/MM/yyyy HH:mm')}">1</td>
+						<td th:text="${passeio.status}">1</td>
+						<td th:text="${#numbers.formatCurrency(passeio.valor)}">1</td>
+						<td th:text="${passeio.formaDePagamento.tipo}">1</td>
+						<td>
+							<a th:href="@{/recebimento/profissional/informar-recebimento/{id} (id=${passeio.id}) }" class="btn btn-success"> Informar Recebimento </a>
+						</td>
+					</tr>
+
+				</tbody>
+			</table>
+
+		</div>
+
+	</div>
+
+</body>
+</html>

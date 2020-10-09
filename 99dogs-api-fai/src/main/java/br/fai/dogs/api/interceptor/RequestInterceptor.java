@@ -23,7 +23,6 @@ public class RequestInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		
-		/*
 		boolean tokenValido = validaTokenJwt(request.getHeader("Authorization"));
 		
 		if(tokenValido) {
@@ -32,9 +31,6 @@ public class RequestInterceptor implements HandlerInterceptor {
 		
 		response.sendError(401);
 		return false;
-		*/
-		
-		return true;
 		
 	}
 
