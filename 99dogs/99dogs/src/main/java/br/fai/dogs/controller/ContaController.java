@@ -31,7 +31,7 @@ public class ContaController {
 	PasswordEncoder passwordEncoder;
 	
 	@PostMapping("/criar-conta-cliente")
-	public String criarConta(HttpServletResponse httpResponse, Pessoa pessoa) {
+	public String criarContaCliente(HttpServletResponse httpResponse, Pessoa pessoa) {
 		
 		try {
 			
@@ -41,7 +41,7 @@ public class ContaController {
 				
 				Pessoa pessoaExistente = pessoaService.readByEmail(pessoa.getEmail(), tokenTemporario);
 				
-				if(pessoaExistente.getId() > 0) {
+				if(pessoaExistente != null && pessoaExistente.getId() > 0) {
 					throw new Exception("email_in_use");
 				}
 				
@@ -69,6 +69,48 @@ public class ContaController {
 		}
 		
 		return "redirect:/quero-encontrar-dogwalkers?createdFailed";
+		
+	}
+	
+	@PostMapping("/criar-conta-profissional")
+	public String criarContaProfissional(HttpServletResponse httpResponse, Pessoa pessoa) {
+		
+		try {
+			
+			String tokenTemporario = tokenJwt(httpResponse,pessoa.getEmail(), 30, false);
+
+			if(tokenTemporario != null) {
+				
+				Pessoa pessoaExistente = pessoaService.readByEmail(pessoa.getEmail(), tokenTemporario);
+				
+				if(pessoaExistente != null && pessoaExistente.getId() > 0) {
+					throw new Exception("email_in_use");
+				}
+				
+				pessoa.setFoto("#");
+				pessoa.setPais("Brasil");
+				pessoa.setTipo("PROFISSIONAL");
+				pessoa.setSenha(passwordEncoder.encode(pessoa.getSenha()));
+				
+				Long pessoa_id = pessoaService.create(pessoa,tokenTemporario);
+				
+				if(pessoa_id != null && pessoa_id > 0) {
+					
+					return "redirect:/login?createdSuccess";
+					
+				}
+				
+			}else {
+				throw new Exception("token_nao_foi_gerado");
+			}
+			
+		} catch (Exception e) {
+
+			return "redirect:/quero-ser-um-dogwalker?error=" + e.getMessage();
+			
+		}
+		
+		return "redirect:/quero-ser-um-dogwalker?createdFailed";
 		
 	}
 	

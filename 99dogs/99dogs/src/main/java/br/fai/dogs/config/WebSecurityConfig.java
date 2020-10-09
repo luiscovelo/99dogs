@@ -36,7 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/token").permitAll()
 				.antMatchers("/login").permitAll()
 				.antMatchers("/criar-conta-cliente").permitAll()
-				.antMatchers("/profissional/criar-conta").permitAll()
+				.antMatchers("/criar-conta-profissional").permitAll()
 				.anyRequest().authenticated()
 			.and()
 				.formLogin().defaultSuccessUrl("/token").loginPage("/login")

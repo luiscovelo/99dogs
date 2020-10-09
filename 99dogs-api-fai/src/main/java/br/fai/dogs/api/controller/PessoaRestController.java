@@ -110,13 +110,9 @@ public class PessoaRestController {
 	@GetMapping("/read-by-email")
 	public ResponseEntity<Pessoa> readByEmail(@PathParam("email") String email){
 		
-		Pessoa pessoa = pessoaService.readByEmail(email);
-		
-		if(pessoa == null) {
-			return ResponseEntity.notFound().build();
-		}
-		
+		Pessoa pessoa = pessoaService.readByEmail(email);		
 		return ResponseEntity.ok(pessoa);
+		
 	}
 	
 }
