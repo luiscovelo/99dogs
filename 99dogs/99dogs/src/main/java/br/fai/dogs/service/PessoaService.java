@@ -6,7 +6,17 @@ import javax.servlet.http.HttpSession;
 
 import br.fai.dogs.model.entities.Pessoa;
 
-public interface PessoaService extends BaseCrudService<Pessoa> {
+public interface PessoaService {
+	
+	List<Pessoa> readAll();
+	
+	Long create(Pessoa entity, String tokenTemporario);
+
+	Pessoa readById(Long id);
+
+	boolean update(Pessoa entity);
+
+	boolean deleteById(Long id);
 	
 	Pessoa validarLogin(Pessoa entity);
 	
@@ -15,5 +25,7 @@ public interface PessoaService extends BaseCrudService<Pessoa> {
 	Boolean gravarSessao(HttpSession session, Pessoa entity);
 	
 	List<Pessoa> readAllProfissional();
+	
+	Pessoa readByEmail(String email, String tokenTemporario);
 	
 }

@@ -1,5 +1,7 @@
 package br.fai.dogs.api.interceptor;
 
+import java.util.Calendar;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,10 +23,7 @@ public class RequestInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		
-		if(request.getServletPath().equals("/api/v1/pessoa/validarLogin")) {
-			return true;
-		}
-		
+		/*
 		boolean tokenValido = validaTokenJwt(request.getHeader("Authorization"));
 		
 		if(tokenValido) {
@@ -33,6 +32,9 @@ public class RequestInterceptor implements HandlerInterceptor {
 		
 		response.sendError(401);
 		return false;
+		*/
+		
+		return true;
 		
 	}
 
@@ -41,14 +43,18 @@ public class RequestInterceptor implements HandlerInterceptor {
 		boolean valido = false;
 		
 		try {
-
+			
+			Calendar calendario = Calendar.getInstance();
+			calendario.setTimeInMillis(System.currentTimeMillis());
+			
 			JWT.require(Algorithm.HMAC256(secret)).build().verify(token);
+			
 			valido = true;
 			
 		} catch (JWTVerificationException eJwt) {
-			valido = false;
+			System.out.println(eJwt.getMessage());
 		} catch (Exception e) {
-			valido = false;
+			System.out.println(e.getMessage());
 		}
 		
 		return valido;

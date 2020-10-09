@@ -16,7 +16,7 @@ public class PessoaServiceImpl implements PessoaService {
 	private PessoaDao pessoaDao;
 	
 	@Override
-	public boolean create(Pessoa entity) {
+	public Long create(Pessoa entity) {
 		
 		return pessoaDao.create(entity);
 	}
@@ -55,6 +55,13 @@ public class PessoaServiceImpl implements PessoaService {
 	public List<Pessoa> readAllProfissional() {
 		
 		return pessoaDao.readAllProfissional();
+		
+	}
+
+	@Override
+	public Pessoa readByEmail(String email) {
+		
+		return pessoaDao.readByEmail(email);
 		
 	}
 

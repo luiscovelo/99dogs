@@ -21,7 +21,10 @@
                 <div class="background-login">
                     <form action="#" class="login100" method="POST" th:object="${pessoa}" th:action="@{/login}">
 						
-						<p th:if="${param.error}" class="error">Invalid user, password, or domain</p>
+						<p th:if="${param.error}" class="alert alert-danger">E-mail e/ou senha inválidos</p>
+						<p th:if="${param.logout}" class="alert alert-info">Até logo :)</p>
+						<p th:if="${param.createdSuccess}" class="alert alert-success">Já criamos a sua conta, entre com suas credenciais.</p>
+						
                         <hr><br>
                         <div class="mb-3">
                             <input id="email" type="email" class="form-control input-border" placeholder="Informe seu e-mail de acesso." name="username" required>

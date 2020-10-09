@@ -2,7 +2,7 @@
 <html layout:decorate="~{layout}">
 <head>
 <meta charset="UTF-8">
-<title>Criar conta Cliente</title>
+<title>99Dogs | Crie sua conta</title>
 </head>
 <body>
 	<div layout:fragment="body">
@@ -21,57 +21,56 @@
 				</div>
 
 				<div class="col-md-7 col-lg-6 ml-auto">
-					<h1 class="lead text-center">Crie sua conta e encontre o
+					<br>
+					
+					<h1 th:if="${param.error == nulll && param.createdFailed == null && param.email_in_use == null}" class="lead text-center">Crie sua conta e encontre o
 						melhor Dog Walker para seu cãozinho!</h1>
+						
+					<h1 th:if="${param.createdFailed}" class="lead text-center alert alert-danger">
+						Ocorreu um problema e não conseguimos criar sua conta, tente novamente!
+					</h1>
+					
+					<h1 th:if="${param.email_in_use}" class="lead text-center alert alert-danger">
+						Já exite um cadastro com este e-mail.
+					</h1>
+										
 					<hr>
-					<form th:action="@{/#}" method="GET">
+					<form th:action="@{/criar-conta-cliente}" th:method="POST" th:object="${pessoa}">
 						<div class="row">
-
-							<div class="input-group col-lg-6 mb-4">
+														
+							<div class="input-group col-lg-12 mb-4">
 								<div class="input-group-prepend">
 									<span
 										class="input-group-text bg-white px-4 border-md border-right-0">
 										<i class="fa fa-user text-muted"></i>
 									</span>
 								</div>
-								<input id="nome" type="text" name="nome" placeholder="Nome"
-									class="form-control bg-white border-left-0 border-md">
+								<input id="nome" type="text" th:name="nome" placeholder="Nome"
+									class="form-control bg-white border-left-0 border-md" required>
 							</div>
 
 							<div class="input-group col-lg-6 mb-4">
-								<div class="input-group-prepend">
-									<span
-										class="input-group-text bg-white px-4 border-md border-right-0">
-										<i class="fa fa-user text-muted"></i>
-									</span>
-								</div>
-								<input id="sobrenome" type="text" name="sobrenome"
-									placeholder="Sobrenome"
-									class="form-control bg-white border-left-0 border-md">
-							</div>
-
-							<div class="input-group col-lg-12 mb-4">
-								<div class="input-group-prepend">
-									<span
-										class="input-group-text bg-white px-4 border-md border-right-0">
-										<i class="fa fa-phone-square text-muted"></i>
-									</span>
-								</div>
-								<input id="whatsapp" type="tel" name="whatsapp"
-									placeholder="Whatsapp"
-									class="form-control bg-white border-md border-left-0 pl-3">
-							</div>
-
-							<div class="input-group col-lg-12 mb-4">
 								<div class="input-group-prepend">
 									<span
 										class="input-group-text bg-white px-4 border-md border-right-0">
 										<i class="fa fa-envelope text-muted"></i>
 									</span>
 								</div>
-								<input id="email" type="email" name="email"
-									placeholder="Seu melhor e-mail"
-									class="form-control bg-white border-left-0 border-md">
+								<input id="email" type="email" th:name="email"
+									placeholder="Email"
+									class="form-control bg-white border-left-0 border-md" required>
+							</div>
+
+							<div class="input-group col-lg-6 mb-4">
+								<div class="input-group-prepend">
+									<span
+										class="input-group-text bg-white px-4 border-md border-right-0">
+										<i class="fa fa-phone-square text-muted"></i>
+									</span>
+								</div>
+								<input id="telefone" type="tel" th:name="telefone"
+									placeholder="Telefone"
+									class="form-control bg-white border-md border-left-0 pl-3" required>
 							</div>
 
 							<div class="input-group col-lg-12">
@@ -83,9 +82,9 @@
 												<i class="fa fa-lock text-muted"></i>
 											</span>
 										</div>
-										<input id="senha" type="password" name="senha"
+										<input id="senha" type="password" th:name="senha"
 											placeholder="Sua senha"
-											class="form-control bg-white border-left-0 border-md">
+											class="form-control bg-white border-left-0 border-md" required>
 									</div>
 
 									<div class="input-group col-lg-6 mb-4">
@@ -95,13 +94,77 @@
 												<i class="fa fa-lock text-muted"></i>
 											</span>
 										</div>
-										<input id="confirmaSenha" type="text" name="confirmaSenha"
+										<input id="confirmaSenha" type="password" th:name="confirmaSenha"
 											placeholder="Confirme sua senha"
-											class="form-control bg-white border-left-0 border-md">
+											class="form-control bg-white border-left-0 border-md" required>
 									</div>
 								</div>
 							</div>
-
+							
+							<div class="input-group col-lg-12 mb-4">
+								<div class="input-group-prepend">
+									<span
+										class="input-group-text bg-white px-4 border-md border-right-0">
+										<i class="fa fa-bookmark text-muted"></i>
+									</span>
+								</div>
+								<input id="rua" type="text" th:name="rua"
+									placeholder="Endereço"
+									class="form-control bg-white border-left-0 border-md" required>
+							</div>
+							
+							<div class="input-group col-lg-6 mb-4">
+								<div class="input-group-prepend">
+									<span
+										class="input-group-text bg-white px-4 border-md border-right-0">
+										<i class="fa fa-bookmark text-muted"></i>
+									</span>
+								</div>
+								<input id="bairro" type="text" th:name="bairro"
+									placeholder="Bairro"
+									class="form-control bg-white border-left-0 border-md" required>
+							</div>
+							
+							<div class="input-group col-lg-6 mb-4">
+								<div class="input-group-prepend">
+									<span
+										class="input-group-text bg-white px-4 border-md border-right-0">
+										<i class="fa fa-bookmark text-muted"></i>
+									</span>
+								</div>
+								<input id="numero" type="text" th:name="numero"
+									placeholder="Número"
+									class="form-control bg-white border-left-0 border-md" required>
+							</div>
+							
+							<div class="input-group col-lg-6 mb-4">
+								<div class="input-group-prepend">
+									<span
+										class="input-group-text bg-white px-4 border-md border-right-0">
+										<i class="fa fa-bookmark text-muted"></i>
+									</span>
+								</div>
+								<select id="cidade" th:name="cidade" class="form-control bg-white border-left-0 border-md" require>
+									<option>Escolha a cidade</option>
+									<option value="Itajubá">Itajubá</option>
+									<option value="Pouso Alegre">Pouso Alegre</option>
+									<option value="Santa Rita do Sapucaí">Santa Rita do Sapucaí</option>
+								</select>
+							</div>
+							
+							<div class="input-group col-lg-6 mb-4">
+								<div class="input-group-prepend">
+									<span
+										class="input-group-text bg-white px-4 border-md border-right-0">
+										<i class="fa fa-bookmark text-muted"></i>
+									</span>
+								</div>
+								<select id="estado" th:name="estado" class="form-control bg-white border-left-0 border-md" require>
+									<option>Escolha o UF</option>
+									<option value="MG">Minhas Gerais</option>
+								</select>
+							</div>
+							
 							<div class="form-group col-lg-12 mx-auto mb-0">
 								<button type="submit" id="btnSubmit"
 									class="btn btn-primary btn-block py-2">Crie sua conta
@@ -129,28 +192,14 @@
 
 		</div>
 
-		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-			integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-			crossorigin="anonymous"></script>
-		<script
-			src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-			integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-			crossorigin="anonymous"></script>
-		<script
-			src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-			integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-			crossorigin="anonymous"></script>
-		<script src="./assets/js/nav.js"></script>
-
 		<script>
-        document.querySelector("form").addEventListener("submit", (event) => {
-            event.preventDefault();
-            document.querySelector("#btnSubmit").innerHTML = "<center><i class='fa-spin fa fa-spinner'></i></center>";
-            document.querySelector("#btnSubmit").disabled = true;
-            document.querySelector("form").submit();
-        })
-    </script>
-		<script src="./assets/js/nav.js"></script>
+        	document.querySelector("form").addEventListener("submit", (event) => {
+            	event.preventDefault();
+            	document.querySelector("#btnSubmit").innerHTML = "<center><i class='fa-spin fa fa-spinner'></i></center>";
+            	document.querySelector("#btnSubmit").disabled = true;
+            	document.querySelector("form").submit();
+       		 })
+   		 </script>
 	</div>
 
 </body>

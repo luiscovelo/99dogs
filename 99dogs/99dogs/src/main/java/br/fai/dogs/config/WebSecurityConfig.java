@@ -33,13 +33,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/quero-ser-um-dogwalker").permitAll()
 				.antMatchers("/**/cliente/**").hasRole("CLIENTE")
 				.antMatchers("/**/profissional/**").hasRole("PROFISSIONAL")
-				.antMatchers("/login/token").permitAll()
+				.antMatchers("/token").permitAll()
 				.antMatchers("/login").permitAll()
+				.antMatchers("/criar-conta-cliente").permitAll()
+				.antMatchers("/profissional/criar-conta").permitAll()
 				.anyRequest().authenticated()
 			.and()
-				.formLogin().defaultSuccessUrl("/login/token").loginPage("/login")
+				.formLogin().defaultSuccessUrl("/token").loginPage("/login")
 			.and()
-				.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/")
+				.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login?logout")
 					.invalidateHttpSession(true)
 					.deleteCookies("JSESSIONID");
 		
@@ -49,13 +51,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
+		
 		auth.jdbcAuthentication()
 			.dataSource(dataSource)
 			.passwordEncoder(passwordEncoder)
 			.usersByUsernameQuery("select email, senha, 1 as ativo from pessoa where email = ?")
 			.authoritiesByUsernameQuery("select email, CONCAT('ROLE_',tipo) as tipo from pessoa where email = ?");
-		
+				
 	}
 	
 	@Override

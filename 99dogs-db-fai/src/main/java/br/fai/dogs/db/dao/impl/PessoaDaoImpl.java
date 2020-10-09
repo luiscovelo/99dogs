@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,18 +66,26 @@ public class PessoaDaoImpl implements PessoaDao {
 	}
 
 	@Override
-	public boolean create(Pessoa entity) {
+	public Long create(Pessoa entity) {
+		
+		Long pessoa_id = null;
+		
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
-
-		String sql = "INSERT INTO usuario (nome, telefone, email, senha, ";
-		sql += " rua, bairro, cidade, estado, pais, foto, numero)  ";
-		sql += " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ";
+		ResultSet resultSet = null;
+		
+		String sql = "";
+		
+		sql  = "INSERT INTO pessoa (nome, telefone, email, senha, rua, bairro, cidade, estado, pais, foto, numero, tipo)  ";
+		sql += " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ";
 
 		try {
+			
 			connection = ConnectionFactory.getConnection();
 			connection.setAutoCommit(false);
-
+			
+			preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			
 			preparedStatement.setString(1, entity.getNome());
 			preparedStatement.setString(2, entity.getTelefone());
 			preparedStatement.setString(3, entity.getEmail());
@@ -88,21 +97,65 @@ public class PessoaDaoImpl implements PessoaDao {
 			preparedStatement.setString(9, entity.getPais());
 			preparedStatement.setString(10, entity.getFoto());
 			preparedStatement.setInt(11, entity.getNumero());
-
+			preparedStatement.setString(12, entity.getTipo());
+			
 			preparedStatement.execute();
 
 			connection.commit();
+			
+			resultSet = preparedStatement.getGeneratedKeys();
+			
+			if(resultSet.next()) {
+				pessoa_id = resultSet.getLong(1);
+			}
+			
 		} catch (Exception e) {
+			
+			System.out.println("Ocorreu um problema ao criar a pessoa na tabela pessoa: " + e.getMessage());
+			
 			try {
+				System.out.println("aqui nesse try");
 				connection.rollback();
 			} catch (SQLException e1) {
-				return false;
+				e1.printStackTrace();
 			}
+			
 		} finally {
-			ConnectionFactory.close(null, preparedStatement, connection);
+			ConnectionFactory.close(resultSet, preparedStatement, connection);
 		}
+		
+		if(pessoa_id != null) {
+			
+			sql = "insert into cliente (pessoa_id) values (?)";
+			
+			try {
+				
+				connection = ConnectionFactory.getConnection();
+				connection.setAutoCommit(false);
+				
+				preparedStatement = connection.prepareStatement(sql);
+				
+				preparedStatement.setLong(1, pessoa_id);
+				
+				preparedStatement.execute();
 
-		return false;
+				connection.commit();
+				
+			} catch (Exception e) {
+				
+				try {
+					connection.rollback();
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+				
+			} finally {
+				ConnectionFactory.close(preparedStatement, connection);
+			}
+			
+		}
+		
+		return pessoa_id;
 	}
 
 	@Override
@@ -315,6 +368,53 @@ public class PessoaDaoImpl implements PessoaDao {
 			ConnectionFactory.close(resultSet, preparedStatement, connection);
 
 		}
+		
+	}
+
+	@Override
+	public Pessoa readByEmail(String email) {
+
+		Pessoa pessoa = null;
+		
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+			connection = ConnectionFactory.getConnection();
+
+			String sql = "SELECT * FROM pessoa WHERE email = ?";
+
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, email);
+
+			resultSet = preparedStatement.executeQuery();
+
+			if (resultSet.next()) {
+				
+				pessoa = new Pessoa();
+				pessoa.setId(resultSet.getLong("id"));
+				pessoa.setNome(resultSet.getString("nome"));
+				pessoa.setTelefone(resultSet.getString("telefone"));
+				pessoa.setEmail(resultSet.getString("email"));
+				pessoa.setSenha(resultSet.getString("senha"));
+				pessoa.setRua(resultSet.getString("rua"));
+				pessoa.setBairro(resultSet.getString("bairro"));
+				pessoa.setCidade(resultSet.getString("cidade"));
+				pessoa.setEstado(resultSet.getString("estado"));
+				pessoa.setPais(resultSet.getString("pais"));
+				pessoa.setFoto(resultSet.getString("foto"));
+				pessoa.setNumero(resultSet.getInt("numero"));
+				
+			}
+
+		} catch (Exception e) {
+			System.out.println("ocorreu um problema ao obter a pessoa por email: {99-db-fai} " + e.getMessage());
+		} finally {
+			ConnectionFactory.close(resultSet, preparedStatement, connection);
+		}
+		
+		return pessoa;
 		
 	}
 }

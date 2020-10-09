@@ -3,6 +3,7 @@ package br.fai.dogs.api.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,9 +17,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 
 import br.fai.dogs.api.service.PessoaService;
 import br.fai.dogs.model.entities.Pessoa;
@@ -48,9 +46,9 @@ public class PessoaRestController {
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<Boolean> create(@RequestBody Pessoa entity){
-		boolean response = pessoaService.create(entity);
+	public ResponseEntity<Long> create(@RequestBody Pessoa entity){
 		
+		Long response = pessoaService.create(entity);
 		return ResponseEntity.ok(response);
 		
 	}
@@ -107,6 +105,18 @@ public class PessoaRestController {
 		}else {
 			return ResponseEntity.ok(pessoa);
 		}
+	}
+	
+	@GetMapping("/read-by-email")
+	public ResponseEntity<Pessoa> readByEmail(@PathParam("email") String email){
+		
+		Pessoa pessoa = pessoaService.readByEmail(email);
+		
+		if(pessoa == null) {
+			return ResponseEntity.notFound().build();
+		}
+		
+		return ResponseEntity.ok(pessoa);
 	}
 	
 }

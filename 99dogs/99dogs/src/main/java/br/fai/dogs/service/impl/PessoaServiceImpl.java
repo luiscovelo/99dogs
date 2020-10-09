@@ -65,9 +65,54 @@ public class PessoaServiceImpl implements PessoaService {
 	}
 
 	@Override
-	public boolean create(Pessoa entity) {
-		// TODO Auto-generated method stub
-		return false;
+	public Long create(Pessoa entity, String tokenTemporario) {
+		
+		Long pessoa_id = null;
+		String endpoint  = "http://localhost:8082/api/v1/pessoa/create";
+
+		RestTemplate restTemplate = new RestTemplate();
+		
+		try {
+						
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			headers.add("Authorization", tokenTemporario);
+
+			Map<String, Object> map = new HashMap<>();
+			
+			map.put("nome", entity.getNome());
+			map.put("telefone", entity.getTelefone());
+			map.put("email", entity.getEmail());
+			map.put("senha", entity.getSenha());
+			map.put("rua", entity.getRua());
+			map.put("bairro", entity.getBairro());
+			map.put("cidade", entity.getCidade());
+			map.put("estado", entity.getEstado());
+			map.put("pais", entity.getPais());
+			map.put("numero", entity.getNumero());
+			map.put("foto", entity.getFoto());
+			map.put("tipo", entity.getTipo());
+						
+			HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(map, headers);
+			 
+			ResponseEntity<Long> requestResponse = restTemplate.exchange(
+				endpoint, 
+				HttpMethod.POST, 
+				requestEntity,
+				Long.class
+			);			
+			
+			if(requestResponse.getStatusCodeValue() == 200) {
+				pessoa_id = requestResponse.getBody();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Ocorreu um problema na requisição de criar o cliente: " + e.getMessage());
+		}
+		
+		return pessoa_id;
+		
 	}
 
 	@Override
@@ -237,6 +282,38 @@ public class PessoaServiceImpl implements PessoaService {
 	public boolean deleteById(Long id) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public Pessoa readByEmail(String email, String tokenTemporario) {
+		
+		Pessoa response = new Pessoa();
+		String endpoint = "http://localhost:8082/api/v1/pessoa/read-by-email?email=" + email;
+
+		RestTemplate restTemplate = new RestTemplate();
+		
+		try {
+			
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Authorization", tokenTemporario);
+			
+			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
+			
+			ResponseEntity<Pessoa> requestResponse = restTemplate.exchange(
+				endpoint, 
+				HttpMethod.GET, 
+				requestEntity,
+				Pessoa.class
+			);
+			
+			response = requestResponse.getBody();
+			
+		} catch (Exception e) {
+			System.out.println("Ocorreu um problema ao realizar a requisição para obter a pessoa por email: " + e.getMessage());
+		}
+		
+		return response;
+		
 	}
 	
 }
