@@ -20,4 +20,6 @@ public interface ProfissionalDao {
 	
 	Map<String,String> passeiosAgrupadoPorMes(Long id);
 	
+	Map<String,String> ticketMedioAgrupadoPorMes(Long id);
+	
 }

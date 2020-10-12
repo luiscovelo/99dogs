@@ -8,4 +8,6 @@ public interface ProfissionalService extends BaseCrudService<Pessoa> {
 		
 	Map<String, String> passeiosAgrupadoPorMes(Long id);
 	
+	Map<String, String> ticketMedioAgrupadoPorMes(Long id);
+	
 }

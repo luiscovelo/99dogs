@@ -7,8 +7,24 @@
 <body>
 	
 	<div layout:fragment="body">
-		<div class="container-box">
-			<canvas id="passeiosAgrupadoPorMes"></canvas>
+		
+		<div class="row">
+			<div class="col-md-6">
+				
+				<div class="container-box">
+					<canvas id="passeiosAgrupadoPorMes"></canvas>
+				</div>
+				
+			</div>
+			
+			<div class="col-md-6">
+				
+				<div class="container-box">
+					<canvas id="ticketMedioAgrupadoPorMes"></canvas>
+				</div>
+				
+			</div>
+						
 		</div>
 		
 		<script>
@@ -18,11 +34,11 @@
 			var myChart = new Chart(passeiosAgrupadoPorMes, {
 			    type: 'bar',
 			    data: {
-			        labels: [(${jsonNomesMeses})],
+			        labels: [(${grafPasseioPorMesJsonNomesMeses})],
 			        datasets: [{
 			            label: '# Número de passeios',
-			            data: [(${jsonValoresMeses})],
-			            backgroundColor: [(${jsonCores})],
+			            data: [(${grafPasseioPorMesJsonValoresMeses})],
+			            backgroundColor: [(${grafPasseioPorMesJsonCores})],
 			            borderWidth: 1
 			        }]
 			    },
@@ -36,8 +52,27 @@
 			        }
 			    }
 			});
-			</script>
 			
+			<!-- gráfico ticket médio -->
+			
+			let ticketMedioAgrupadoPorMes = document.querySelector("#ticketMedioAgrupadoPorMes")
+			
+			var myChart = new Chart(ticketMedioAgrupadoPorMes, {
+			    type: 'line',
+			    data: {
+			        labels: [(${grafTicketMedioJsonNomesMeses})],
+			        datasets: [{
+			            label: '# Ticket Médio',
+			            data: [(${grafTicketMedioJsonValoresMeses})],
+			            backgroundColor: [(${grafTicketMedioJsonCores})],
+			            borderColor: [(${grafTicketMedioJsonCores})],
+			            borderWidth: 3,
+			            fill: false
+			        }]
+			    },
+			    options: {}
+			});
+		
 		</script>
 		
 	</div>

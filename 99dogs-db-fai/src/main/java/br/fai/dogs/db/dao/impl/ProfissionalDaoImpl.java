@@ -260,4 +260,63 @@ public class ProfissionalDaoImpl implements ProfissionalDao {
 		
 	}
 
+	@Override
+	public Map<String, String> ticketMedioAgrupadoPorMes(Long id) {
+		
+		Map<String,String> ticketMedio = new HashMap<>();
+		
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		
+		String sql = " select (sum(R.valor)/count(PA.id)) as ticketMedio, " + 
+				"		case " + 
+				"		when (EXTRACT(MONTH FROM PA.datahora)= 1) then 'janeiro' " + 
+				"		when (EXTRACT(MONTH FROM PA.datahora)= 2) then 'fevereiro' " + 
+				"		when (EXTRACT(MONTH FROM PA.datahora)= 3) then 'marco' " + 
+				"		when (EXTRACT(MONTH FROM PA.datahora)= 4) then 'abril' " + 
+				"		when (EXTRACT(MONTH FROM PA.datahora)= 5) then 'maio' " + 
+				"		when (EXTRACT(MONTH FROM PA.datahora)= 6) then 'junho' " + 
+				"		when (EXTRACT(MONTH FROM PA.datahora)= 7) then 'julho' " + 
+				"		when (EXTRACT(MONTH FROM PA.datahora)= 8) then 'agosto' " + 
+				"		when (EXTRACT(MONTH FROM PA.datahora)= 9) then 'setembro' " + 
+				"		when (EXTRACT(MONTH FROM PA.datahora)= 10) then 'outubro' " + 
+				"		when (EXTRACT(MONTH FROM PA.datahora)= 11) then 'novembro' " + 
+				"		when (EXTRACT(MONTH FROM PA.datahora)= 12) then 'dezembro' " + 
+				"		end as mes " + 
+				"		from passeio PA " + 
+				"		inner join recebimento R on R.passeio_id = PA.id " + 
+				"		where PA.profissional_id = ? " + 
+				"		group by EXTRACT(MONTH FROM PA.datahora) " + 
+				"		order by EXTRACT(MONTH FROM PA.datahora) asc ";
+		
+		try {
+			
+			connection = ConnectionFactory.getConnection();
+			
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setLong(1, id);
+			
+			resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) {
+				
+				ticketMedio.put(resultSet.getString("mes"), resultSet.getString("ticketMedio"));
+				
+			}
+			
+			return ticketMedio;
+			
+		} catch (Exception e) {
+			
+			System.out.println(e.getMessage());
+			
+		} finally {
+			ConnectionFactory.close(resultSet, preparedStatement, connection);
+		}
+		
+		return null;
+		
+	}
+
 }

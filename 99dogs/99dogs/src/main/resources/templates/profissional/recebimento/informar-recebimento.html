@@ -23,7 +23,7 @@
 				<div class="form-group">
 				  	<label for="formGroupExampleInput">Forma de pagamento:</label>
 				  	<select class="form-control" th:name="formaDePagamentoId" required>
-				  		<option th:each="formaDePagamento: ${formasDePagamento}" th:value="${formaDePagamento.id}" th:text="${formaDePagamento.tipo}" th:selected="${passeio.formaDePagamentoId}"></option>
+				  		<option th:each="formaDePagamento: ${formasDePagamento}" th:value="${formaDePagamento.id}" th:text="${formaDePagamento.tipo}" th:selected="${passeio.formaDePagamentoId == formaDePagamento.id}"></option>
 				  	</select>
 				</div>
 								

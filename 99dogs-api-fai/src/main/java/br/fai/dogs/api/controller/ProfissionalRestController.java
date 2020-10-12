@@ -86,4 +86,13 @@ public class ProfissionalRestController {
 		
 	}
 	
+	@GetMapping("/ticket-medio-agrupado-por-mes/{id}")
+	public ResponseEntity<Map<String,String>> ticketMedioAgrupadoPorMes(@PathVariable("id") Long id){
+				
+		Map<String,String> passeios = profissionalService.ticketMedioAgrupadoPorMes(id);
+		
+		return ResponseEntity.ok(passeios);
+		
+	}
+	
 }

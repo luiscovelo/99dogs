@@ -82,22 +82,39 @@ public class DashboardController {
 			Long profissional_id = pessoaService.sessaoAtual("p").getId();
 					
 			Map<String,String> passeiosAgrupadoPorMes = profissionalService.passeiosAgrupadoPorMes(profissional_id);
-			
-			JSONArray jsonNomesMeses = new JSONArray();
-			JSONArray jsonValoresMeses = new JSONArray();
-			JSONArray jsonCores = new JSONArray();
+			Map<String,String> ticketMedioAgrupadoPorMes = profissionalService.ticketMedioAgrupadoPorMes(profissional_id);
+						
+			JSONArray grafPasseioPorMesJsonNomesMeses = new JSONArray();
+			JSONArray grafPasseioPorMesJsonValoresMeses = new JSONArray();
+			JSONArray grafPasseioPorMesJsonCores = new JSONArray();
 			
 			for (Map.Entry<String,String> entry : passeiosAgrupadoPorMes.entrySet()) {
 				
-				jsonNomesMeses.put(entry.getKey());
-				jsonValoresMeses.put(entry.getValue());
-				jsonCores.put("rgba(49, 54, 56, 0.75)");
+				grafPasseioPorMesJsonNomesMeses.put(entry.getKey());
+				grafPasseioPorMesJsonValoresMeses.put(entry.getValue());
+				grafPasseioPorMesJsonCores.put("rgba(49, 54, 56, 0.75)");
+				
 			}
 			
-			model.addAttribute("jsonNomesMeses", jsonNomesMeses);
-			model.addAttribute("jsonValoresMeses", jsonValoresMeses);
-			model.addAttribute("jsonCores", jsonCores);
+			JSONArray grafTicketMedioJsonNomesMeses = new JSONArray();
+			JSONArray grafTicketMedioJsonValoresMeses = new JSONArray();
+			JSONArray grafTicketMedioJsonCores = new JSONArray();
 			
+			for (Map.Entry<String,String> entry : ticketMedioAgrupadoPorMes.entrySet()) {
+				
+				grafTicketMedioJsonNomesMeses.put(entry.getKey());
+				grafTicketMedioJsonValoresMeses.put(entry.getValue());
+				grafTicketMedioJsonCores.put("rgb(255, 99, 132)");
+				
+			}
+						
+			model.addAttribute("grafPasseioPorMesJsonNomesMeses", grafPasseioPorMesJsonNomesMeses);
+			model.addAttribute("grafPasseioPorMesJsonValoresMeses", grafPasseioPorMesJsonValoresMeses);
+			model.addAttribute("grafPasseioPorMesJsonCores", grafPasseioPorMesJsonCores);
+			model.addAttribute("grafTicketMedioJsonNomesMeses", grafTicketMedioJsonNomesMeses);
+			model.addAttribute("grafTicketMedioJsonValoresMeses", grafTicketMedioJsonValoresMeses);
+			model.addAttribute("grafTicketMedioJsonCores", grafTicketMedioJsonCores);
+						
 		}catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
