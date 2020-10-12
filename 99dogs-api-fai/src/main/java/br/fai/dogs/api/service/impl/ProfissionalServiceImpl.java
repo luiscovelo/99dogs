@@ -61,4 +61,11 @@ public class ProfissionalServiceImpl implements ProfissionalService {
 		
 	}
 
+	@Override
+	public Map<String, String> recebimentoAgrupadoPorMes(Long id) {
+		
+		return profissionalDao.recebimentoAgrupadoPorMes(id);
+		
+	}
+
 }

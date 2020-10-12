@@ -83,6 +83,7 @@ public class DashboardController {
 					
 			Map<String,String> passeiosAgrupadoPorMes = profissionalService.passeiosAgrupadoPorMes(profissional_id);
 			Map<String,String> ticketMedioAgrupadoPorMes = profissionalService.ticketMedioAgrupadoPorMes(profissional_id);
+			Map<String,String> recebimentoAgrupadoPorMes = profissionalService.recebimentoAgrupadoPorMes(profissional_id);
 						
 			JSONArray grafPasseioPorMesJsonNomesMeses = new JSONArray();
 			JSONArray grafPasseioPorMesJsonValoresMeses = new JSONArray();
@@ -104,16 +105,31 @@ public class DashboardController {
 				
 				grafTicketMedioJsonNomesMeses.put(entry.getKey());
 				grafTicketMedioJsonValoresMeses.put(entry.getValue());
-				grafTicketMedioJsonCores.put("rgb(255, 99, 132)");
+				grafTicketMedioJsonCores.put("rgba(49, 54, 56, 0.60");
 				
 			}
-						
+			
+			JSONArray grafRecebimentoJsonNomesMeses = new JSONArray();
+			JSONArray grafRecebimentoJsonValoresMeses = new JSONArray();
+			JSONArray grafRecebimentoJsonCores = new JSONArray();
+			
+			for (Map.Entry<String,String> entry : recebimentoAgrupadoPorMes.entrySet()) {
+				
+				grafRecebimentoJsonNomesMeses.put(entry.getKey());
+				grafRecebimentoJsonValoresMeses.put(entry.getValue());
+				grafRecebimentoJsonCores.put("rgba(49, 54, 56, 0.5)");
+				
+			}
+			
 			model.addAttribute("grafPasseioPorMesJsonNomesMeses", grafPasseioPorMesJsonNomesMeses);
 			model.addAttribute("grafPasseioPorMesJsonValoresMeses", grafPasseioPorMesJsonValoresMeses);
 			model.addAttribute("grafPasseioPorMesJsonCores", grafPasseioPorMesJsonCores);
 			model.addAttribute("grafTicketMedioJsonNomesMeses", grafTicketMedioJsonNomesMeses);
 			model.addAttribute("grafTicketMedioJsonValoresMeses", grafTicketMedioJsonValoresMeses);
 			model.addAttribute("grafTicketMedioJsonCores", grafTicketMedioJsonCores);
+			model.addAttribute("grafRecebimentoJsonNomesMeses", grafRecebimentoJsonNomesMeses);
+			model.addAttribute("grafRecebimentoJsonValoresMeses", grafRecebimentoJsonValoresMeses);
+			model.addAttribute("grafRecebimentoJsonCores", grafRecebimentoJsonCores);
 						
 		}catch (Exception e) {
 			System.out.println(e.getMessage());

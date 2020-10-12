@@ -319,4 +319,50 @@ public class ProfissionalDaoImpl implements ProfissionalDao {
 		
 	}
 
+	@Override
+	public Map<String, String> recebimentoAgrupadoPorMes(Long id) {
+		
+		Map<String,String> recebimento = new HashMap<>();
+		
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		
+		String sql = " select " + 
+				"	sum(R.valor) as total, FP.tipo " + 
+				"from passeio PA\r\n" + 
+				"inner join recebimento R on R.passeio_id = PA.id " + 
+				"inner join forma_de_pagamento FP on FP.id = R.forma_de_pagamento_id " + 
+				"where PA.profissional_id = ? " + 
+				"group by FP.tipo ";
+		
+		try {
+			
+			connection = ConnectionFactory.getConnection();
+			
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setLong(1, id);
+			
+			resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) {
+				
+				recebimento.put(resultSet.getString("tipo"), resultSet.getString("total"));
+				
+			}
+			
+			return recebimento;
+			
+		} catch (Exception e) {
+			
+			System.out.println(e.getMessage());
+			
+		} finally {
+			ConnectionFactory.close(resultSet, preparedStatement, connection);
+		}
+		
+		return null;
+		
+	}
+
 }

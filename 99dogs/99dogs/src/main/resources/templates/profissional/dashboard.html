@@ -9,7 +9,7 @@
 	<div layout:fragment="body">
 		
 		<div class="row">
-			<div class="col-md-6">
+			<div class="col-lg-4">
 				
 				<div class="container-box">
 					<canvas id="passeiosAgrupadoPorMes"></canvas>
@@ -17,10 +17,18 @@
 				
 			</div>
 			
-			<div class="col-md-6">
+			<div class="col-lg-4">
 				
 				<div class="container-box">
 					<canvas id="ticketMedioAgrupadoPorMes"></canvas>
+				</div>
+				
+			</div>
+			
+			<div class="col-lg-4">
+				
+				<div class="container-box">
+					<canvas id="recebimentoAgrupadoPorMes"></canvas>
 				</div>
 				
 			</div>
@@ -66,6 +74,25 @@
 			            data: [(${grafTicketMedioJsonValoresMeses})],
 			            backgroundColor: [(${grafTicketMedioJsonCores})],
 			            borderColor: [(${grafTicketMedioJsonCores})],
+			            borderWidth: 3,
+			            fill: false
+			        }]
+			    },
+			    options: {}
+			});
+			
+			<!-- recebimento por mes -->
+			
+			let recebimentoAgrupadoPorMes = document.querySelector("#recebimentoAgrupadoPorMes")
+			
+			var myChart = new Chart(recebimentoAgrupadoPorMes, {
+			    type: 'horizontalBar',
+			    data: {
+			        labels: [(${grafRecebimentoJsonNomesMeses})],
+			        datasets: [{
+			            label: '# Recebimento por Pagamento',
+			            data: [(${grafRecebimentoJsonValoresMeses})],
+			            backgroundColor: [(${grafRecebimentoJsonCores})],
 			            borderWidth: 3,
 			            fill: false
 			        }]

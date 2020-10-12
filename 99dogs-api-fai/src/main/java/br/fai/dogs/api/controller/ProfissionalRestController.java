@@ -95,4 +95,13 @@ public class ProfissionalRestController {
 		
 	}
 	
+	@GetMapping("/recebimento-agrupado-por-mes/{id}")
+	public ResponseEntity<Map<String,String>> recebimentoAgrupadoPorMes(@PathVariable("id") Long id){
+				
+		Map<String,String> passeios = profissionalService.recebimentoAgrupadoPorMes(id);
+		
+		return ResponseEntity.ok(passeios);
+		
+	}
+	
 }

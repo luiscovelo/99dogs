@@ -154,4 +154,39 @@ public class ProfissionalServiceImpl implements ProfissionalService {
 		
 	}
 
+	@Override
+	public Map<String, String> recebimentoAgrupadoPorMes(Long id) {
+		
+		String endpoint = "http://localhost:8082/api/v1/profissional/recebimento-agrupado-por-mes/" + id;
+		
+		RestTemplate restTemplate = new RestTemplate();
+		
+		try {
+			
+			ParameterizedTypeReference<Map<String, String>> typeRef = new ParameterizedTypeReference<Map<String, String>>() {};
+			
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			
+			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
+			
+			ResponseEntity<Map<String, String>> requestResponse = restTemplate.exchange(
+				endpoint, 
+				HttpMethod.GET, 
+				requestEntity,
+				typeRef
+			);
+			
+			if(requestResponse.getStatusCodeValue() == 200) {
+				return requestResponse.getBody();
+			}
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return null;
+		
+	}
+
 }
