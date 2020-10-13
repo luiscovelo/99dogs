@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.fai.dogs.model.entities.ConfiguracaoDaAgenda;
 import br.fai.dogs.model.entities.Pessoa;
@@ -27,7 +28,7 @@ public class PerfilController {
 		
 		Long cliente_id = pessoaService.sessaoAtual("c").getId();
 		Pessoa cliente = pessoaService.readById(cliente_id);
-		
+
 		model.addAttribute("cliente", cliente);
 		
 		return "/cliente/perfil/meu-perfil";
@@ -43,6 +44,38 @@ public class PerfilController {
 		model.addAttribute("profissional", profissional);
 		
 		return "/profissional/perfil/meu-perfil";
+		
+	}
+	
+	@PostMapping("/post-atualizar-dados")
+	public String postAtualizarDados(Pessoa pessoa, RedirectAttributes redirect) {
+		
+		Long id = null;
+		
+		if(pessoa.getTipo().equals("CLIENTE")) {
+			id = pessoaService.sessaoAtual("c").getId();
+		}else {
+			id = pessoaService.sessaoAtual("p").getId();
+		}
+		
+		pessoa.setPais("Brasil");
+		pessoa.setFoto("#");
+		pessoa.setId(id);
+				
+		
+		boolean response = pessoaService.update(pessoa);
+		
+		if(response) {
+			redirect.addFlashAttribute("message", "Informações alteradas com sucesso.");
+		}else {
+			redirect.addFlashAttribute("message", "Ocorreu um problema ao atualizar as informações.");
+		}
+		
+		if(pessoa.getTipo().equals("CLIENTE")) {
+			return "redirect:/perfil/cliente/meu-perfil";
+		}else {
+			return "redirect:/perfil/profissional/meu-perfil";
+		}
 		
 	}
 	

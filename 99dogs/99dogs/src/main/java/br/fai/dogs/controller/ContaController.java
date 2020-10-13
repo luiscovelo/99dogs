@@ -126,7 +126,7 @@ public class ContaController {
 			
 			String username = auth.getName();
 						
-			String token = tokenJwt(httpResponse, username, 60 * 30, true);
+			String token = tokenJwt(httpResponse, username, 0, true);
 			
 			if(token != null) {
 				
@@ -158,11 +158,21 @@ public class ContaController {
 			
 			calendario.setTimeInMillis(System.currentTimeMillis());
 			calendario.add(Calendar.SECOND, limiteExpiracaoEmSegundos);
-						
-			jwt = JWT.create()
-					.withClaim("username", username)
-					.withExpiresAt(calendario.getTime())
-					.sign(Algorithm.HMAC256(SECRET_KEY_JWT));
+			
+			if(limiteExpiracaoEmSegundos == 0) {
+				
+				jwt = JWT.create()
+						.withClaim("username", username)
+						.sign(Algorithm.HMAC256(SECRET_KEY_JWT));
+				
+			}else {
+				
+				jwt = JWT.create()
+						.withClaim("username", username)
+						.withExpiresAt(calendario.getTime())
+						.sign(Algorithm.HMAC256(SECRET_KEY_JWT));
+				
+			}
 			
 			if(geraCookie) {
 				
@@ -170,7 +180,7 @@ public class ContaController {
 				
 				cookie.setHttpOnly(true);
 				cookie.setPath("/");
-				cookie.setMaxAge(limiteExpiracaoEmSegundos);
+				//cookie.setMaxAge(limiteExpiracaoEmSegundos);
 				httpResponse.addCookie(cookie);
 				
 			}
@@ -178,7 +188,7 @@ public class ContaController {
 		} catch (Exception e) {
 			e.getMessage();
 		}
-		
+
 		return jwt;
 		
 	}

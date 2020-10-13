@@ -274,8 +274,54 @@ public class PessoaServiceImpl implements PessoaService {
 
 	@Override
 	public boolean update(Pessoa entity) {
-		// TODO Auto-generated method stub
-		return false;
+		
+		boolean response = false;
+		String endpoint  = "http://localhost:8082/api/v1/pessoa/update";
+
+		RestTemplate restTemplate = new RestTemplate();
+		
+		try {
+						
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+
+			Map<String, Object> map = new HashMap<>();
+			
+			map.put("id", entity.getId());
+			map.put("nome", entity.getNome());
+			map.put("telefone", entity.getTelefone());
+			map.put("email", entity.getEmail());
+			map.put("senha", entity.getSenha());
+			map.put("rua", entity.getRua());
+			map.put("bairro", entity.getBairro());
+			map.put("cidade", entity.getCidade());
+			map.put("estado", entity.getEstado());
+			map.put("pais", entity.getPais());
+			map.put("numero", entity.getNumero());
+			map.put("foto", entity.getFoto());
+			map.put("tipo", entity.getTipo());
+						
+			HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(map, headers);
+			 
+			ResponseEntity<Boolean> requestResponse = restTemplate.exchange(
+				endpoint, 
+				HttpMethod.PUT, 
+				requestEntity,
+				Boolean.class
+			);			
+			
+			if(requestResponse.getStatusCodeValue() == 200) {
+				response = requestResponse.getBody();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Ocorreu um problema na requisição de atualizar a pessoa: " + e.getMessage());
+		}
+		
+		return response;
+		
 	}
 
 	@Override

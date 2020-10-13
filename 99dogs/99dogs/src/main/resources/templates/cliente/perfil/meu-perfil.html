@@ -8,6 +8,14 @@
 	
 	<div layout:fragment="body">
 		<div class="container-box">
+		
+			<div class="alert alert-primary alert-dismissible fade show" role="alert" th:if="${message != null}">
+	  			<span th:text="${message}"></span>
+	  			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+	    			<span aria-hidden="true">&times;</span>
+	  			</button>
+			</div>
+		
 			<center>
 				<img th:src="${cliente.foto}" class="rounded-circle" width="64">
 			</center>
@@ -18,10 +26,12 @@
 					Meu Perfil
 				</h1>
 				<hr>
-				<form th:action="@{#}" method="POST">
+				<form th:action="@{/perfil/post-atualizar-dados}" th:object="${pessoa}" method="POST">
 					<div class="row">
 						
-						<input type="hidden" th:name="id" th:value="${cliente.id}">
+						<input type="hidden" th:name="id" th:field="${cliente.id}" >
+						<input type="hidden" th:name="tipo" th:value="${cliente.tipo}">
+						<input type="hidden" name="_method" value="PUT">
 						
 						<div class="input-group col-lg-12 mb-4">
 							<div class="input-group-prepend">
@@ -120,7 +130,7 @@
 
 						<div class="form-group col-lg-12 mx-auto mb-0">
 							<button type="submit" id="btnSubmit"
-								class="btn btn-primary btn-block py-2" disabled> Confirmar Alteração
+								class="btn btn-primary btn-block py-2"> Confirmar Alteração
 							</button>
 						</div>
 

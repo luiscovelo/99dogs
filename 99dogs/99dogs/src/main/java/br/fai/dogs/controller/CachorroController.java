@@ -88,7 +88,7 @@ public class CachorroController {
 		Long cliente_id = pessoaService.sessaoAtual("c").getId();
 		
 		cachorro.setClienteId(cliente_id);
-		
+		System.out.println(cachorro);
 		boolean response = cachorroService.update(cachorro);
 		
 		return "redirect:/cachorro/cliente/meus-caes";

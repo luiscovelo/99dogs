@@ -49,6 +49,7 @@ public class PessoaDaoImpl implements PessoaDao {
 				pessoa.setPais(resultSet.getString("pais"));
 				pessoa.setFoto(resultSet.getString("foto"));
 				pessoa.setNumero(resultSet.getInt("numero"));
+				pessoa.setTipo(resultSet.getString("tipo"));
 
 				pessoas.add(pessoa);
 
@@ -189,6 +190,7 @@ public class PessoaDaoImpl implements PessoaDao {
 				pessoa.setPais(resultSet.getString("pais"));
 				pessoa.setFoto(resultSet.getString("foto"));
 				pessoa.setNumero(resultSet.getInt("numero"));
+				pessoa.setTipo(resultSet.getString("tipo"));
 			}
 
 		} catch (Exception e) {
@@ -202,17 +204,20 @@ public class PessoaDaoImpl implements PessoaDao {
 
 	@Override
 	public boolean update(Pessoa entity) {
+		
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
-
+		
 		String sql = "UPDATE pessoa SET nome = ?, telefone = ?, email = ?, rua = ?, bairro = ?, cidade = ?, estado = ?, ";
-		sql += "pais = ?, numero = ?, foto = ? WHERE id = ?;";
+		sql += "pais = ?, numero = ? WHERE id = ?;";
 
 		try {
+			
 			connection = ConnectionFactory.getConnection();
 			connection.setAutoCommit(false);
 
 			preparedStatement = connection.prepareStatement(sql);
+			
 			preparedStatement.setString(1, entity.getNome());
 			preparedStatement.setString(2, entity.getTelefone());
 			preparedStatement.setString(3, entity.getEmail());
@@ -222,24 +227,30 @@ public class PessoaDaoImpl implements PessoaDao {
 			preparedStatement.setString(7, entity.getEstado());
 			preparedStatement.setString(8, entity.getPais());
 			preparedStatement.setInt(9, entity.getNumero());
-			preparedStatement.setString(10, entity.getFoto());
-			preparedStatement.setLong(11, entity.getId());
-
+			preparedStatement.setLong(10, entity.getId());
+			
 			preparedStatement.execute();
 			connection.commit();
+			
 			return true;
 
 		} catch (Exception e) {
-
+			
+			System.out.println("Ocorreu um problema ao atualizar a pessoa {99dogs-db-fai}: ");
+			e.printStackTrace();
+			
 			try {
 				connection.rollback();
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
-			return false;
+			
 		} finally {
 			ConnectionFactory.close(preparedStatement, connection);
 		}
+		
+		return false;
+		
 	}
 
 	@Override
