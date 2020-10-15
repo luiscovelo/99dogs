@@ -1,0 +1,14 @@
+spring.thymeleaf.cache=false
+
+server.port=
+
+spring.datasource.url=
+spring.datasource.password=
+spring.datasource.username=
+
+jwt.secret=
+
+MAILTRAP_HOST=
+MAILTRAP_PORT=
+MAILTRAP_USERNAME=
+MAILTRAP_PASSWORD=
