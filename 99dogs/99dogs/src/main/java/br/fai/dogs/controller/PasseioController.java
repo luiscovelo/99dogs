@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import br.fai.dogs.email.MailStrategy;
+import br.fai.dogs.email.Mailtrap;
 import br.fai.dogs.helper.Helper;
 import br.fai.dogs.model.entities.Cachorro;
 import br.fai.dogs.model.entities.FormaDePagamento;
@@ -52,6 +54,14 @@ public class PasseioController {
 	
 	@Autowired
 	private ClienteService clienteService;
+	
+	private MailStrategy sendMail;
+	
+	public PasseioController() {
+		if(this.sendMail == null) {
+			this.sendMail = new Mailtrap();
+		}
+	}
 	
 	@GetMapping("/cliente/meus-passeios")
 	public String getListaDePasseiosPorCliente(Model model) {
@@ -114,10 +124,14 @@ public class PasseioController {
 	@PostMapping("/cliente/post-adicionar-cachorro-ao-passeio")
 	public String postAdicionarCachorroAoPasseio(PasseioCachorro passeioCachorro) {
 		
+		Passeio passeio = passeioService.readById(Long.valueOf(passeioCachorro.getPasseioId()));
 		boolean response = passeioCachorroService.create(passeioCachorro);
 		
 		if(response == true) {
+			
+			sendMail.passeioSolicitado(passeio);
 			return "redirect:/passeio/cliente/meus-passeios";
+			
 		}
 		
 		return "redirect:/passeio/cliente/adicionar-cachorro-ao-passeio/" + passeioCachorro.getPasseioId();
@@ -191,7 +205,7 @@ public class PasseioController {
 		model.addAttribute("passeio", passeio);
 		model.addAttribute("cliente", cliente);
 		model.addAttribute("cachorros", cachorros);
-		
+				
 		return "/profissional/passeio/detalhes";
 		
 	}
@@ -199,12 +213,17 @@ public class PasseioController {
 	@GetMapping("/profissional/aprovar-passeio/{id}")
 	public String aprovarPasseio(@PathVariable("id") Long id) {
 		
+		Passeio passeioDetalhes = passeioService.readById(id);
 		Passeio passeio = new Passeio();
 		
 		passeio.setId(id);
 		passeio.setStatus("Aprovado");
 		
 		boolean response = passeioService.alterarStatus(passeio);
+		
+		if(response) {
+			sendMail.passeioAprovado(passeioDetalhes);
+		}
 		
 		return "redirect:/passeio/profissional/detalhes/" + id;
 				
@@ -213,12 +232,17 @@ public class PasseioController {
 	@GetMapping("/profissional/recusar-passeio/{id}")
 	public String recusarPasseio(@PathVariable("id") Long id) {
 		
+		Passeio passeioDetalhes = passeioService.readById(id);
 		Passeio passeio = new Passeio();
 		
 		passeio.setId(id);
 		passeio.setStatus("Recusado");
 		
 		boolean response = passeioService.alterarStatus(passeio);
+		
+		if(response) {
+			sendMail.passeioRecusado(passeioDetalhes);
+		}
 		
 		return "redirect:/passeio/profissional/detalhes/" + id;
 				
@@ -233,6 +257,15 @@ public class PasseioController {
 		passeio.setStatus("Finalizado");
 		
 		boolean response = passeioService.alterarStatus(passeio);
+		
+		if(response) {
+			
+			Passeio passeioDetalhes = passeioService.readById(id);
+			if(passeioDetalhes != null) {
+				sendMail.passeioFinalizado(passeioDetalhes);
+			}
+			
+		}
 		
 		return "redirect:/passeio/profissional/detalhes/" + id;
 				

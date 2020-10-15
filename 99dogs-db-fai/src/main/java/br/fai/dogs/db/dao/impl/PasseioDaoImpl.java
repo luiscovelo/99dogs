@@ -759,8 +759,7 @@ public class PasseioDaoImpl implements PasseioDao {
 		}else {
 			sql = " update passeio set status = ? where id = ? ";
 		}
-		
-		System.out.println(entity.getStatus());
+
 		try {
 			
 			Date dataAtual = new Date();

@@ -3,14 +3,14 @@ package br.fai.dogs.helper;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.util.WebUtils;
 
 public class Helper {
@@ -21,7 +21,8 @@ public class Helper {
 	
 	public static String getDataAtual(String mascara) {
 		
-		Date data = new Date(System.currentTimeMillis()); SimpleDateFormat formatarDate = new SimpleDateFormat(mascara);
+		Date data = new Date(System.currentTimeMillis()); 
+		SimpleDateFormat formatarDate = new SimpleDateFormat(mascara);
 		
 		return formatarDate.format(data);
 		
@@ -32,6 +33,24 @@ public class Helper {
 		String valorFormatado = DINHEIRO_REAL.format(valor);
 		
 		return valorFormatado;
+		
+	}
+	
+	public static String tratarDataHora(LocalDateTime datahora) {
+		
+		String dataFormatada = "";
+		
+		try {
+			
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"); 
+			dataFormatada = datahora.format(formatter);
+			
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			dataFormatada = datahora.toString();
+		}
+		
+		return dataFormatada;
 		
 	}
 	

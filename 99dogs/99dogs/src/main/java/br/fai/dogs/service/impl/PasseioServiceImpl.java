@@ -306,11 +306,11 @@ public class PasseioServiceImpl implements PasseioService {
 						
 			HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(map, headers);
 			 
-			ResponseEntity<Long> requestResponse = restTemplate.exchange(
+			ResponseEntity<Boolean> requestResponse = restTemplate.exchange(
 				endpoint, 
 				HttpMethod.PUT, 
 				requestEntity,
-				Long.class
+				Boolean.class
 			);			
 			
 			if(requestResponse.getStatusCodeValue() == 200) {
