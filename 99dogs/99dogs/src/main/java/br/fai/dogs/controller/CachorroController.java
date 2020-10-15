@@ -1,7 +1,9 @@
 package br.fai.dogs.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.fai.dogs.model.entities.Cachorro;
 import br.fai.dogs.model.entities.Raca;
@@ -30,15 +33,32 @@ public class CachorroController {
 	@Autowired
 	private RacaService racaService;
 	
+	@SuppressWarnings("unchecked")
 	@GetMapping("/cliente/meus-caes")
-	public String getListaDeCaesPorCliente(Model model) {
+	public String getListaDeCaesPorCliente(Model model, RedirectAttributes redirect) {
 		
 		Long cliente_id = pessoaService.sessaoAtual("c").getId();
-		List<Cachorro> cachorros = new ArrayList<Cachorro>();
 		
-		cachorros = cachorroService.cachorrosPorCliente(cliente_id);
+		Map<String, Object> responseRequest = new HashMap<>();
+		List<Cachorro> cachorros            = new ArrayList<Cachorro>();
 		
-		model.addAttribute("cachorros", cachorros);
+		try {
+			
+			responseRequest = cachorroService.cachorrosPorCliente(cliente_id);
+
+			if(responseRequest.get("hasError").equals(false)) {
+				cachorros = (List<Cachorro>) responseRequest.get("response");
+			}else {
+				throw new Exception(responseRequest.get("message").toString());
+			}
+			
+			model.addAttribute("cachorros", cachorros);
+			
+		} catch (Exception e) {
+
+			model.addAttribute("responseError", e.getMessage());
+			
+		}
 		
 		return "/cliente/cachorro/meus-caes";
 		

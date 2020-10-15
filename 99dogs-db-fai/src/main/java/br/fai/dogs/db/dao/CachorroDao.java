@@ -1,11 +1,11 @@
 package br.fai.dogs.db.dao;
 
-import java.util.List;
+import java.util.Map;
 
 import br.fai.dogs.model.entities.Cachorro;
 
 public interface CachorroDao extends BaseCrudDao<Cachorro> {
 		
-	List<Cachorro> cachorrosPorCliente(Long cliente_id);
+	Map<String, Object> cachorrosPorCliente(Long cliente_id);
 	
 }

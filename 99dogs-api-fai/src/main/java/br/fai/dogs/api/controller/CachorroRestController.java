@@ -1,6 +1,7 @@
 package br.fai.dogs.api.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -76,9 +77,9 @@ public class CachorroRestController {
 	}
 	
 	@GetMapping("/cachorrosPorCliente/{id}")
-	public ResponseEntity<List<Cachorro>> cachorrosPorCliente(@PathVariable("id") Long id){
+	public ResponseEntity<Map<String, Object>> cachorrosPorCliente(@PathVariable("id") Long id){
 		
-		List<Cachorro> response = cachorroService.cachorrosPorCliente(id);
+		Map<String, Object> response = cachorroService.cachorrosPorCliente(id);
 		return ResponseEntity.ok(response);
 		
 	}

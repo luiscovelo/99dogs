@@ -7,6 +7,14 @@
 <body>
 	
 	<div layout:fragment="body">
+	
+		<div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${responseError != null}">
+  			<span th:text="${responseError}"></span>
+  			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    			<span aria-hidden="true">&times;</span>
+  			</button>
+		</div>
+	
 		<div class="container-box">
 			
 			<form method="POST" th:object="${cachorro}" th:action="@{/cachorro/cliente/post-adicionar-cachorro}">
@@ -25,7 +33,7 @@
 				  	</select>
 				</div>
 				<div class="form-group">
-				  	<button type="submit" class="btn btn-success btn-block">Adicionar Cachorro</button>
+				  	<button type="submit" class="btn btn-success btn-block" th:if="${responseError != null}">Adicionar Cachorro</button>
 				</div>
 			  </form>
 			

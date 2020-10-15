@@ -1,6 +1,7 @@
 package br.fai.dogs.api.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,7 +48,7 @@ public class CachorroServiceImpl implements CachorroService {
 	}
 
 	@Override
-	public List<Cachorro> cachorrosPorCliente(Long cliente_id) {
+	public Map<String, Object> cachorrosPorCliente(Long cliente_id) {
 		return cachorroDao.cachorrosPorCliente(cliente_id);
 	}
 	

@@ -1,11 +1,11 @@
 package br.fai.dogs.service;
 
-import java.util.List;
+import java.util.Map;
 
 import br.fai.dogs.model.entities.Cachorro;
 
 public interface CachorroService extends BaseCrudService<Cachorro> {
 	
-	List<Cachorro> cachorrosPorCliente(Long cliente_id);
+	Map<String, Object> cachorrosPorCliente(Long cliente_id);
 	
 }

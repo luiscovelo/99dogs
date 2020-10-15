@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -27,10 +28,17 @@ public class CachorroServiceImpl implements CachorroService {
 	@Autowired
 	HttpServletRequest httpRequest;
 	
+	ParameterizedTypeReference<Map<String, Object>> responseMapStringObjectType = 
+            new ParameterizedTypeReference<Map<String, Object>>() {};
+	
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<Cachorro> cachorrosPorCliente(Long cliente_id) {
+	public Map<String, Object> cachorrosPorCliente(Long cliente_id) {
 		
-		List<Cachorro> response = null;
+		Map<String, Object> responseRequest = new HashMap<>();
+		
+		List<Cachorro> listaCachorros = null;
+		
 		String endpoint = "http://localhost:8082/api/v1/cachorro/cachorrosPorCliente/" + cliente_id;
 
 		RestTemplate restTemplate = new RestTemplate();
@@ -42,22 +50,33 @@ public class CachorroServiceImpl implements CachorroService {
 			
 			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
-			ResponseEntity<Cachorro[]> requestResponse = restTemplate.exchange(
+			ResponseEntity<Map<String,Object>> requestResponse = restTemplate.exchange(
 				endpoint, 
 				HttpMethod.GET, 
 				requestEntity,
-				Cachorro[].class
+				responseMapStringObjectType
 			);
 			
-			Cachorro[] cachorros = requestResponse.getBody();
-			
-			response = Arrays.asList(cachorros);
+			if(requestResponse.getStatusCodeValue() == 200 && requestResponse.getBody().get("hasError").equals(false)) {
+				
+				listaCachorros =  (List<Cachorro>) requestResponse.getBody().get("response");
+				
+				responseRequest.put("hasError", false);
+				responseRequest.put("response", listaCachorros);
+				
+			} else {
+								
+				responseRequest.put("hasError", requestResponse.getBody().get("hasError"));
+				responseRequest.put("message",  requestResponse.getBody().get("message"));
+				
+			}
 			
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			responseRequest.put("hasError", true);
+			responseRequest.put("message", "Ocorreu um problema ao realizar a requisição para obter todos os cachorros do cliente: " + e.getMessage());
 		}
 		
-		return response;
+		return responseRequest;
 		
 	}
 

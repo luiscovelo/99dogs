@@ -107,15 +107,31 @@ public class PasseioController {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	@GetMapping("/cliente/adicionar-cachorro-ao-passeio/{id}")
 	public String getPageAdicionarCachorroAoPasseio(@PathVariable("id") Long id, Model model) {
 		
-		Long cliente_id = pessoaService.sessaoAtual("c").getId();
+		Map<String, Object> responseRequest = new HashMap<>();
+		List<Cachorro> cachorros            = new ArrayList<Cachorro>();
 		
-		List<Cachorro> cachorros = cachorroService.cachorrosPorCliente(cliente_id);
-		
-		model.addAttribute("passeioId", id);
-		model.addAttribute("cachorros", cachorros);
+		try {
+			
+			Long cliente_id = pessoaService.sessaoAtual("c").getId();
+			
+			responseRequest = cachorroService.cachorrosPorCliente(cliente_id);
+
+			if(responseRequest.get("hasError").equals(false)) {
+				cachorros = (List<Cachorro>) responseRequest.get("response");
+			} else {
+				throw new Exception(responseRequest.get("message").toString());
+			}
+			
+			model.addAttribute("passeioId", id);
+			model.addAttribute("cachorros", cachorros);
+			
+		} catch (Exception e) {
+			model.addAttribute("responseError", e.getMessage());
+		}
 		
 		return "/cliente/passeio/adicionar-cachorro-ao-passeio";
 		

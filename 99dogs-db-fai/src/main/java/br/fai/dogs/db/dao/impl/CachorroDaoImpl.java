@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -248,9 +250,11 @@ public class CachorroDaoImpl implements CachorroDao {
 	}
 
 	@Override
-	public List<Cachorro> cachorrosPorCliente(Long cliente_id) {
+	public Map<String, Object> cachorrosPorCliente(Long cliente_id) {
 		
+		Map<String, Object> responseRequest = new HashMap<>();
 		List<Cachorro> cachorros = new ArrayList<Cachorro>();
+		
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -295,18 +299,26 @@ public class CachorroDaoImpl implements CachorroDao {
 
 			}
 			
-			return cachorros;
+			responseRequest.put("hasError", false);
+			responseRequest.put("response", cachorros);
 			
+		} catch (SQLException e) {
+			
+			responseRequest.put("hasError", true);
+			responseRequest.put("message", "Ocorreu um problema ao executar a busca no banco" + e.getMessage());
+						
 		} catch (Exception e) {
+		
+			responseRequest.put("hasError", true);
+			responseRequest.put("message", "Falha ao obter lista de cachorros por cliente: " + e.getMessage());
 			
-			System.out.println("Falha ao obter lista de cachorros por cliente: " + e.getMessage());
-			return null;
-			
-		} finally {
+		}finally {
 
 			ConnectionFactory.close(resultSet, preparedStatement, connection);
 
 		}
+		
+		return responseRequest;
 		
 	}
 
