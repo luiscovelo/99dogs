@@ -1,11 +1,15 @@
 package br.fai.dogs.controller;
 
+import java.util.Base64;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.fai.dogs.model.entities.Pessoa;
@@ -26,6 +30,10 @@ public class PerfilController {
 
 		model.addAttribute("cliente", cliente);
 		
+		if(cliente.getFoto() != null) {
+			model.addAttribute("foto", Base64.getEncoder().encodeToString(cliente.getFoto()));
+		}
+		
 		return "/cliente/perfil/meu-perfil";
 		
 	}
@@ -38,6 +46,10 @@ public class PerfilController {
 		
 		model.addAttribute("profissional", profissional);
 		
+		if(profissional.getFoto() != null) {
+			model.addAttribute("foto", Base64.getEncoder().encodeToString(profissional.getFoto()));
+		}
+		
 		return "/profissional/perfil/meu-perfil";
 		
 	}
@@ -48,7 +60,6 @@ public class PerfilController {
 		Long id = pessoaService.sessaoAtual().getId();
 				
 		pessoa.setPais("Brasil");
-		pessoa.setFoto("#");
 		pessoa.setId(id);
 				
 		
@@ -64,6 +75,44 @@ public class PerfilController {
 			return "redirect:/perfil/cliente/meu-perfil";
 		}else {
 			return "redirect:/perfil/profissional/meu-perfil";
+		}
+		
+	}
+	
+	@PostMapping("/put-alterar-imagem")
+	public String putAlterarImagem(@RequestParam("image") MultipartFile file, RedirectAttributes redirect) {
+		
+		Pessoa usuario = (Pessoa) pessoaService.sessaoAtual();
+		
+		String prefix = null;
+
+		if(usuario.getTipo().equals("CLIENTE")) {
+			prefix = "cliente";
+		}else {
+			prefix = "profissional";
+		}
+		
+		try {
+			
+			if(file.isEmpty()) {
+				redirect.addFlashAttribute("message", "Escolha um iamgem para ser alterada.");
+				return "redirect:/perfil/"+prefix+"/meu-perfil";
+			}
+			
+			boolean response = pessoaService.uploadImage(usuario.getId(), file);
+			
+			if(response) {
+				redirect.addFlashAttribute("message", "Imagem alterada com sucesso.");
+				
+			}else {
+				redirect.addFlashAttribute("message", "Não foi possível alterar a imagem.");
+			}
+			
+			return "redirect:/perfil/"+prefix+"/meu-perfil";
+			
+		} catch (Exception e) {
+			redirect.addFlashAttribute("message", e.getMessage());
+			return "redirect:/perfil/"+prefix+"/meu-perfil";
 		}
 		
 	}

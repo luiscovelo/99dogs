@@ -12,11 +12,10 @@
 			<a th:href="@{/passeio/cliente/solicitar-passeio}" class="btn btn-success">Solicitar Passeio</a>
 			<hr>
 
-			<table class="table">
+			<table class="table dataTable">
 				<thead>
 					<tr>
 						<th>ID</th>
-						<th>Logo</th>
 						<th>Profissional</th>
 						<th>Data/Hora</th>
 						<th>Status</th>
@@ -29,9 +28,6 @@
 					
 					<tr th:each="passeio: ${passeios}">
 						<td th:text="${passeio.id}">1</td>
-						<td>
-							<img class="rounded-circle" th:src="${passeio.profissional.pessoa.foto}" width="50">
-						</td>
 						<td th:text="${passeio.profissional.pessoa.nome}">1</td>
 						<td th:text="${#temporals.format(passeio.datahora, 'dd/MM/yyyy HH:mm')}">1</td>
 						<td th:text="${passeio.status}">1</td>

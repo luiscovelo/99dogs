@@ -13,7 +13,6 @@
 				<thead>
 					<tr>
 						<th>ID</th>
-						<th>Foto</th>
 						<th>Cliente</th>
 						<th>Data/Hora</th>
 						<th>Status</th>
@@ -26,9 +25,6 @@
 					
 					<tr th:each="passeio: ${passeios}">
 						<td th:text="${passeio.id}">1</td>
-						<td>
-							<img class="rounded-circle" th:src="${passeio.cliente.pessoa.foto}" width="50">
-						</td>
 						<td th:text="${passeio.cliente.pessoa.nome}">1</td>
 						<td th:text="${#temporals.format(passeio.datahora, 'dd/MM/yyyy HH:mm')}">1</td>
 						<td th:text="${passeio.status}">1</td>

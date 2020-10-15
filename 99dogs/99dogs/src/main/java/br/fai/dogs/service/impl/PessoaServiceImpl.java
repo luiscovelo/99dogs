@@ -15,9 +15,12 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.fai.dogs.helper.Helper;
+import br.fai.dogs.model.dto.UploadImage;
 import br.fai.dogs.model.entities.Pessoa;
 import br.fai.dogs.service.PessoaService;
 
@@ -338,6 +341,49 @@ public class PessoaServiceImpl implements PessoaService {
 			
 		} catch (Exception e) {
 			System.out.println("Ocorreu um problema ao realizar a requisição para obter a pessoa por email: " + e.getMessage());
+		}
+		
+		return response;
+		
+	}
+
+	@Override
+	public boolean uploadImage(Long id, MultipartFile file) {
+		
+		String endpoint = "http://localhost:8082/api/v1/pessoa/upload-image";
+		
+		RestTemplate restTemplate = new RestTemplate();
+		
+		boolean response = false;
+		
+		try {
+			
+			String imageName = StringUtils.cleanPath(file.getOriginalFilename());
+			
+			UploadImage uploadImage = new UploadImage();
+			
+			uploadImage.setPessoaId(id);
+			uploadImage.setNome(imageName);
+			uploadImage.setImagem(file.getBytes());
+			
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Authorization", Helper.getUserTokenJwt(session));
+			
+			HttpEntity<UploadImage> requestEntity = new HttpEntity<UploadImage>(uploadImage,headers);
+			
+			ResponseEntity<Boolean> requestResponse = restTemplate.exchange(
+					endpoint, 
+				HttpMethod.POST, 
+				requestEntity,
+				Boolean.class
+			);
+			
+			if(requestResponse.getStatusCodeValue() == 200) {
+				response = true;
+			}
+			
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
 		}
 		
 		return response;

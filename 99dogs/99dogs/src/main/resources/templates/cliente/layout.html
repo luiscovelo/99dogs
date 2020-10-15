@@ -118,6 +118,9 @@
 	
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js">
 	
+	<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+	
     <script type="text/javascript">
         $(document).ready(function() {
         	
@@ -127,7 +130,11 @@
             
             $(".chosen-select").chosen({disable_search_threshold: 10});
             
-            $('.dataTable').DataTable();
+            $('.dataTable').DataTable({
+            	dom: 'frtip',
+            	ordering: true,
+            	stateSave: true
+            });
             
         });
     </script>

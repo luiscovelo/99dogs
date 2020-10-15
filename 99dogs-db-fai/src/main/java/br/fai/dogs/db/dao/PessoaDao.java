@@ -2,6 +2,7 @@ package br.fai.dogs.db.dao;
 
 import java.util.List;
 
+import br.fai.dogs.model.dto.UploadImage;
 import br.fai.dogs.model.entities.Pessoa;
 
 public interface PessoaDao {
@@ -21,5 +22,7 @@ public interface PessoaDao {
 	List<Pessoa> readAllProfissional();
 	
 	Pessoa readByEmail(String email);
+	
+	boolean uploadImage(UploadImage uploadImage);
 	
 }

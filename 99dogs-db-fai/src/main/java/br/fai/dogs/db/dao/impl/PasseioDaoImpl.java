@@ -108,7 +108,7 @@ public class PasseioDaoImpl implements PasseioDao {
 					pessoa_cliente.setEstado(resultSet.getString("cliente_estado"));
 					pessoa_cliente.setPais(resultSet.getString("cliente_pais"));
 					pessoa_cliente.setNumero(resultSet.getInt("cliente_numero"));
-					pessoa_cliente.setFoto(resultSet.getString("cliente_foto"));
+					//pessoa_cliente.setFoto(resultSet.getBytes("cliente_foto"));
 					pessoa_cliente.setTipo(resultSet.getString("cliente_tipo"));
 					
 					cliente.setId(resultSet.getLong("cliente_id"));
@@ -125,7 +125,7 @@ public class PasseioDaoImpl implements PasseioDao {
 					pessoa_profissional.setEstado(resultSet.getString("profissional_estado"));
 					pessoa_profissional.setPais(resultSet.getString("profissional_pais"));
 					pessoa_profissional.setNumero(resultSet.getInt("profissional_numero"));
-					pessoa_profissional.setFoto(resultSet.getString("profissional_foto"));
+					//pessoa_profissional.setFoto(resultSet.getBytes("profissional_foto"));
 					pessoa_profissional.setTipo(resultSet.getString("profissional_tipo"));
 					
 					profissional.setId(resultSet.getLong("profissional_id"));
@@ -295,7 +295,7 @@ public class PasseioDaoImpl implements PasseioDao {
 				pessoa_cliente.setEstado(resultSet.getString("cliente_estado"));
 				pessoa_cliente.setPais(resultSet.getString("cliente_pais"));
 				pessoa_cliente.setNumero(resultSet.getInt("cliente_numero"));
-				pessoa_cliente.setFoto(resultSet.getString("cliente_foto"));
+				pessoa_cliente.setFoto(resultSet.getBytes("cliente_foto"));
 				pessoa_cliente.setTipo(resultSet.getString("cliente_tipo"));
 				
 				cliente.setId(resultSet.getLong("cliente_id"));
@@ -312,7 +312,7 @@ public class PasseioDaoImpl implements PasseioDao {
 				pessoa_profissional.setEstado(resultSet.getString("profissional_estado"));
 				pessoa_profissional.setPais(resultSet.getString("profissional_pais"));
 				pessoa_profissional.setNumero(resultSet.getInt("profissional_numero"));
-				pessoa_profissional.setFoto(resultSet.getString("profissional_foto"));
+				pessoa_profissional.setFoto(resultSet.getBytes("profissional_foto"));
 				pessoa_profissional.setTipo(resultSet.getString("profissional_tipo"));
 				
 				profissional.setId(resultSet.getLong("profissional_id"));
@@ -509,7 +509,7 @@ public class PasseioDaoImpl implements PasseioDao {
 					pessoa_cliente.setEstado(resultSet.getString("cliente_estado"));
 					pessoa_cliente.setPais(resultSet.getString("cliente_pais"));
 					pessoa_cliente.setNumero(resultSet.getInt("cliente_numero"));
-					pessoa_cliente.setFoto(resultSet.getString("cliente_foto"));
+					//pessoa_cliente.setFoto(resultSet.getBytes("cliente_foto"));
 					pessoa_cliente.setTipo(resultSet.getString("cliente_tipo"));
 					
 					cliente.setId(resultSet.getLong("cliente_id"));
@@ -526,7 +526,7 @@ public class PasseioDaoImpl implements PasseioDao {
 					pessoa_profissional.setEstado(resultSet.getString("profissional_estado"));
 					pessoa_profissional.setPais(resultSet.getString("profissional_pais"));
 					pessoa_profissional.setNumero(resultSet.getInt("profissional_numero"));
-					pessoa_profissional.setFoto(resultSet.getString("profissional_foto"));
+					//pessoa_profissional.setFoto(resultSet.getBytes("profissional_foto"));
 					pessoa_profissional.setTipo(resultSet.getString("profissional_tipo"));
 					
 					profissional.setId(resultSet.getLong("profissional_id"));
@@ -644,7 +644,7 @@ public class PasseioDaoImpl implements PasseioDao {
 					pessoa_cliente.setEstado(resultSet.getString("cliente_estado"));
 					pessoa_cliente.setPais(resultSet.getString("cliente_pais"));
 					pessoa_cliente.setNumero(resultSet.getInt("cliente_numero"));
-					pessoa_cliente.setFoto(resultSet.getString("cliente_foto"));
+					//pessoa_cliente.setFoto(resultSet.getBytes("cliente_foto"));
 					pessoa_cliente.setTipo(resultSet.getString("cliente_tipo"));
 					
 					cliente.setId(resultSet.getLong("cliente_id"));
@@ -661,7 +661,7 @@ public class PasseioDaoImpl implements PasseioDao {
 					pessoa_profissional.setEstado(resultSet.getString("profissional_estado"));
 					pessoa_profissional.setPais(resultSet.getString("profissional_pais"));
 					pessoa_profissional.setNumero(resultSet.getInt("profissional_numero"));
-					pessoa_profissional.setFoto(resultSet.getString("profissional_foto"));
+					//pessoa_profissional.setFoto(resultSet.getBytes("profissional_foto"));
 					pessoa_profissional.setTipo(resultSet.getString("profissional_tipo"));
 					
 					profissional.setId(resultSet.getLong("profissional_id"));
@@ -895,7 +895,7 @@ public class PasseioDaoImpl implements PasseioDao {
 					pessoa_cliente.setEstado(resultSet.getString("cliente_estado"));
 					pessoa_cliente.setPais(resultSet.getString("cliente_pais"));
 					pessoa_cliente.setNumero(resultSet.getInt("cliente_numero"));
-					pessoa_cliente.setFoto(resultSet.getString("cliente_foto"));
+					//pessoa_cliente.setFoto(resultSet.getBytes("cliente_foto"));
 					pessoa_cliente.setTipo(resultSet.getString("cliente_tipo"));
 					
 					cliente.setId(resultSet.getLong("cliente_id"));
@@ -912,7 +912,7 @@ public class PasseioDaoImpl implements PasseioDao {
 					pessoa_profissional.setEstado(resultSet.getString("profissional_estado"));
 					pessoa_profissional.setPais(resultSet.getString("profissional_pais"));
 					pessoa_profissional.setNumero(resultSet.getInt("profissional_numero"));
-					pessoa_profissional.setFoto(resultSet.getString("profissional_foto"));
+					//pessoa_profissional.setFoto(resultSet.getBytes("profissional_foto"));
 					pessoa_profissional.setTipo(resultSet.getString("profissional_tipo"));
 					
 					profissional.setId(resultSet.getLong("profissional_id"));
@@ -943,5 +943,5 @@ public class PasseioDaoImpl implements PasseioDao {
 		return passeios;
 		
 	}
-	
+
 }

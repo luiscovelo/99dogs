@@ -54,7 +54,8 @@
 				<tbody>
 					<tr>
 						<td>
-							<img class="rounded-circle" th:src="${passeio.profissional.pessoa.foto}" width="50">
+							<img th:if="${passeio.profissional.pessoa.base64Foto == null}" src="/assets/imgs/default-img.png" width="50">
+							<img th:if="${passeio.profissional.pessoa.base64Foto != null}" th:src="*{'data:image/png;base64,'+passeio.profissional.pessoa.base64Foto}" width="50">
 						</td>
 						<td th:text="${passeio.profissional.pessoa.nome}"></td>
 						<td th:text="${passeio.profissional.pessoa.email}"></td>
@@ -84,7 +85,8 @@
 				<tbody>
 					<tr>
 						<td>
-							<img class="rounded-circle" th:src="${passeio.profissional.pessoa.foto}" width="50">
+							<img th:if="${passeio.cliente.pessoa.base64Foto == null}" src="/assets/imgs/default-img.png" width="50">
+							<img th:if="${passeio.cliente.pessoa.base64Foto != null}" th:src="*{'data:image/png;base64,'+passeio.cliente.pessoa.base64Foto}" width="50">
 						</td>
 						<td th:text="${passeio.cliente.pessoa.nome}"></td>
 						<td th:text="${passeio.cliente.pessoa.email}"></td>

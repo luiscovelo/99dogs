@@ -45,7 +45,6 @@ public class ContaController {
 					throw new Exception("email_in_use");
 				}
 				
-				pessoa.setFoto("#");
 				pessoa.setPais("Brasil");
 				pessoa.setTipo("CLIENTE");
 				pessoa.setSenha(passwordEncoder.encode(pessoa.getSenha()));
@@ -87,7 +86,6 @@ public class ContaController {
 					throw new Exception("email_in_use");
 				}
 				
-				pessoa.setFoto("#");
 				pessoa.setPais("Brasil");
 				pessoa.setTipo("PROFISSIONAL");
 				pessoa.setSenha(passwordEncoder.encode(pessoa.getSenha()));

@@ -1,6 +1,7 @@
 package br.fai.dogs.controller;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,7 +71,7 @@ public class PasseioController {
 		List<Passeio> passeios = new ArrayList<Passeio>();
 		
 		passeios = passeioService.passeiosPorCliente(cliente_id);
-		
+				
 		model.addAttribute("passeios", passeios);
 		
 		return "/cliente/passeio/meus-passeios";
@@ -159,7 +160,35 @@ public class PasseioController {
 		
 		Passeio passeio = passeioService.readById(id);
 		List<Cachorro> cachorros = passeioCachorroService.readByPasseioId(passeio.getId());
-
+		
+		if(passeio.getProfissional().getPessoa().getFoto() != null) {
+			
+			Pessoa profissional = new Pessoa();
+			
+			profissional = passeio.getProfissional().getPessoa();
+			
+			if(profissional.getFoto() != null) {
+				profissional.setBase64Foto(Base64.getEncoder().encodeToString(profissional.getFoto()));
+			}
+			
+			passeio.getProfissional().setPessoa(profissional);
+			
+		}
+		
+		if(passeio.getCliente().getPessoa().getFoto() != null) {
+			
+			Pessoa cliente = new Pessoa();
+			
+			cliente = passeio.getCliente().getPessoa();
+			
+			if(cliente.getFoto() != null) {
+				cliente.setBase64Foto(Base64.getEncoder().encodeToString(cliente.getFoto()));
+			}
+			
+			passeio.getCliente().setPessoa(cliente);
+			
+		}
+		
 		model.addAttribute("passeio", passeio);
 		model.addAttribute("cachorros", cachorros);
 		
@@ -215,11 +244,37 @@ public class PasseioController {
 	public String getPageDetalhesDoPasseioProfissional(@PathVariable("id") Long id, Model model) {
 		
 		Passeio passeio = passeioService.readById(id);
-		Pessoa cliente  = clienteService.readById(passeio.getClienteId());
 		List<Cachorro> cachorros = passeioCachorroService.readByPasseioId(passeio.getId());
 		
+		if(passeio.getProfissional().getPessoa().getFoto() != null) {
+			
+			Pessoa profissional = new Pessoa();
+			
+			profissional = passeio.getProfissional().getPessoa();
+			
+			if(profissional.getFoto() != null) {
+				profissional.setBase64Foto(Base64.getEncoder().encodeToString(profissional.getFoto()));
+			}
+			
+			passeio.getProfissional().setPessoa(profissional);
+			
+		}
+		
+		if(passeio.getCliente().getPessoa().getFoto() != null) {
+			
+			Pessoa cliente = new Pessoa();
+			
+			cliente = passeio.getCliente().getPessoa();
+			
+			if(cliente.getFoto() != null) {
+				cliente.setBase64Foto(Base64.getEncoder().encodeToString(cliente.getFoto()));
+			}
+			
+			passeio.getCliente().setPessoa(cliente);
+			
+		}
+		
 		model.addAttribute("passeio", passeio);
-		model.addAttribute("cliente", cliente);
 		model.addAttribute("cachorros", cachorros);
 				
 		return "/profissional/passeio/detalhes";

@@ -51,7 +51,7 @@ public class ProfissionalDaoImpl implements ProfissionalDao {
 				profissional.setCidade(resultSet.getString("cidade"));
 				profissional.setEstado(resultSet.getString("estado"));
 				profissional.setPais(resultSet.getString("pais"));
-				profissional.setFoto(resultSet.getString("foto"));
+				profissional.setFoto(resultSet.getBytes("foto"));
 				profissional.setNumero(resultSet.getInt("numero"));
 				profissional.setTipo(resultSet.getString("tipo"));
 				

@@ -2,8 +2,6 @@ package br.fai.dogs.db.dao;
 
 import java.util.List;
 
-import org.json.JSONObject;
-
 import br.fai.dogs.model.entities.Passeio;
 
 public interface PasseioDao {

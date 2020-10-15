@@ -7,32 +7,28 @@
 <body>
 	
 	<div layout:fragment="body">
+	
+		<div class="alert alert-primary alert-dismissible fade show" role="alert" th:if="${message != null}">
+			 <span th:text="${message}"></span>
+			 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			    <span aria-hidden="true">&times;</span>
+			 </button>
+		</div>
+	
 		<div class="container-box">
-		
-			<div class="alert alert-primary alert-dismissible fade show" role="alert" th:if="${message != null}">
-	  			<span th:text="${message}"></span>
-	  			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-	    			<span aria-hidden="true">&times;</span>
-	  			</button>
-			</div>
-		
-			<center>
-				<img th:src="${cliente.foto}" class="rounded-circle" width="64">
-			</center>
 			
-			<div class="col-md-12 ml-auto">
-				<hr>
-				<h1 class="lead text-center">
-					Meu Perfil
-				</h1>
-				<hr>
-				<form th:action="@{/perfil/post-atualizar-dados}" th:object="${pessoa}" method="POST">
-					<div class="row">
-						
-						<input type="hidden" th:name="id" th:field="${cliente.id}" >
-						<input type="hidden" th:name="tipo" th:value="${cliente.tipo}">
-						<input type="hidden" name="_method" value="PUT">
-						
+			<div class="row">
+			
+				<div class="col-md-3">
+					
+					<div class="row" style="display:flex;align-items:center;justify-content:center;">
+						<img th:if="${foto != null}" th:src="*{'data:image/png;base64,'+foto}" class="text-center" style="max-width: 40%">
+						<img th:if="${foto == null}" src="/assets/imgs/default-img.png" class="text-center" style="max-width: 40%">
+					</div>
+					<hr>
+					
+					<form th:action="@{/perfil/put-alterar-imagem}" th:object="${uploadImage}" method="POST" enctype="multipart/form-data">
+							
 						<div class="input-group col-lg-12 mb-4">
 							<div class="input-group-prepend">
 								<span
@@ -40,109 +36,149 @@
 									<i class="fa fa-user text-muted"></i>
 								</span>
 							</div>
-							<input id="nome" type="text" th:name="nome" placeholder="Nome"
-								class="form-control bg-white border-left-0 border-md" th:value="${cliente.nome}">
+							<input id="nome" type="file" th:name="image" placeholder="Nome"
+										class="form-control bg-white border-left-0 border-md" accept="image/png,image/jpeg" required>
 						</div>
-
-						<div class="input-group col-lg-6 mb-4">
-							<div class="input-group-prepend">
-								<span
-									class="input-group-text bg-white px-4 border-md border-right-0">
-									<i class="fa fa-phone-square text-muted"></i>
-								</span>
-							</div>
-							<input id="telefone" type="text" th:name="telefone"
-								placeholder="Telefone"
-								class="form-control bg-white border-left-0 border-md" th:value="${cliente.telefone}">
-						</div>
-
-						<div class="input-group col-lg-6 mb-4">
-							<div class="input-group-prepend">
-								<span
-									class="input-group-text bg-white px-4 border-md border-right-0">
-									<i class="fa fa-envelope text-muted"></i>
-								</span>
-							</div>
-							<input id="email" type="email" th:name="email"
-								placeholder="E-mail"
-								class="form-control bg-white border-md border-left-0 pl-3" th:value="${cliente.email}">
-						</div>
-
-						<div class="input-group col-lg-12 mb-4">
-							<div class="input-group-prepend">
-								<span
-									class="input-group-text bg-white px-4 border-md border-right-0">
-									<i class="fa fa-bookmark-o text-muted"></i>
-								</span>
-							</div>
-							<input id="rua" type="text" th:name="rua"
-								placeholder="Endereço"
-								class="form-control bg-white border-left-0 border-md" th:value="${cliente.rua}">
-						</div>
-
-						<div class="input-group col-lg-6 mb-4">
-							<div class="input-group-prepend">
-								<span
-									class="input-group-text bg-white px-4 border-md border-right-0">
-									<i class="fa fa-bookmark-o text-muted"></i>
-								</span>
-							</div>
-							<input id="bairro" type="text" th:name="bairro"
-								placeholder="Bairro"
-								class="form-control bg-white border-left-0 border-md" th:value="${cliente.bairro}">
-						</div>
-
-						<div class="input-group col-lg-6 mb-4">
-							<div class="input-group-prepend">
-								<span
-									class="input-group-text bg-white px-4 border-md border-right-0">
-									<i class="fa fa-bookmark-o text-muted"></i>
-								</span>
-							</div>
-							<input id="numero" type="text" th:name="numero"
-								placeholder="Número"
-								class="form-control bg-white border-left-0 border-md" th:value="${cliente.numero}">
-						</div>
-
-						<div class="input-group col-lg-6 mb-4">
-							<div class="input-group-prepend">
-								<span
-									class="input-group-text bg-white px-4 border-md border-right-0">
-									<i class="fa fa-bookmark-o text-muted"></i>
-								</span>
-							</div>
-							<input id="cidade" type="text" th:name="cidade"
-								placeholder="Cidade"
-								class="form-control bg-white border-left-0 border-md" th:value="${cliente.cidade}">
-						</div>
-
-						<div class="input-group col-lg-6 mb-4">
-							<div class="input-group-prepend">
-								<span
-									class="input-group-text bg-white px-4 border-md border-right-0">
-									<i class="fa fa-bookmark-o text-muted"></i>
-								</span>
-							</div>
-							<input id="estado" type="text" th:name="estado"
-								placeholder="Estado"
-								class="form-control bg-white border-left-0 border-md" th:value="${cliente.estado}">
-						</div>
-
+							
 						<div class="form-group col-lg-12 mx-auto mb-0">
 							<button type="submit" id="btnSubmit"
-								class="btn btn-primary btn-block py-2"> Confirmar Alteração
+								class="btn btn-success btn-block py-2"> Alterar
 							</button>
 						</div>
+							
+					</form>
 
-						<div
-							class="form-group col-lg-12 mx-auto d-flex align-items-center my-4">
-							<div class="border-bottom w-100 ml-5"></div>
-							<span class="px-2 small text-muted font-weight-bold text-muted"></span>
-							<div class="border-bottom w-100 mr-5"></div>
-						</div>
-
+				</div>
+				
+				<div class="col-md-9">
+					
+					<div class="col-md-12 ml-auto">
+						<hr>
+						<h1 class="lead text-center">
+							Meu Perfil
+						</h1>
+						<hr>
+						<form th:action="@{/perfil/post-atualizar-dados}" th:object="${pessoa}" method="POST">
+							<div class="row">
+								
+								<input type="hidden" th:name="id" th:field="${cliente.id}" >
+								<input type="hidden" th:name="tipo" th:value="${cliente.tipo}">
+								<input type="hidden" name="_method" value="PUT">
+								
+								<div class="input-group col-lg-12 mb-4">
+									<div class="input-group-prepend">
+										<span
+											class="input-group-text bg-white px-4 border-md border-right-0">
+											<i class="fa fa-user text-muted"></i>
+										</span>
+									</div>
+									<input id="nome" type="text" th:name="nome" placeholder="Nome"
+										class="form-control bg-white border-left-0 border-md" th:value="${cliente.nome}">
+								</div>
+		
+								<div class="input-group col-lg-6 mb-4">
+									<div class="input-group-prepend">
+										<span
+											class="input-group-text bg-white px-4 border-md border-right-0">
+											<i class="fa fa-phone-square text-muted"></i>
+										</span>
+									</div>
+									<input id="telefone" type="text" th:name="telefone"
+										placeholder="Telefone"
+										class="form-control bg-white border-left-0 border-md" th:value="${cliente.telefone}">
+								</div>
+		
+								<div class="input-group col-lg-6 mb-4">
+									<div class="input-group-prepend">
+										<span
+											class="input-group-text bg-white px-4 border-md border-right-0">
+											<i class="fa fa-envelope text-muted"></i>
+										</span>
+									</div>
+									<input id="email" type="email" th:name="email"
+										placeholder="E-mail"
+										class="form-control bg-white border-md border-left-0 pl-3" th:value="${cliente.email}">
+								</div>
+		
+								<div class="input-group col-lg-12 mb-4">
+									<div class="input-group-prepend">
+										<span
+											class="input-group-text bg-white px-4 border-md border-right-0">
+											<i class="fa fa-bookmark-o text-muted"></i>
+										</span>
+									</div>
+									<input id="rua" type="text" th:name="rua"
+										placeholder="Endereço"
+										class="form-control bg-white border-left-0 border-md" th:value="${cliente.rua}">
+								</div>
+		
+								<div class="input-group col-lg-6 mb-4">
+									<div class="input-group-prepend">
+										<span
+											class="input-group-text bg-white px-4 border-md border-right-0">
+											<i class="fa fa-bookmark-o text-muted"></i>
+										</span>
+									</div>
+									<input id="bairro" type="text" th:name="bairro"
+										placeholder="Bairro"
+										class="form-control bg-white border-left-0 border-md" th:value="${cliente.bairro}">
+								</div>
+		
+								<div class="input-group col-lg-6 mb-4">
+									<div class="input-group-prepend">
+										<span
+											class="input-group-text bg-white px-4 border-md border-right-0">
+											<i class="fa fa-bookmark-o text-muted"></i>
+										</span>
+									</div>
+									<input id="numero" type="text" th:name="numero"
+										placeholder="Número"
+										class="form-control bg-white border-left-0 border-md" th:value="${cliente.numero}">
+								</div>
+		
+								<div class="input-group col-lg-6 mb-4">
+									<div class="input-group-prepend">
+										<span
+											class="input-group-text bg-white px-4 border-md border-right-0">
+											<i class="fa fa-bookmark-o text-muted"></i>
+										</span>
+									</div>
+									<input id="cidade" type="text" th:name="cidade"
+										placeholder="Cidade"
+										class="form-control bg-white border-left-0 border-md" th:value="${cliente.cidade}">
+								</div>
+		
+								<div class="input-group col-lg-6 mb-4">
+									<div class="input-group-prepend">
+										<span
+											class="input-group-text bg-white px-4 border-md border-right-0">
+											<i class="fa fa-bookmark-o text-muted"></i>
+										</span>
+									</div>
+									<input id="estado" type="text" th:name="estado"
+										placeholder="Estado"
+										class="form-control bg-white border-left-0 border-md" th:value="${cliente.estado}">
+								</div>
+		
+								<div class="form-group col-lg-12 mx-auto mb-0">
+									<button type="submit" id="btnSubmit"
+										class="btn btn-primary btn-block py-2"> Confirmar Alteração
+									</button>
+								</div>
+		
+								<div
+									class="form-group col-lg-12 mx-auto d-flex align-items-center my-4">
+									<div class="border-bottom w-100 ml-5"></div>
+									<span class="px-2 small text-muted font-weight-bold text-muted"></span>
+									<div class="border-bottom w-100 mr-5"></div>
+								</div>
+		
+							</div>
+						</form>
 					</div>
-				</form>
+					
+				</div>
+				
 			</div>
 			
 		</div>

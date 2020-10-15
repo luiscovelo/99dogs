@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.fai.dogs.api.service.PessoaService;
+import br.fai.dogs.model.dto.UploadImage;
 import br.fai.dogs.model.entities.Pessoa;
 
 @RestController
@@ -112,6 +113,14 @@ public class PessoaRestController {
 		
 		Pessoa pessoa = pessoaService.readByEmail(email);		
 		return ResponseEntity.ok(pessoa);
+		
+	}
+	
+	@PostMapping("/upload-image")
+	public ResponseEntity<Boolean> uploadImage(@RequestBody UploadImage uploadImage){
+		
+		boolean response = pessoaService.uploadImage(uploadImage);
+		return ResponseEntity.ok(response);
 		
 	}
 	

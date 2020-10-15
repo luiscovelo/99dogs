@@ -2,12 +2,12 @@ package br.fai.dogs.api.service.impl;
 
 import java.util.List;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.fai.dogs.api.service.PasseioService;
 import br.fai.dogs.db.dao.PasseioDao;
+import br.fai.dogs.model.dto.UploadImage;
 import br.fai.dogs.model.entities.Passeio;
 
 @Service

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import br.fai.dogs.db.connection.ConnectionFactory;
 import br.fai.dogs.db.dao.PessoaDao;
+import br.fai.dogs.model.dto.UploadImage;
 import br.fai.dogs.model.entities.Pessoa;
 
 @Repository
@@ -47,7 +48,7 @@ public class PessoaDaoImpl implements PessoaDao {
 				pessoa.setCidade(resultSet.getString("cidade"));
 				pessoa.setEstado(resultSet.getString("estado"));
 				pessoa.setPais(resultSet.getString("pais"));
-				pessoa.setFoto(resultSet.getString("foto"));
+				pessoa.setFoto(resultSet.getBytes("foto"));
 				pessoa.setNumero(resultSet.getInt("numero"));
 				pessoa.setTipo(resultSet.getString("tipo"));
 
@@ -77,8 +78,8 @@ public class PessoaDaoImpl implements PessoaDao {
 		
 		String sql = "";
 		
-		sql  = "INSERT INTO pessoa (nome, telefone, email, senha, rua, bairro, cidade, estado, pais, foto, numero, tipo)  ";
-		sql += " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ";
+		sql  = "INSERT INTO pessoa (nome, telefone, email, senha, rua, bairro, cidade, estado, pais, numero, tipo)  ";
+		sql += " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ";
 
 		try {
 			
@@ -96,9 +97,8 @@ public class PessoaDaoImpl implements PessoaDao {
 			preparedStatement.setString(7, entity.getCidade());
 			preparedStatement.setString(8, entity.getEstado());
 			preparedStatement.setString(9, entity.getPais());
-			preparedStatement.setString(10, entity.getFoto());
-			preparedStatement.setInt(11, entity.getNumero());
-			preparedStatement.setString(12, entity.getTipo());
+			preparedStatement.setInt(10, entity.getNumero());
+			preparedStatement.setString(11, entity.getTipo());
 			
 			preparedStatement.execute();
 
@@ -115,7 +115,6 @@ public class PessoaDaoImpl implements PessoaDao {
 			System.out.println("Ocorreu um problema ao criar a pessoa na tabela pessoa: " + e.getMessage());
 			
 			try {
-				System.out.println("aqui nesse try");
 				connection.rollback();
 			} catch (SQLException e1) {
 				e1.printStackTrace();
@@ -127,7 +126,11 @@ public class PessoaDaoImpl implements PessoaDao {
 		
 		if(pessoa_id != null) {
 			
-			sql = "insert into cliente (pessoa_id) values (?)";
+			if(entity.getTipo().equals("CLIENTE")) {
+				sql = "insert into cliente (pessoa_id) values (?)";
+			}else {
+				sql = "insert into profissional (pessoa_id) values (?)";
+			}
 			
 			try {
 				
@@ -188,7 +191,7 @@ public class PessoaDaoImpl implements PessoaDao {
 				pessoa.setCidade(resultSet.getString("cidade"));
 				pessoa.setEstado(resultSet.getString("estado"));
 				pessoa.setPais(resultSet.getString("pais"));
-				pessoa.setFoto(resultSet.getString("foto"));
+				pessoa.setFoto(resultSet.getBytes("foto"));
 				pessoa.setNumero(resultSet.getInt("numero"));
 				pessoa.setTipo(resultSet.getString("tipo"));
 			}
@@ -313,7 +316,7 @@ public class PessoaDaoImpl implements PessoaDao {
 				pessoa.setCidade(resultSet.getString("cidade"));
 				pessoa.setEstado(resultSet.getString("estado"));
 				pessoa.setPais(resultSet.getString("pais"));
-				pessoa.setFoto(resultSet.getString("foto"));
+				pessoa.setFoto(resultSet.getBytes("foto"));
 				pessoa.setNumero(resultSet.getInt("numero"));
 				pessoa.setTipo(resultSet.getString("tipo"));
 			}
@@ -361,8 +364,9 @@ public class PessoaDaoImpl implements PessoaDao {
 				pessoa.setCidade(resultSet.getString("cidade"));
 				pessoa.setEstado(resultSet.getString("estado"));
 				pessoa.setPais(resultSet.getString("pais"));
-				pessoa.setFoto(resultSet.getString("foto"));
+				pessoa.setFoto(resultSet.getBytes("foto"));
 				pessoa.setNumero(resultSet.getInt("numero"));
+				pessoa.setTipo(resultSet.getString("tipo"));
 
 				pessoas.add(pessoa);
 
@@ -414,8 +418,9 @@ public class PessoaDaoImpl implements PessoaDao {
 				pessoa.setCidade(resultSet.getString("cidade"));
 				pessoa.setEstado(resultSet.getString("estado"));
 				pessoa.setPais(resultSet.getString("pais"));
-				pessoa.setFoto(resultSet.getString("foto"));
+				pessoa.setFoto(resultSet.getBytes("foto"));
 				pessoa.setNumero(resultSet.getInt("numero"));
+				pessoa.setTipo(resultSet.getString("tipo"));
 				
 			}
 
@@ -428,4 +433,49 @@ public class PessoaDaoImpl implements PessoaDao {
 		return pessoa;
 		
 	}
+
+	@Override
+	public boolean uploadImage(UploadImage uploadImage) {
+		
+		boolean response = false;
+		
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		
+		String sql = " update pessoa set foto = ? where id = ? ";
+		
+		try {
+			
+			connection = ConnectionFactory.getConnection();
+			connection.setAutoCommit(false);
+			
+	        preparedStatement = connection.prepareStatement(sql);
+	        
+	        preparedStatement.setBytes(1, uploadImage.getImagem());
+	        preparedStatement.setLong(2, uploadImage.getPessoaId());
+	        	        
+			preparedStatement.execute();
+			
+			connection.commit();
+			
+			response = true;
+			
+		} catch (Exception e) {
+			
+			System.out.println("Falha ao alterar a imagem {99-dogs-db-fai}: " + e.getMessage());
+			
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				System.out.println("Falha no query no momento de alterar a imagem {99-dogs-db-fai}: " + e1.getMessage());
+			}
+			
+		} finally {
+			ConnectionFactory.close(preparedStatement, connection);
+		}
+
+		return response;
+		
+	}
+	
 }

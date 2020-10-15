@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import br.fai.dogs.api.service.PessoaService;
 import br.fai.dogs.db.dao.PessoaDao;
+import br.fai.dogs.model.dto.UploadImage;
 import br.fai.dogs.model.entities.Pessoa;
 
 @Service
@@ -63,6 +64,11 @@ public class PessoaServiceImpl implements PessoaService {
 		
 		return pessoaDao.readByEmail(email);
 		
+	}
+
+	@Override
+	public boolean uploadImage(UploadImage uploadImage) {
+		return pessoaDao.uploadImage(uploadImage);
 	}
 
 }

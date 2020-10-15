@@ -118,7 +118,7 @@ public class ClienteDaoImpl implements ClienteDao {
 				cliente.setEstado(resultSet.getString("estado"));
 				cliente.setPais(resultSet.getString("pais"));
 				cliente.setNumero(resultSet.getInt("numero"));
-				cliente.setFoto(resultSet.getString("foto"));
+				cliente.setFoto(resultSet.getBytes("foto"));
 				cliente.setTipo(resultSet.getString("tipo"));
 
 			}

@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import br.fai.dogs.model.entities.Pessoa;
 
 public interface PessoaService {
@@ -27,5 +29,7 @@ public interface PessoaService {
 	List<Pessoa> readAllProfissional();
 	
 	Pessoa readByEmail(String email, String tokenTemporario);
+	
+	boolean uploadImage(Long id, MultipartFile file);
 	
 }

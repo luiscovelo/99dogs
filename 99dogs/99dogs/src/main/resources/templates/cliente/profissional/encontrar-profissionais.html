@@ -23,7 +23,8 @@
 				<tbody>
 					<tr th:each="profissional: ${profissionais}">
 						<td>
-							<img class="rounded-circle" th:src="${profissional.foto}" width="50">
+							<img th:if="${profissional.base64Foto == null}" src="/assets/imgs/default-img.png" width="50">
+							<img th:if="${profissional.base64Foto != null}" th:src="*{'data:image/png;base64,'+profissional.base64Foto}" width="50">
 						</td>
 						<td th:text="${profissional.nome}"></td>
 						<td th:text="${profissional.email}"></td>
