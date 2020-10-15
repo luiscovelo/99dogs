@@ -121,7 +121,11 @@
                 $('#sidebar').toggleClass('active');
             });
             
-            $('.dataTable').DataTable();
+            $('.dataTable').DataTable({
+            	dom: 'frtip',
+            	ordering: true,
+            	stateSave: true
+            });
             
         });
     </script>
