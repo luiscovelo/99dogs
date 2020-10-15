@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -26,6 +27,9 @@ public class ReclamacaoSugestaoServiceImpl  implements ReclamacaoSugestaoService
 	@Autowired
 	HttpServletRequest httpRequest;
 	
+	@Autowired
+	HttpSession session;
+	
 	@Override
 	public List<ReclamacaoSugestao> reclamacaoSugestaoPorCliente(Long id) {
 		
@@ -37,7 +41,7 @@ public class ReclamacaoSugestaoServiceImpl  implements ReclamacaoSugestaoService
 		try {
 			
 			HttpHeaders headers = new HttpHeaders();
-			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			headers.add("Authorization", Helper.getUserTokenJwt(session));
 			
 			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
@@ -72,7 +76,7 @@ public class ReclamacaoSugestaoServiceImpl  implements ReclamacaoSugestaoService
 						
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON);
-			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			headers.add("Authorization", Helper.getUserTokenJwt(session));
 			
 			Map<String, Object> map = new HashMap<>();
 			

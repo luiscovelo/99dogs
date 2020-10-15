@@ -28,7 +28,7 @@ public class QualificacaoController {
 	@GetMapping("/profissional/minhas-qualificacoes")
 	public String getPageMinhasQualificacoes(Model model) {
 		
-		Long profissional_id = pessoaService.sessaoAtual("p").getId();
+		Long profissional_id = pessoaService.sessaoAtual().getId();
 		
 		List<Qualificacao> qualificacoes = qualificacaoService.readByProfissionalId(profissional_id);
 		model.addAttribute("qualificacoes", qualificacoes);
@@ -59,7 +59,7 @@ public class QualificacaoController {
 	@PostMapping("/profissional/put-alterar-qualificacao")
 	public String putAlterarQualificao(Qualificacao qualificacao) {
 		
-		Long profissional_id = pessoaService.sessaoAtual("p").getId();
+		Long profissional_id = pessoaService.sessaoAtual().getId();
 		qualificacao.setProfissionalId(profissional_id);
 				
 		boolean response = qualificacaoService.update(qualificacao);
@@ -87,7 +87,7 @@ public class QualificacaoController {
 	@PostMapping("/profissional/post-alterar-qualificacao")
 	public String postAlterarQualificao(Qualificacao qualificacao) {
 		
-		Long profissional_id = pessoaService.sessaoAtual("p").getId();
+		Long profissional_id = pessoaService.sessaoAtual().getId();
 		qualificacao.setProfissionalId(profissional_id);
 		
 		boolean response = qualificacaoService.create(qualificacao);

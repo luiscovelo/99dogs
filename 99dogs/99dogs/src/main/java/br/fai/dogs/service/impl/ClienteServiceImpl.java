@@ -3,6 +3,7 @@ package br.fai.dogs.service.impl;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -22,6 +23,9 @@ public class ClienteServiceImpl implements ClienteService {
 	@Autowired
 	HttpServletRequest httpRequest;
 	
+	@Autowired
+	HttpSession session;
+	
 	@Override
 	public Pessoa readById(Long id) {
 		
@@ -33,7 +37,7 @@ public class ClienteServiceImpl implements ClienteService {
 		try {
 			
 			HttpHeaders headers = new HttpHeaders();
-			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			headers.add("Authorization", Helper.getUserTokenJwt(session));
 			
 			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			

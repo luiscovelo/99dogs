@@ -41,7 +41,7 @@ public class PessoaServiceImpl implements PessoaService {
 		try {
 			
 			HttpHeaders headers = new HttpHeaders();
-			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			headers.add("Authorization", Helper.getUserTokenJwt(session));
 			
 			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
@@ -127,7 +127,7 @@ public class PessoaServiceImpl implements PessoaService {
 						
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON);
-			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			headers.add("Authorization", Helper.getUserTokenJwt(session));
 			
 			Map<String, Object> map = new HashMap<>();
 			
@@ -156,31 +156,13 @@ public class PessoaServiceImpl implements PessoaService {
 	}
 
 	@Override
-	public Pessoa sessaoAtual(String tipo) {
+	public Pessoa sessaoAtual() {
 		
 		Pessoa pessoa = new Pessoa();
 		
 		if(session.getAttribute("pessoa") != null) {
 			pessoa = (Pessoa) session.getAttribute("pessoa");
 
-		}else {
-			
-			if(tipo == "p") {
-				
-				pessoa.setId((long) 4);
-				pessoa.setTipo("PROFISSIONAL");
-				pessoa.setEmail("dogwalker@gmail.com");
-				pessoa.setNome("Dogwlaker");
-				
-			}else {
-				
-				pessoa.setId((long) 2); 
-				pessoa.setTipo("CLIENTE");
-				pessoa.setEmail("cliente@hotmail.com");
-				pessoa.setNome("Cliente");
-				
-			}
-			
 		}
 		
 		return pessoa;
@@ -217,7 +199,7 @@ public class PessoaServiceImpl implements PessoaService {
 		try {
 			
 			HttpHeaders headers = new HttpHeaders();
-			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			headers.add("Authorization", Helper.getUserTokenJwt(session));
 			
 			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
@@ -251,7 +233,7 @@ public class PessoaServiceImpl implements PessoaService {
 		try {
 			
 			HttpHeaders headers = new HttpHeaders();
-			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			headers.add("Authorization", Helper.getUserTokenJwt(session));
 			
 			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
@@ -284,7 +266,7 @@ public class PessoaServiceImpl implements PessoaService {
 						
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON);
-			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			headers.add("Authorization", Helper.getUserTokenJwt(session));
 
 			Map<String, Object> map = new HashMap<>();
 			

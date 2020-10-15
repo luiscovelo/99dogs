@@ -7,11 +7,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.web.util.WebUtils;
+import javax.servlet.http.HttpSession;
 
 public class Helper {
 		
@@ -54,10 +50,9 @@ public class Helper {
 		
 	}
 	
-	public static String getUserTokenJwt(HttpServletRequest httpRequest) {
-		
-		Cookie token = WebUtils.getCookie(httpRequest, "token");
-		return token.getValue();
+	public static String getUserTokenJwt(HttpSession session) {
+				
+		return (String) session.getAttribute("token");
 		
 	}
 	

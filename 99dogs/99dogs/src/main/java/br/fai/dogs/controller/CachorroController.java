@@ -37,7 +37,7 @@ public class CachorroController {
 	@GetMapping("/cliente/meus-caes")
 	public String getListaDeCaesPorCliente(Model model, RedirectAttributes redirect) {
 		
-		Long cliente_id = pessoaService.sessaoAtual("c").getId();
+		Long cliente_id = pessoaService.sessaoAtual().getId();
 		
 		Map<String, Object> responseRequest = new HashMap<>();
 		List<Cachorro> cachorros            = new ArrayList<Cachorro>();
@@ -78,7 +78,7 @@ public class CachorroController {
 	@PostMapping("/cliente/post-adicionar-cachorro")
 	public String postAdicionarCachorro(Cachorro cachorro) {
 		
-		Long cliente_id = pessoaService.sessaoAtual("c").getId();
+		Long cliente_id = pessoaService.sessaoAtual().getId();
 		
 		cachorro.setClienteId(cliente_id);
 		
@@ -105,7 +105,7 @@ public class CachorroController {
 	@PostMapping("/cliente/put-alterar-cachorro")
 	public String putAlterarchorro(Cachorro cachorro) {
 		
-		Long cliente_id = pessoaService.sessaoAtual("c").getId();
+		Long cliente_id = pessoaService.sessaoAtual().getId();
 		
 		cachorro.setClienteId(cliente_id);
 		System.out.println(cachorro);

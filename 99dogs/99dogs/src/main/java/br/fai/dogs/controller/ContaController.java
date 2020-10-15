@@ -2,9 +2,9 @@ package br.fai.dogs.controller;
 
 import java.util.Calendar;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,7 +35,7 @@ public class ContaController {
 		
 		try {
 			
-			String tokenTemporario = tokenJwt(httpResponse,pessoa.getEmail(), 30, false);
+			String tokenTemporario = tokenJwt(httpResponse,pessoa.getEmail(), 30);
 
 			if(tokenTemporario != null) {
 				
@@ -77,7 +77,7 @@ public class ContaController {
 		
 		try {
 			
-			String tokenTemporario = tokenJwt(httpResponse,pessoa.getEmail(), 30, false);
+			String tokenTemporario = tokenJwt(httpResponse,pessoa.getEmail(), 30);
 
 			if(tokenTemporario != null) {
 				
@@ -118,7 +118,7 @@ public class ContaController {
 	private String SECRET_KEY_JWT;
 	
 	@GetMapping("/token")
-	public String geraTokenJwt(HttpServletResponse httpResponse, HttpServletRequest httpRequest) {
+	public String geraTokenJwt(HttpServletResponse httpResponse, HttpServletRequest httpRequest, HttpSession session) {
 		
 		try {
 			
@@ -126,14 +126,28 @@ public class ContaController {
 			
 			String username = auth.getName();
 						
-			String token = tokenJwt(httpResponse, username, 0, true);
+			String token = tokenJwt(httpResponse, username, 0);
 			
 			if(token != null) {
 				
-				if (httpRequest.isUserInRole("CLIENTE")) {
-				    return "redirect:/dashboard/cliente";
-				}else if(httpRequest.isUserInRole("PROFISSIONAL")) {
-					return "redirect:/dashboard/profissional";
+				Pessoa usuario = pessoaService.readByEmail(username, token);
+								
+				if(usuario != null) {
+					
+					boolean sessao = pessoaService.gravarSessao(session, usuario);
+					
+					if(sessao == true) {
+						
+						session.setAttribute("token", token);
+						
+						if (httpRequest.isUserInRole("CLIENTE")) {
+						    return "redirect:/dashboard/cliente";
+						}else if(httpRequest.isUserInRole("PROFISSIONAL")) {
+							return "redirect:/dashboard/profissional";
+						}
+						
+					}
+					
 				}
 				
 			}else {
@@ -148,7 +162,7 @@ public class ContaController {
 		
 	}
 	
-	public String tokenJwt(HttpServletResponse httpResponse, String username, int limiteExpiracaoEmSegundos, Boolean geraCookie) {
+	public String tokenJwt(HttpServletResponse httpResponse, String username, int limiteExpiracaoEmSegundos) {
 		
 		String jwt = null;
 		
@@ -173,18 +187,7 @@ public class ContaController {
 						.sign(Algorithm.HMAC256(SECRET_KEY_JWT));
 				
 			}
-			
-			if(geraCookie) {
-				
-				Cookie cookie = new Cookie("token", jwt);
-				
-				cookie.setHttpOnly(true);
-				cookie.setPath("/");
-				//cookie.setMaxAge(limiteExpiracaoEmSegundos);
-				httpResponse.addCookie(cookie);
-				
-			}
-			
+						
 		} catch (Exception e) {
 			e.getMessage();
 		}

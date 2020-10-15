@@ -32,7 +32,7 @@ public class ConfiguracaoDaAgendaController {
 	@GetMapping("/profissional/minha-configuracao")
 	public String getPageMinhaConfiguracao(Model model) {
 		
-		Long profissional_id = pessoaService.sessaoAtual("p").getId();
+		Long profissional_id = pessoaService.sessaoAtual().getId();
 		
 		List<ConfiguracaoDaAgenda> configs = configuracaoDaAgendaService.readByProfissionalId(profissional_id);
 		Map<Integer,String> diasDaSemana = new HashMap<Integer,String>();
@@ -55,7 +55,7 @@ public class ConfiguracaoDaAgendaController {
 	@GetMapping("/profissional/adicionar-configuracao")
 	public String getPageAdicionarConfiguracaoDaAgenda(Model model) {
 		
-		Long profissional_id = pessoaService.sessaoAtual("p").getId();
+		Long profissional_id = pessoaService.sessaoAtual().getId();
 				
 		Map<Integer,String> diasDaSemana = new HashMap<Integer,String>();
 		

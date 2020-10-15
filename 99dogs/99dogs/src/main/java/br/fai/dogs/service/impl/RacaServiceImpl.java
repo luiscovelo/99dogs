@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -23,6 +24,9 @@ public class RacaServiceImpl implements RacaService {
 	@Autowired
 	HttpServletRequest httpRequest;
 	
+	@Autowired
+	HttpSession session;
+	
 	@Override
 	public List<Raca> readAll() {
 		
@@ -34,7 +38,7 @@ public class RacaServiceImpl implements RacaService {
 		try {
 			
 			HttpHeaders headers = new HttpHeaders();
-			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			headers.add("Authorization", Helper.getUserTokenJwt(session));
 			
 			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			

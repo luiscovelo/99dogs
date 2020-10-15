@@ -1,6 +1,5 @@
 package br.fai.dogs.controller;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +39,7 @@ public class RecebimentoController {
 	@GetMapping("/profissional/a-receber")
 	public String getPageAReceber(Model model) {
 		
-		Long profissional_id = pessoaService.sessaoAtual("p").getId();
+		Long profissional_id = pessoaService.sessaoAtual().getId();
 		
 		List<Passeio> passeios = recebimentoService.readPasseiosSemRecebimentoPorProfissional(profissional_id);
 		List<FormaDePagamento> formasDePagamento = formaDePagamentoService.readAll();
@@ -85,7 +84,7 @@ public class RecebimentoController {
 	@GetMapping("/profissional/recebido")
 	public String getPageRecebido(Model model) {
 		
-		Long profissional_id = pessoaService.sessaoAtual("p").getId();
+		Long profissional_id = pessoaService.sessaoAtual().getId();
 		
 		List<Recebimento> recebimentos = recebimentoService.readAllByProfissionalId(profissional_id);
 		

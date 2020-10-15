@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -25,6 +26,9 @@ public class ProfissionalServiceImpl implements ProfissionalService {
 	@Autowired
 	HttpServletRequest httpRequest;
 	
+	@Autowired
+	HttpSession session;
+	
 	@Override
 	public List<Pessoa> readAll() {
 		
@@ -36,7 +40,7 @@ public class ProfissionalServiceImpl implements ProfissionalService {
 		try {
 			
 			HttpHeaders headers = new HttpHeaders();
-			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			headers.add("Authorization", Helper.getUserTokenJwt(session));
 			
 			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
@@ -71,7 +75,7 @@ public class ProfissionalServiceImpl implements ProfissionalService {
 			ParameterizedTypeReference<Map<String, String>> typeRef = new ParameterizedTypeReference<Map<String, String>>() {};
 			
 			HttpHeaders headers = new HttpHeaders();
-			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			headers.add("Authorization", Helper.getUserTokenJwt(session));
 			
 			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
@@ -131,7 +135,7 @@ public class ProfissionalServiceImpl implements ProfissionalService {
 			ParameterizedTypeReference<Map<String, String>> typeRef = new ParameterizedTypeReference<Map<String, String>>() {};
 			
 			HttpHeaders headers = new HttpHeaders();
-			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			headers.add("Authorization", Helper.getUserTokenJwt(session));
 			
 			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
@@ -166,7 +170,7 @@ public class ProfissionalServiceImpl implements ProfissionalService {
 			ParameterizedTypeReference<Map<String, String>> typeRef = new ParameterizedTypeReference<Map<String, String>>() {};
 			
 			HttpHeaders headers = new HttpHeaders();
-			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			headers.add("Authorization", Helper.getUserTokenJwt(session));
 			
 			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			

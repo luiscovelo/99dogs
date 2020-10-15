@@ -1,12 +1,12 @@
 package br.fai.dogs.service.impl;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -28,6 +28,9 @@ public class CachorroServiceImpl implements CachorroService {
 	@Autowired
 	HttpServletRequest httpRequest;
 	
+	@Autowired
+	HttpSession session;
+	
 	ParameterizedTypeReference<Map<String, Object>> responseMapStringObjectType = 
             new ParameterizedTypeReference<Map<String, Object>>() {};
 	
@@ -46,7 +49,7 @@ public class CachorroServiceImpl implements CachorroService {
 		try {
 			
 			HttpHeaders headers = new HttpHeaders();
-			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			headers.add("Authorization", Helper.getUserTokenJwt(session));
 			
 			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
@@ -93,7 +96,7 @@ public class CachorroServiceImpl implements CachorroService {
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON);
 			headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			headers.add("Authorization", Helper.getUserTokenJwt(session));
 			
 			Map<String, Object> map = new HashMap<>();
 			
@@ -134,7 +137,7 @@ public class CachorroServiceImpl implements CachorroService {
 		try {
 			
 			HttpHeaders headers = new HttpHeaders();
-			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			headers.add("Authorization", Helper.getUserTokenJwt(session));
 			
 			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
@@ -168,7 +171,7 @@ public class CachorroServiceImpl implements CachorroService {
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON);
 			headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			headers.add("Authorization", Helper.getUserTokenJwt(session));
 			
 			Map<String, Object> map = new HashMap<>();
 			
@@ -209,7 +212,7 @@ public class CachorroServiceImpl implements CachorroService {
 		try {
 			
 			HttpHeaders headers = new HttpHeaders();
-			headers.add("Authorization", Helper.getUserTokenJwt(httpRequest));
+			headers.add("Authorization", Helper.getUserTokenJwt(session));
 			
 			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
