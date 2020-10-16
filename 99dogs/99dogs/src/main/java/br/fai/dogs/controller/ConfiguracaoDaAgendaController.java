@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -20,15 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import br.fai.dogs.helper.Helper;
 import br.fai.dogs.model.entities.ConfiguracaoDaAgenda;
 import br.fai.dogs.service.ConfiguracaoDaAgendaService;
-import br.fai.dogs.service.PessoaService;
 
 @Controller
 @RequestMapping("configuracao-da-agenda")
 public class ConfiguracaoDaAgendaController {
-	
-	@Autowired
-	private PessoaService pessoaService;
-	
+		
 	@Autowired
 	private ConfiguracaoDaAgendaService configuracaoDaAgendaService;
 	
@@ -38,21 +33,27 @@ public class ConfiguracaoDaAgendaController {
 	@GetMapping("/profissional/minha-configuracao")
 	public String getPageMinhaConfiguracao(Model model) {
 		
-		Long profissional_id = Helper.getSessao(session).getId();
-		
-		List<ConfiguracaoDaAgenda> configs = configuracaoDaAgendaService.readByProfissionalId(profissional_id);
-		Map<Integer,String> diasDaSemana = new HashMap<Integer,String>();
-		
-		diasDaSemana.put(2, "Segunda-feira");
-		diasDaSemana.put(3, "Terça-feira");
-		diasDaSemana.put(4, "Quarta-feira");
-		diasDaSemana.put(5, "Quinta-feira");
-		diasDaSemana.put(6, "Sexta-feira");
-		diasDaSemana.put(7, "Sábado");
-		diasDaSemana.put(1, "Domingo");
-		
-		model.addAttribute("configs", configs);
-		model.addAttribute("diasDaSemana", diasDaSemana);
+		try {
+			
+			Long profissional_id = Helper.getSessao(session).getId();
+			
+			List<ConfiguracaoDaAgenda> configs = configuracaoDaAgendaService.readByProfissionalId(profissional_id);
+			Map<Integer,String> diasDaSemana = new HashMap<Integer,String>();
+			
+			diasDaSemana.put(2, "Segunda-feira");
+			diasDaSemana.put(3, "Terça-feira");
+			diasDaSemana.put(4, "Quarta-feira");
+			diasDaSemana.put(5, "Quinta-feira");
+			diasDaSemana.put(6, "Sexta-feira");
+			diasDaSemana.put(7, "Sábado");
+			diasDaSemana.put(1, "Domingo");
+			
+			model.addAttribute("configs", configs);
+			model.addAttribute("diasDaSemana", diasDaSemana);
+			
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
 		
 		return "/profissional/configuracao-da-agenda/minha-configuracao";
 		
@@ -61,20 +62,35 @@ public class ConfiguracaoDaAgendaController {
 	@GetMapping("/profissional/adicionar-configuracao")
 	public String getPageAdicionarConfiguracaoDaAgenda(Model model) {
 		
-		Long profissional_id = Helper.getSessao(session).getId();
+		try {
+			
+			Long profissional_id = Helper.getSessao(session).getId();
+			
+			List<ConfiguracaoDaAgenda> configs = configuracaoDaAgendaService.readByProfissionalId(profissional_id);
+			Map<Integer,String> diasDaSemana = new HashMap<Integer,String>();
+			
+			diasDaSemana.put(2, "Segunda-feira");
+			diasDaSemana.put(3, "Terça-feira");
+			diasDaSemana.put(4, "Quarta-feira");
+			diasDaSemana.put(5, "Quinta-feira");
+			diasDaSemana.put(6, "Sexta-feira");
+			diasDaSemana.put(7, "Sábado");
+			diasDaSemana.put(1, "Domingo");
+			
+			for(ConfiguracaoDaAgenda cda: configs) {
 				
-		Map<Integer,String> diasDaSemana = new HashMap<Integer,String>();
-		
-		diasDaSemana.put(2, "Segunda-feira");
-		diasDaSemana.put(3, "Terça-feira");
-		diasDaSemana.put(4, "Quarta-feira");
-		diasDaSemana.put(5, "Quinta-feira");
-		diasDaSemana.put(6, "Sexta-feira");
-		diasDaSemana.put(7, "Sábado");
-		diasDaSemana.put(1, "Domingo");
-		
-		model.addAttribute("diasDaSemana", diasDaSemana);
-		model.addAttribute("profissional_id", profissional_id);
+				if(diasDaSemana.containsKey(cda.getDiaSemana().intValue())) {
+					diasDaSemana.remove(cda.getDiaSemana().intValue());
+				}
+				
+			}
+			
+			model.addAttribute("diasDaSemana", diasDaSemana);
+			model.addAttribute("profissional_id", profissional_id);
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 		return "/profissional/configuracao-da-agenda/adicionar-configuracao";
 		
@@ -83,7 +99,13 @@ public class ConfiguracaoDaAgendaController {
 	@PostMapping("/profissional/post-adicionar-configuracao-da-agenda")
 	public String postConfiguracaoDaAgenda(ConfiguracaoDaAgenda configuracaoDaAgenda) {
 		
-		boolean response = configuracaoDaAgendaService.create(configuracaoDaAgenda);
+		try {
+			
+			boolean response = configuracaoDaAgendaService.create(configuracaoDaAgenda);
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 		return "redirect:/configuracao-da-agenda/profissional/minha-configuracao";
 		
@@ -92,21 +114,27 @@ public class ConfiguracaoDaAgendaController {
 	@GetMapping("/profissional/alterar-configuracao/{id}")
 	public String getPageAlterarConfiguracaoDaAgenda(@PathVariable("id") Long id, Model model) {
 		
-		ConfiguracaoDaAgenda config = configuracaoDaAgendaService.readById(id);
-		
-		Map<Integer,String> diasDaSemana = new HashMap<Integer,String>();
-		
-		diasDaSemana.put(2, "Segunda-feira");
-		diasDaSemana.put(3, "Terça-feira");
-		diasDaSemana.put(4, "Quarta-feira");
-		diasDaSemana.put(5, "Quinta-feira");
-		diasDaSemana.put(6, "Sexta-feira");
-		diasDaSemana.put(7, "Sábado");
-		diasDaSemana.put(1, "Domingo");
-		
-		model.addAttribute("diasDaSemana", diasDaSemana);
-		model.addAttribute("config", config);
-		model.addAttribute("id", id);
+		try {
+			
+			ConfiguracaoDaAgenda config = configuracaoDaAgendaService.readById(id);
+			
+			Map<Integer,String> diasDaSemana = new HashMap<Integer,String>();
+			
+			diasDaSemana.put(2, "Segunda-feira");
+			diasDaSemana.put(3, "Terça-feira");
+			diasDaSemana.put(4, "Quarta-feira");
+			diasDaSemana.put(5, "Quinta-feira");
+			diasDaSemana.put(6, "Sexta-feira");
+			diasDaSemana.put(7, "Sábado");
+			diasDaSemana.put(1, "Domingo");
+			
+			model.addAttribute("diasDaSemana", diasDaSemana);
+			model.addAttribute("config", config);
+			model.addAttribute("id", id);
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 		return "/profissional/configuracao-da-agenda/alterar-configuracao";
 		
@@ -115,7 +143,14 @@ public class ConfiguracaoDaAgendaController {
 	@PostMapping("/profissional/put-alterar-configuracao-da-agenda")
 	public String putConfiguracaoDaAgenda(ConfiguracaoDaAgenda configuracaoDaAgenda) {
 		
-		boolean response = configuracaoDaAgendaService.update(configuracaoDaAgenda);
+		try {
+			
+			boolean response = configuracaoDaAgendaService.update(configuracaoDaAgenda);
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
 		return "redirect:/configuracao-da-agenda/profissional/minha-configuracao";
 		
 	}
@@ -123,7 +158,14 @@ public class ConfiguracaoDaAgendaController {
 	@GetMapping("/profissional/deletar-configuracao/{id}")
 	public String deletarConfiguracaoDaAgenda(@PathVariable("id") Long id) {
 		
-		boolean response = configuracaoDaAgendaService.delete(id);
+		try {
+			
+			boolean response = configuracaoDaAgendaService.delete(id);
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
 		return "redirect:/configuracao-da-agenda/profissional/minha-configuracao";
 		
 	}
@@ -131,8 +173,16 @@ public class ConfiguracaoDaAgendaController {
 	@GetMapping("/cliente/horarios-disponveis-por-data/{data}/{id}")
 	public HttpEntity<Map<String,String>> horariosDisponiveisPorData(@PathVariable("data") String data, @PathVariable("id") Long id){
 		
-		Map<String,String> response = configuracaoDaAgendaService.horariosDisponiveisPorData(data, id);
-		return ResponseEntity.ok(response);
+		try {
+			
+			Map<String,String> response = configuracaoDaAgendaService.horariosDisponiveisPorData(data, id);
+			return ResponseEntity.ok(response);
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return ResponseEntity.ok(null);
 		
 	}
 	

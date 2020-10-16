@@ -1,7 +1,5 @@
 package br.fai.dogs.config;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -16,9 +14,6 @@ import br.fai.dogs.config.providers.CustomAuthenticationProvider;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-	
-	@Autowired
-	DataSource dataSource;
 	
 	@Autowired
 	private CustomAuthenticationProvider customAuthenticationProvider;
@@ -52,14 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		
-		/*
-		auth.jdbcAuthentication()
-			.dataSource(dataSource)
-			.passwordEncoder(passwordEncoder)
-			.usersByUsernameQuery("select email, senha, 1 as ativo from pessoa where email = ?")
-			.authoritiesByUsernameQuery("select email, CONCAT('ROLE_',tipo) as tipo from pessoa where email = ?");*/
-		
+				
 		auth.authenticationProvider(customAuthenticationProvider);
 		
 	}
