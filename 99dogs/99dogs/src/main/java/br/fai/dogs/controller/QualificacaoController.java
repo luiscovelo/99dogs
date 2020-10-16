@@ -34,10 +34,16 @@ public class QualificacaoController {
 	@GetMapping("/profissional/minhas-qualificacoes")
 	public String getPageMinhasQualificacoes(Model model) {
 		
-		Long profissional_id = Helper.getSessao(session).getId();
-		
-		List<Qualificacao> qualificacoes = qualificacaoService.readByProfissionalId(profissional_id);
-		model.addAttribute("qualificacoes", qualificacoes);
+		try {
+			
+			Long profissional_id = Helper.getSessao(session).getId();
+			
+			List<Qualificacao> qualificacoes = qualificacaoService.readByProfissionalId(profissional_id);
+			model.addAttribute("qualificacoes", qualificacoes);
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 		return "/profissional/qualificacao/minhas-qualificacoes";
 		
@@ -46,17 +52,23 @@ public class QualificacaoController {
 	@GetMapping("/profissional/alterar-qualificacao/{id}")
 	public String getPageAlterarQualificacao(@PathVariable("id") Long id, Model model) {
 		
-		Qualificacao qualificacao = qualificacaoService.readById(id);
-		model.addAttribute("qualificacao", qualificacao);
-		
-		List<String> modalidades = new ArrayList<String>();
-		
-		modalidades.add("Graduacao");
-		modalidades.add("Tecnico");
-		modalidades.add("Pos-Graduacao");
-		modalidades.add("Mestrado");
-		
-		model.addAttribute("modalidades", modalidades);
+		try {
+			
+			Qualificacao qualificacao = qualificacaoService.readById(id);
+			model.addAttribute("qualificacao", qualificacao);
+			
+			List<String> modalidades = new ArrayList<String>();
+			
+			modalidades.add("Graduacao");
+			modalidades.add("Tecnico");
+			modalidades.add("Pos-Graduacao");
+			modalidades.add("Mestrado");
+			
+			model.addAttribute("modalidades", modalidades);
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 		return "/profissional/qualificacao/alterar-qualificacao";
 		
@@ -65,10 +77,16 @@ public class QualificacaoController {
 	@PostMapping("/profissional/put-alterar-qualificacao")
 	public String putAlterarQualificao(Qualificacao qualificacao) {
 		
-		Long profissional_id = Helper.getSessao(session).getId();
-		qualificacao.setProfissionalId(profissional_id);
-				
-		boolean response = qualificacaoService.update(qualificacao);
+		try {
+			
+			Long profissional_id = Helper.getSessao(session).getId();
+			qualificacao.setProfissionalId(profissional_id);
+					
+			boolean response = qualificacaoService.update(qualificacao);
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 		return "redirect:/qualificacao/profissional/minhas-qualificacoes";
 		
@@ -77,14 +95,20 @@ public class QualificacaoController {
 	@GetMapping("/profissional/adicionar-qualificacao")
 	public String getPageAdicionarQualificacao(Model model) {
 		
-		List<String> modalidades = new ArrayList<String>();
-		
-		modalidades.add("Graduacao");
-		modalidades.add("Tecnico");
-		modalidades.add("Pos-Graduacao");
-		modalidades.add("Mestrado");
-		
-		model.addAttribute("modalidades", modalidades);
+		try {
+			
+			List<String> modalidades = new ArrayList<String>();
+			
+			modalidades.add("Graduacao");
+			modalidades.add("Tecnico");
+			modalidades.add("Pos-Graduacao");
+			modalidades.add("Mestrado");
+			
+			model.addAttribute("modalidades", modalidades);
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 		return "/profissional/qualificacao/adicionar-qualificacao";
 		
@@ -93,10 +117,16 @@ public class QualificacaoController {
 	@PostMapping("/profissional/post-alterar-qualificacao")
 	public String postAlterarQualificao(Qualificacao qualificacao) {
 		
-		Long profissional_id = Helper.getSessao(session).getId();
-		qualificacao.setProfissionalId(profissional_id);
-		
-		boolean response = qualificacaoService.create(qualificacao);
+		try {
+			
+			Long profissional_id = Helper.getSessao(session).getId();
+			qualificacao.setProfissionalId(profissional_id);
+			
+			boolean response = qualificacaoService.create(qualificacao);
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 		return "redirect:/qualificacao/profissional/minhas-qualificacoes";
 		
@@ -105,7 +135,13 @@ public class QualificacaoController {
 	@GetMapping("/profissional/deletar-qualificacao/{id}")
 	public String deleteQualificacao(@PathVariable("id") Long id) {
 		
-		boolean response = qualificacaoService.deleteById(id);
+		try {
+			
+			boolean response = qualificacaoService.deleteById(id);
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 		return "redirect:/qualificacao/profissional/minhas-qualificacoes"; 
 		

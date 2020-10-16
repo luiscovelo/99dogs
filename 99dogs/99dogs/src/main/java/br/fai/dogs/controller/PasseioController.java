@@ -68,12 +68,18 @@ public class PasseioController {
 	@GetMapping("/cliente/meus-passeios")
 	public String getListaDePasseiosPorCliente(Model model) {
 		
-		Long cliente_id = Helper.getSessao(session).getId();
-		List<Passeio> passeios = new ArrayList<Passeio>();
-		
-		passeios = passeioService.passeiosPorCliente(cliente_id);
-				
-		model.addAttribute("passeios", passeios);
+		try {
+			
+			Long cliente_id = Helper.getSessao(session).getId();
+			List<Passeio> passeios = new ArrayList<Passeio>();
+			
+			passeios = passeioService.passeiosPorCliente(cliente_id);
+					
+			model.addAttribute("passeios", passeios);
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 		return "/cliente/passeio/meus-passeios";
 	}
@@ -81,11 +87,17 @@ public class PasseioController {
 	@GetMapping("/cliente/solicitar-passeio")
 	public String getPageSolicitarPasseio(Model model) {
 				
-		List<Pessoa> profissionais = pessoaService.readAllProfissional();
-		model.addAttribute("profissionais", profissionais);
-				
-		List<FormaDePagamento> formasDePagamento = formaDePagamentoService.readAll();
-		model.addAttribute("formasDePagamento", formasDePagamento);
+		try {
+			
+			List<Pessoa> profissionais = pessoaService.readAllProfissional();
+			model.addAttribute("profissionais", profissionais);
+					
+			List<FormaDePagamento> formasDePagamento = formaDePagamentoService.readAll();
+			model.addAttribute("formasDePagamento", formasDePagamento);
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 		return "/cliente/passeio/solicitar-passeio";
 		
@@ -94,15 +106,21 @@ public class PasseioController {
 	@PostMapping("/cliente/post-solicitar-passeio")
 	public String postSolicitarPasseio(Passeio passeio, BindingResult bindingResult) {
 		
-		Long cliente_id = Helper.getSessao(session).getId();
+		try {
+			
+			Long cliente_id = Helper.getSessao(session).getId();
 
-		passeio.setClienteId(cliente_id);
-		passeio.setStatus("Espera");
-				
-		Long idPasseio = passeioService.create(passeio);
-				
-		if(idPasseio != null && idPasseio != 0) {
-			return "redirect:/passeio/cliente/adicionar-cachorro-ao-passeio/" + idPasseio;
+			passeio.setClienteId(cliente_id);
+			passeio.setStatus("Espera");
+					
+			Long idPasseio = passeioService.create(passeio);
+					
+			if(idPasseio != null && idPasseio != 0) {
+				return "redirect:/passeio/cliente/adicionar-cachorro-ao-passeio/" + idPasseio;
+			}
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 		
 		return "redirect:/passeio/cliente/solicitar-passeio";
@@ -142,14 +160,20 @@ public class PasseioController {
 	@PostMapping("/cliente/post-adicionar-cachorro-ao-passeio")
 	public String postAdicionarCachorroAoPasseio(PasseioCachorro passeioCachorro) {
 		
-		Passeio passeio = passeioService.readById(Long.valueOf(passeioCachorro.getPasseioId()));
-		boolean response = passeioCachorroService.create(passeioCachorro);
-		
-		if(response == true) {
+		try {
 			
-			sendMail.passeioSolicitado(passeio);
-			return "redirect:/passeio/cliente/detalhes/" + passeioCachorro.getPasseioId();
+			Passeio passeio = passeioService.readById(Long.valueOf(passeioCachorro.getPasseioId()));
+			boolean response = passeioCachorroService.create(passeioCachorro);
 			
+			if(response == true) {
+				
+				sendMail.passeioSolicitado(passeio);
+				return "redirect:/passeio/cliente/detalhes/" + passeioCachorro.getPasseioId();
+				
+			}
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 		
 		return "redirect:/passeio/cliente/adicionar-cachorro-ao-passeio/" + passeioCachorro.getPasseioId();
@@ -159,39 +183,45 @@ public class PasseioController {
 	@GetMapping("/cliente/detalhes/{id}")
 	public String getPageDetalhesDoPasseioCliente(@PathVariable("id") Long id, Model model) {
 		
-		Passeio passeio = passeioService.readById(id);
-		List<Cachorro> cachorros = passeioCachorroService.readByPasseioId(passeio.getId());
-		
-		if(passeio.getProfissional().getPessoa().getFoto() != null) {
+		try {
 			
-			Pessoa profissional = new Pessoa();
+			Passeio passeio = passeioService.readById(id);
+			List<Cachorro> cachorros = passeioCachorroService.readByPasseioId(passeio.getId());
 			
-			profissional = passeio.getProfissional().getPessoa();
-			
-			if(profissional.getFoto() != null) {
-				profissional.setBase64Foto(Base64.getEncoder().encodeToString(profissional.getFoto()));
+			if(passeio.getProfissional().getPessoa().getFoto() != null) {
+				
+				Pessoa profissional = new Pessoa();
+				
+				profissional = passeio.getProfissional().getPessoa();
+				
+				if(profissional.getFoto() != null) {
+					profissional.setBase64Foto(Base64.getEncoder().encodeToString(profissional.getFoto()));
+				}
+				
+				passeio.getProfissional().setPessoa(profissional);
+				
 			}
 			
-			passeio.getProfissional().setPessoa(profissional);
-			
-		}
-		
-		if(passeio.getCliente().getPessoa().getFoto() != null) {
-			
-			Pessoa cliente = new Pessoa();
-			
-			cliente = passeio.getCliente().getPessoa();
-			
-			if(cliente.getFoto() != null) {
-				cliente.setBase64Foto(Base64.getEncoder().encodeToString(cliente.getFoto()));
+			if(passeio.getCliente().getPessoa().getFoto() != null) {
+				
+				Pessoa cliente = new Pessoa();
+				
+				cliente = passeio.getCliente().getPessoa();
+				
+				if(cliente.getFoto() != null) {
+					cliente.setBase64Foto(Base64.getEncoder().encodeToString(cliente.getFoto()));
+				}
+				
+				passeio.getCliente().setPessoa(cliente);
+				
 			}
 			
-			passeio.getCliente().setPessoa(cliente);
+			model.addAttribute("passeio", passeio);
+			model.addAttribute("cachorros", cachorros);
 			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
-		
-		model.addAttribute("passeio", passeio);
-		model.addAttribute("cachorros", cachorros);
 		
 		return "/cliente/passeio/detalhes";
 		
@@ -200,12 +230,18 @@ public class PasseioController {
 	@GetMapping("/profissional/meus-passeios")
 	public String getListaDePasseiosPorProfissional(Model model) {
 		
-		Long profissional = Helper.getSessao(session).getId();
-		List<Passeio> passeios = new ArrayList<Passeio>();
-		
-		passeios = passeioService.passeiosPorProfissional(profissional);
-		
-		model.addAttribute("passeios", passeios);
+		try {
+			
+			Long profissional = Helper.getSessao(session).getId();
+			List<Passeio> passeios = new ArrayList<Passeio>();
+			
+			passeios = passeioService.passeiosPorProfissional(profissional);
+			
+			model.addAttribute("passeios", passeios);
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 		return "/profissional/passeio/meus-passeios";
 	}
@@ -213,29 +249,35 @@ public class PasseioController {
 	@GetMapping("/profissional/minha-agenda")
 	public String getPageMinhaAgenda(Model model) {
 		
-		Long profissional = Helper.getSessao(session).getId();
-		List<Passeio> passeios = new ArrayList<Passeio>();
+		try {
+			
+			Long profissional = Helper.getSessao(session).getId();
+			List<Passeio> passeios = new ArrayList<Passeio>();
+					
+			passeios = passeioService.passeiosPorProfissional(profissional);
+			
+			Map<String, String> map = new HashMap<>();
+			Stack<JSONObject> jsonPasseios = new Stack<JSONObject>();
+			
+			for(Passeio passeio: passeios) {
 				
-		passeios = passeioService.passeiosPorProfissional(profissional);
-		
-		Map<String, String> map = new HashMap<>();
-		Stack<JSONObject> jsonPasseios = new Stack<JSONObject>();
-		
-		for(Passeio passeio: passeios) {
+				map.put("title", passeio.getCliente().getPessoa().getNome().toString());
+				map.put("start", passeio.getDatahora().toString());
+				map.put("url", "/passeio/profissional/detalhes/" + passeio.getId());
+				
+				JSONObject json = new JSONObject(map);
+				jsonPasseios.push(json);
+				
+			}
 			
-			map.put("title", passeio.getCliente().getPessoa().getNome().toString());
-			map.put("start", passeio.getDatahora().toString());
-			map.put("url", "/passeio/profissional/detalhes/" + passeio.getId());
+			String diaPrimeiroDoMes = Helper.getDataAtual("yyyy-MM-dd");
 			
-			JSONObject json = new JSONObject(map);
-			jsonPasseios.push(json);
+			model.addAttribute("jsonPasseios", jsonPasseios);
+			model.addAttribute("diaPrimeiroDoMes", diaPrimeiroDoMes);
 			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
-		
-		String diaPrimeiroDoMes = Helper.getDataAtual("yyyy-MM-dd");
-		
-		model.addAttribute("jsonPasseios", jsonPasseios);
-		model.addAttribute("diaPrimeiroDoMes", diaPrimeiroDoMes);
 		
 		return "/profissional/passeio/minha-agenda";
 		
@@ -244,39 +286,45 @@ public class PasseioController {
 	@GetMapping("/profissional/detalhes/{id}")
 	public String getPageDetalhesDoPasseioProfissional(@PathVariable("id") Long id, Model model) {
 		
-		Passeio passeio = passeioService.readById(id);
-		List<Cachorro> cachorros = passeioCachorroService.readByPasseioId(passeio.getId());
-		
-		if(passeio.getProfissional().getPessoa().getFoto() != null) {
+		try {
 			
-			Pessoa profissional = new Pessoa();
+			Passeio passeio = passeioService.readById(id);
+			List<Cachorro> cachorros = passeioCachorroService.readByPasseioId(passeio.getId());
 			
-			profissional = passeio.getProfissional().getPessoa();
-			
-			if(profissional.getFoto() != null) {
-				profissional.setBase64Foto(Base64.getEncoder().encodeToString(profissional.getFoto()));
+			if(passeio.getProfissional().getPessoa().getFoto() != null) {
+				
+				Pessoa profissional = new Pessoa();
+				
+				profissional = passeio.getProfissional().getPessoa();
+				
+				if(profissional.getFoto() != null) {
+					profissional.setBase64Foto(Base64.getEncoder().encodeToString(profissional.getFoto()));
+				}
+				
+				passeio.getProfissional().setPessoa(profissional);
+				
 			}
 			
-			passeio.getProfissional().setPessoa(profissional);
-			
-		}
-		
-		if(passeio.getCliente().getPessoa().getFoto() != null) {
-			
-			Pessoa cliente = new Pessoa();
-			
-			cliente = passeio.getCliente().getPessoa();
-			
-			if(cliente.getFoto() != null) {
-				cliente.setBase64Foto(Base64.getEncoder().encodeToString(cliente.getFoto()));
+			if(passeio.getCliente().getPessoa().getFoto() != null) {
+				
+				Pessoa cliente = new Pessoa();
+				
+				cliente = passeio.getCliente().getPessoa();
+				
+				if(cliente.getFoto() != null) {
+					cliente.setBase64Foto(Base64.getEncoder().encodeToString(cliente.getFoto()));
+				}
+				
+				passeio.getCliente().setPessoa(cliente);
+				
 			}
 			
-			passeio.getCliente().setPessoa(cliente);
+			model.addAttribute("passeio", passeio);
+			model.addAttribute("cachorros", cachorros);
 			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
-		
-		model.addAttribute("passeio", passeio);
-		model.addAttribute("cachorros", cachorros);
 				
 		return "/profissional/passeio/detalhes";
 		
@@ -285,16 +333,22 @@ public class PasseioController {
 	@GetMapping("/profissional/aprovar-passeio/{id}")
 	public String aprovarPasseio(@PathVariable("id") Long id) {
 		
-		Passeio passeioDetalhes = passeioService.readById(id);
-		Passeio passeio = new Passeio();
-		
-		passeio.setId(id);
-		passeio.setStatus("Aprovado");
-		
-		boolean response = passeioService.alterarStatus(passeio);
-		
-		if(response) {
-			sendMail.passeioAprovado(passeioDetalhes);
+		try {
+			
+			Passeio passeioDetalhes = passeioService.readById(id);
+			Passeio passeio = new Passeio();
+			
+			passeio.setId(id);
+			passeio.setStatus("Aprovado");
+			
+			boolean response = passeioService.alterarStatus(passeio);
+			
+			if(response) {
+				sendMail.passeioAprovado(passeioDetalhes);
+			}
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 		
 		return "redirect:/passeio/profissional/detalhes/" + id;
@@ -304,16 +358,22 @@ public class PasseioController {
 	@GetMapping("/profissional/recusar-passeio/{id}")
 	public String recusarPasseio(@PathVariable("id") Long id) {
 		
-		Passeio passeioDetalhes = passeioService.readById(id);
-		Passeio passeio = new Passeio();
-		
-		passeio.setId(id);
-		passeio.setStatus("Recusado");
-		
-		boolean response = passeioService.alterarStatus(passeio);
-		
-		if(response) {
-			sendMail.passeioRecusado(passeioDetalhes);
+		try {
+			
+			Passeio passeioDetalhes = passeioService.readById(id);
+			Passeio passeio = new Passeio();
+			
+			passeio.setId(id);
+			passeio.setStatus("Recusado");
+			
+			boolean response = passeioService.alterarStatus(passeio);
+			
+			if(response) {
+				sendMail.passeioRecusado(passeioDetalhes);
+			}
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 		
 		return "redirect:/passeio/profissional/detalhes/" + id;
@@ -323,20 +383,26 @@ public class PasseioController {
 	@GetMapping("/profissional/finalizar-passeio/{id}")
 	public String finaliarPasseio(@PathVariable("id") Long id) {
 		
-		Passeio passeio = new Passeio();
-		
-		passeio.setId(id);
-		passeio.setStatus("Finalizado");
-		
-		boolean response = passeioService.alterarStatus(passeio);
-		
-		if(response) {
+		try {
 			
-			Passeio passeioDetalhes = passeioService.readById(id);
-			if(passeioDetalhes != null) {
-				sendMail.passeioFinalizado(passeioDetalhes);
+			Passeio passeio = new Passeio();
+			
+			passeio.setId(id);
+			passeio.setStatus("Finalizado");
+			
+			boolean response = passeioService.alterarStatus(passeio);
+			
+			if(response) {
+				
+				Passeio passeioDetalhes = passeioService.readById(id);
+				if(passeioDetalhes != null) {
+					sendMail.passeioFinalizado(passeioDetalhes);
+				}
+				
 			}
 			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 		
 		return "redirect:/passeio/profissional/detalhes/" + id;
@@ -346,8 +412,16 @@ public class PasseioController {
 	@GetMapping("/cliente/verificar-disponibilidade/{datahora}/{id}")
 	public HttpEntity<Boolean> verificarDisponibilidade(@PathVariable("datahora") String datahora, @PathVariable("id") Long id){
 				
-		boolean response = passeioService.verificarDisponibilidade(datahora, id);
-		return ResponseEntity.ok(response);
+		try {
+			
+			boolean response = passeioService.verificarDisponibilidade(datahora, id);
+			return ResponseEntity.ok(response);
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return ResponseEntity.ok(null);
 		
 	}
 	

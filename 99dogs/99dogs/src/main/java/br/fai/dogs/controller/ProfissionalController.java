@@ -23,20 +23,26 @@ public class ProfissionalController {
 	@GetMapping("/cliente/encontrar-profissionais")
 	public String getPageEncontrarProfissionais(Model model) {
 		
-		List<Pessoa> newList = new ArrayList<>();
-		List<Pessoa> profissionais = profissionalService.readAll();
-		
-		for(Pessoa p: profissionais) {
+		try {
 			
-			if(p.getFoto() != null) {
-				p.setBase64Foto(Base64.getEncoder().encodeToString(p.getFoto()));
+			List<Pessoa> newList = new ArrayList<>();
+			List<Pessoa> profissionais = profissionalService.readAll();
+			
+			for(Pessoa p: profissionais) {
+				
+				if(p.getFoto() != null) {
+					p.setBase64Foto(Base64.getEncoder().encodeToString(p.getFoto()));
+				}
+				
+				newList.add(p);
+				
 			}
 			
-			newList.add(p);
+			model.addAttribute("profissionais", newList);
 			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
-		
-		model.addAttribute("profissionais", newList);
 		
 		return "/cliente/profissional/encontrar-profissionais";
 		

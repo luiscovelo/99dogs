@@ -69,9 +69,15 @@ public class CachorroController {
 	@GetMapping("/cliente/adicionar-cachorro")
 	public String getPageAdicionarCachorro(Model model) {
 		
-		List<Raca> racas = racaService.readAll();
+		try {
+			
+			List<Raca> racas = racaService.readAll();
 
-		model.addAttribute("racas", racas);
+			model.addAttribute("racas", racas);
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 		return "/cliente/cachorro/adicionar-cachorro";
 		
@@ -80,11 +86,17 @@ public class CachorroController {
 	@PostMapping("/cliente/post-adicionar-cachorro")
 	public String postAdicionarCachorro(Cachorro cachorro) {
 		
-		Long cliente_id = Helper.getSessao(session).getId();
-		
-		cachorro.setClienteId(cliente_id);
-		
-		boolean response = cachorroService.create(cachorro);
+		try {
+			
+			Long cliente_id = Helper.getSessao(session).getId();
+			
+			cachorro.setClienteId(cliente_id);
+			
+			boolean response = cachorroService.create(cachorro);
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 		return "redirect:/cachorro/cliente/meus-caes";
 		
@@ -93,12 +105,18 @@ public class CachorroController {
 	@GetMapping("/cliente/alterar-cachorro/{id}")
 	public String getPageAlterarCachorro(@PathVariable("id") Long id, Model model) {
 		
-		List<Raca> racas = racaService.readAll();
-		model.addAttribute("racas", racas);
-		
-		Cachorro cachorro = cachorroService.readById(id);
+		try {
+			
+			List<Raca> racas = racaService.readAll();
+			model.addAttribute("racas", racas);
+			
+			Cachorro cachorro = cachorroService.readById(id);
 
-		model.addAttribute("cachorro", cachorro);
+			model.addAttribute("cachorro", cachorro);
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 		return "/cliente/cachorro/alterar-cachorro";
 		
@@ -107,11 +125,17 @@ public class CachorroController {
 	@PostMapping("/cliente/put-alterar-cachorro")
 	public String putAlterarchorro(Cachorro cachorro) {
 		
-		Long cliente_id = Helper.getSessao(session).getId();
-		
-		cachorro.setClienteId(cliente_id);
-		
-		boolean response = cachorroService.update(cachorro);
+		try {
+			
+			Long cliente_id = Helper.getSessao(session).getId();
+			
+			cachorro.setClienteId(cliente_id);
+			
+			boolean response = cachorroService.update(cachorro);
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 		return "redirect:/cachorro/cliente/meus-caes";
 		
@@ -120,7 +144,13 @@ public class CachorroController {
 	@GetMapping("/cliente/deletar-cachorro/{id}")
 	public String deleteCachorro(@PathVariable("id") Long id) {
 		
-		boolean response = cachorroService.deleteById(id);
+		try {
+			
+			boolean response = cachorroService.deleteById(id);
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 		return "redirect:/cachorro/cliente/meus-caes";
 		

@@ -31,13 +31,19 @@ public class PerfilController {
 	@GetMapping("/cliente/meu-perfil")
 	public String getPagePerfilDoCliente(Model model) {
 		
-		Long cliente_id = Helper.getSessao(session).getId();
-		Pessoa cliente = pessoaService.readById(cliente_id);
+		try {
+			
+			Long cliente_id = Helper.getSessao(session).getId();
+			Pessoa cliente = pessoaService.readById(cliente_id);
 
-		model.addAttribute("cliente", cliente);
-		
-		if(cliente.getFoto() != null) {
-			model.addAttribute("foto", Base64.getEncoder().encodeToString(cliente.getFoto()));
+			model.addAttribute("cliente", cliente);
+			
+			if(cliente.getFoto() != null) {
+				model.addAttribute("foto", Base64.getEncoder().encodeToString(cliente.getFoto()));
+			}
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 		
 		return "/cliente/perfil/meu-perfil";
@@ -47,13 +53,19 @@ public class PerfilController {
 	@GetMapping("/profissional/meu-perfil")
 	public String getPagePerfilDoProfissional(Model model) {
 		
-		Long profissional_id = Helper.getSessao(session).getId();
-		Pessoa profissional = pessoaService.readById(profissional_id);
-		
-		model.addAttribute("profissional", profissional);
-		
-		if(profissional.getFoto() != null) {
-			model.addAttribute("foto", Base64.getEncoder().encodeToString(profissional.getFoto()));
+		try {
+			
+			Long profissional_id = Helper.getSessao(session).getId();
+			Pessoa profissional = pessoaService.readById(profissional_id);
+			
+			model.addAttribute("profissional", profissional);
+			
+			if(profissional.getFoto() != null) {
+				model.addAttribute("foto", Base64.getEncoder().encodeToString(profissional.getFoto()));
+			}
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 		
 		return "/profissional/perfil/meu-perfil";
@@ -63,18 +75,23 @@ public class PerfilController {
 	@PostMapping("/post-atualizar-dados")
 	public String postAtualizarDados(Pessoa pessoa, RedirectAttributes redirect) {
 		
-		Long id = Helper.getSessao(session).getId();
-				
-		pessoa.setPais("Brasil");
-		pessoa.setId(id);
-				
-		
-		boolean response = pessoaService.update(pessoa);
-		
-		if(response) {
-			redirect.addFlashAttribute("message", "Informações alteradas com sucesso.");
-		}else {
-			redirect.addFlashAttribute("message", "Ocorreu um problema ao atualizar as informações.");
+		try {
+			
+			Long id = Helper.getSessao(session).getId();
+			
+			pessoa.setPais("Brasil");
+			pessoa.setId(id);
+					
+			boolean response = pessoaService.update(pessoa);
+			
+			if(response) {
+				redirect.addFlashAttribute("message", "Informações alteradas com sucesso.");
+			}else {
+				redirect.addFlashAttribute("message", "Ocorreu um problema ao atualizar as informações.");
+			}
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 		
 		if(pessoa.getTipo().equals("CLIENTE")) {

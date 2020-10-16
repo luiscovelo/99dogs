@@ -44,13 +44,19 @@ public class RecebimentoController {
 	@GetMapping("/profissional/a-receber")
 	public String getPageAReceber(Model model) {
 		
-		Long profissional_id = Helper.getSessao(session).getId();
-		
-		List<Passeio> passeios = recebimentoService.readPasseiosSemRecebimentoPorProfissional(profissional_id);
-		List<FormaDePagamento> formasDePagamento = formaDePagamentoService.readAll();
-		
-		model.addAttribute("passeios", passeios);
-		model.addAttribute("formasDePagamento", formasDePagamento);
+		try {
+			
+			Long profissional_id = Helper.getSessao(session).getId();
+			
+			List<Passeio> passeios = recebimentoService.readPasseiosSemRecebimentoPorProfissional(profissional_id);
+			List<FormaDePagamento> formasDePagamento = formaDePagamentoService.readAll();
+			
+			model.addAttribute("passeios", passeios);
+			model.addAttribute("formasDePagamento", formasDePagamento);
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 		return "/profissional/recebimento/a-receber";
 		
@@ -59,13 +65,19 @@ public class RecebimentoController {
 	@GetMapping("/profissional/informar-recebimento/{id}")
 	public String getPageInformarRecebimento(@PathVariable("id") Long id, Model model) {
 		
-		Passeio passeio = passeioService.readById(id);
-		List<FormaDePagamento> formasDePagamento = formaDePagamentoService.readAll();
-				
-		model.addAttribute("passeio", passeio);
-		model.addAttribute("formasDePagamento", formasDePagamento);
-		model.addAttribute("passeioId", id);
-		model.addAttribute("dataAtual", Helper.getDataAtual("yyyy-MM-dd"));
+		try {
+			
+			Passeio passeio = passeioService.readById(id);
+			List<FormaDePagamento> formasDePagamento = formaDePagamentoService.readAll();
+					
+			model.addAttribute("passeio", passeio);
+			model.addAttribute("formasDePagamento", formasDePagamento);
+			model.addAttribute("passeioId", id);
+			model.addAttribute("dataAtual", Helper.getDataAtual("yyyy-MM-dd"));
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 		return "/profissional/recebimento/informar-recebimento";
 		
@@ -74,7 +86,15 @@ public class RecebimentoController {
 	@PostMapping("/profissional/post-informar-recebimento")
 	public String postInformarRecebimento(Recebimento recebimento, RedirectAttributes redirect) {
 		
-		boolean response = recebimentoService.create(recebimento);
+		boolean response = false;
+		
+		try {
+			
+			response = recebimentoService.create(recebimento);
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 		if(response) {
 			redirect.addFlashAttribute("message", "Recebimento informado com sucesso.");
@@ -89,11 +109,17 @@ public class RecebimentoController {
 	@GetMapping("/profissional/recebido")
 	public String getPageRecebido(Model model) {
 		
-		Long profissional_id = Helper.getSessao(session).getId();
-		
-		List<Recebimento> recebimentos = recebimentoService.readAllByProfissionalId(profissional_id);
-		
-		model.addAttribute("recebimentos", recebimentos);
+		try {
+			
+			Long profissional_id = Helper.getSessao(session).getId();
+			
+			List<Recebimento> recebimentos = recebimentoService.readAllByProfissionalId(profissional_id);
+			
+			model.addAttribute("recebimentos", recebimentos);
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 		return "/profissional/recebimento/recebido";
 		
