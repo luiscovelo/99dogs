@@ -19,13 +19,7 @@ public interface PessoaService {
 	boolean update(Pessoa entity);
 
 	boolean deleteById(Long id);
-	
-	Pessoa validarLogin(Pessoa entity);
-	
-	Pessoa sessaoAtual();
-	
-	Boolean gravarSessao(HttpSession session, Pessoa entity);
-	
+		
 	List<Pessoa> readAllProfissional();
 	
 	Pessoa readByEmail(String email, String tokenTemporario);

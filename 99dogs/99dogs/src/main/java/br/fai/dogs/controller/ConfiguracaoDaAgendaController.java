@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import br.fai.dogs.helper.Helper;
 import br.fai.dogs.model.entities.ConfiguracaoDaAgenda;
 import br.fai.dogs.service.ConfiguracaoDaAgendaService;
 import br.fai.dogs.service.PessoaService;
@@ -29,10 +32,13 @@ public class ConfiguracaoDaAgendaController {
 	@Autowired
 	private ConfiguracaoDaAgendaService configuracaoDaAgendaService;
 	
+	@Autowired
+	private HttpSession session;
+	
 	@GetMapping("/profissional/minha-configuracao")
 	public String getPageMinhaConfiguracao(Model model) {
 		
-		Long profissional_id = pessoaService.sessaoAtual().getId();
+		Long profissional_id = Helper.getSessao(session).getId();
 		
 		List<ConfiguracaoDaAgenda> configs = configuracaoDaAgendaService.readByProfissionalId(profissional_id);
 		Map<Integer,String> diasDaSemana = new HashMap<Integer,String>();
@@ -55,7 +61,7 @@ public class ConfiguracaoDaAgendaController {
 	@GetMapping("/profissional/adicionar-configuracao")
 	public String getPageAdicionarConfiguracaoDaAgenda(Model model) {
 		
-		Long profissional_id = pessoaService.sessaoAtual().getId();
+		Long profissional_id = Helper.getSessao(session).getId();
 				
 		Map<Integer,String> diasDaSemana = new HashMap<Integer,String>();
 		

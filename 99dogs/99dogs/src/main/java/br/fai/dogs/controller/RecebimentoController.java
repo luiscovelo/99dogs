@@ -2,6 +2,8 @@ package br.fai.dogs.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,10 +38,13 @@ public class RecebimentoController {
 	@Autowired
 	private FormaDePagamentoService formaDePagamentoService;
 	
+	@Autowired
+	private HttpSession session;
+	
 	@GetMapping("/profissional/a-receber")
 	public String getPageAReceber(Model model) {
 		
-		Long profissional_id = pessoaService.sessaoAtual().getId();
+		Long profissional_id = Helper.getSessao(session).getId();
 		
 		List<Passeio> passeios = recebimentoService.readPasseiosSemRecebimentoPorProfissional(profissional_id);
 		List<FormaDePagamento> formasDePagamento = formaDePagamentoService.readAll();
@@ -84,7 +89,7 @@ public class RecebimentoController {
 	@GetMapping("/profissional/recebido")
 	public String getPageRecebido(Model model) {
 		
-		Long profissional_id = pessoaService.sessaoAtual().getId();
+		Long profissional_id = Helper.getSessao(session).getId();
 		
 		List<Recebimento> recebimentos = recebimentoService.readAllByProfissionalId(profissional_id);
 		

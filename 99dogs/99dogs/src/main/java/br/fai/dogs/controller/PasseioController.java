@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+import javax.servlet.http.HttpSession;
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -28,7 +30,6 @@ import br.fai.dogs.model.entities.Passeio;
 import br.fai.dogs.model.entities.PasseioCachorro;
 import br.fai.dogs.model.entities.Pessoa;
 import br.fai.dogs.service.CachorroService;
-import br.fai.dogs.service.ClienteService;
 import br.fai.dogs.service.FormaDePagamentoService;
 import br.fai.dogs.service.PasseioCachorroService;
 import br.fai.dogs.service.PasseioService;
@@ -54,7 +55,7 @@ public class PasseioController {
 	private PasseioCachorroService passeioCachorroService;
 	
 	@Autowired
-	private ClienteService clienteService;
+	private HttpSession session;
 	
 	private MailStrategy sendMail;
 	
@@ -67,7 +68,7 @@ public class PasseioController {
 	@GetMapping("/cliente/meus-passeios")
 	public String getListaDePasseiosPorCliente(Model model) {
 		
-		Long cliente_id = pessoaService.sessaoAtual().getId();
+		Long cliente_id = Helper.getSessao(session).getId();
 		List<Passeio> passeios = new ArrayList<Passeio>();
 		
 		passeios = passeioService.passeiosPorCliente(cliente_id);
@@ -93,7 +94,7 @@ public class PasseioController {
 	@PostMapping("/cliente/post-solicitar-passeio")
 	public String postSolicitarPasseio(Passeio passeio, BindingResult bindingResult) {
 		
-		Long cliente_id = pessoaService.sessaoAtual().getId();
+		Long cliente_id = Helper.getSessao(session).getId();
 
 		passeio.setClienteId(cliente_id);
 		passeio.setStatus("Espera");
@@ -117,7 +118,7 @@ public class PasseioController {
 		
 		try {
 			
-			Long cliente_id = pessoaService.sessaoAtual().getId();
+			Long cliente_id = Helper.getSessao(session).getId();
 			
 			responseRequest = cachorroService.cachorrosPorCliente(cliente_id);
 
@@ -147,7 +148,7 @@ public class PasseioController {
 		if(response == true) {
 			
 			sendMail.passeioSolicitado(passeio);
-			return "redirect:/passeio/cliente/meus-passeios";
+			return "redirect:/passeio/cliente/detalhes/" + passeioCachorro.getPasseioId();
 			
 		}
 		
@@ -199,7 +200,7 @@ public class PasseioController {
 	@GetMapping("/profissional/meus-passeios")
 	public String getListaDePasseiosPorProfissional(Model model) {
 		
-		Long profissional = pessoaService.sessaoAtual().getId();
+		Long profissional = Helper.getSessao(session).getId();
 		List<Passeio> passeios = new ArrayList<Passeio>();
 		
 		passeios = passeioService.passeiosPorProfissional(profissional);
@@ -212,7 +213,7 @@ public class PasseioController {
 	@GetMapping("/profissional/minha-agenda")
 	public String getPageMinhaAgenda(Model model) {
 		
-		Long profissional = pessoaService.sessaoAtual().getId();
+		Long profissional = Helper.getSessao(session).getId();
 		List<Passeio> passeios = new ArrayList<Passeio>();
 				
 		passeios = passeioService.passeiosPorProfissional(profissional);

@@ -9,8 +9,14 @@ import java.util.Date;
 import java.util.Locale;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import br.fai.dogs.model.entities.Pessoa;
+
+@Component
 public class Helper {
-		
+	
 	private static final Locale BRAZIL = new Locale("pt","BR");
 	private static final DecimalFormatSymbols REAL = new DecimalFormatSymbols(BRAZIL);
 	public static final DecimalFormat DINHEIRO_REAL = new DecimalFormat("¤ ###,###,##0.00",REAL);
@@ -53,6 +59,12 @@ public class Helper {
 	public static String getUserTokenJwt(HttpSession session) {
 				
 		return (String) session.getAttribute("token");
+		
+	}
+	
+	public static Pessoa getSessao(HttpSession session) {
+				
+		return (Pessoa) session.getAttribute("usuario");
 		
 	}
 	

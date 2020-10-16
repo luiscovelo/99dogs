@@ -9,8 +9,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import br.fai.dogs.config.providers.CustomAuthenticationProvider;
 
 @Configuration
 @EnableWebSecurity
@@ -20,7 +21,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	DataSource dataSource;
 	
 	@Autowired
-	private PasswordEncoder passwordEncoder;
+	private CustomAuthenticationProvider customAuthenticationProvider;
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -39,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/criar-conta-profissional").permitAll()
 				.anyRequest().authenticated()
 			.and()
-				.formLogin().defaultSuccessUrl("/token").loginPage("/login")
+				.formLogin().loginPage("/login").defaultSuccessUrl("/redirect-after-login")
 			.and()
 				.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login?logout")
 					.invalidateHttpSession(true)
@@ -52,12 +53,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		
+		/*
 		auth.jdbcAuthentication()
 			.dataSource(dataSource)
 			.passwordEncoder(passwordEncoder)
 			.usersByUsernameQuery("select email, senha, 1 as ativo from pessoa where email = ?")
-			.authoritiesByUsernameQuery("select email, CONCAT('ROLE_',tipo) as tipo from pessoa where email = ?");
-				
+			.authoritiesByUsernameQuery("select email, CONCAT('ROLE_',tipo) as tipo from pessoa where email = ?");*/
+		
+		auth.authenticationProvider(customAuthenticationProvider);
+		
 	}
 	
 	@Override

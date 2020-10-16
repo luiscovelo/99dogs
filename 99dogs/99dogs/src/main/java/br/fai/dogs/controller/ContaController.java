@@ -2,13 +2,13 @@ package br.fai.dogs.controller;
 
 import java.util.Calendar;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -24,11 +24,17 @@ import br.fai.dogs.service.PessoaService;
 @Controller
 public class ContaController {
 	
+	@Value("${jwt.secret}")
+	private String SECRET_KEY_JWT;
+	
 	@Autowired
 	private PessoaService pessoaService;
 	
 	@Autowired
 	PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	HttpSession session;
 	
 	@PostMapping("/criar-conta-cliente")
 	public String criarContaCliente(HttpServletResponse httpResponse, Pessoa pessoa) {
@@ -112,44 +118,22 @@ public class ContaController {
 		
 	}
 	
-	@Value("${jwt.secret}")
-	private String SECRET_KEY_JWT;
-	
-	@GetMapping("/token")
-	public String geraTokenJwt(HttpServletResponse httpResponse, HttpServletRequest httpRequest, HttpSession session) {
+	@GetMapping("/redirect-after-login")
+	public String redirectAfterLogin() {
 		
 		try {
-			
+						
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			
-			String username = auth.getName();
-						
-			String token = tokenJwt(httpResponse, username, 0);
+			String role = null;
+			for(GrantedAuthority authority :auth.getAuthorities()) {
+				role = authority.toString();
+			}
 			
-			if(token != null) {
-				
-				Pessoa usuario = pessoaService.readByEmail(username, token);
-								
-				if(usuario != null) {
-					
-					boolean sessao = pessoaService.gravarSessao(session, usuario);
-					
-					if(sessao == true) {
-						
-						session.setAttribute("token", token);
-						
-						if (httpRequest.isUserInRole("CLIENTE")) {
-						    return "redirect:/dashboard/cliente";
-						}else if(httpRequest.isUserInRole("PROFISSIONAL")) {
-							return "redirect:/dashboard/profissional";
-						}
-						
-					}
-					
-				}
-				
-			}else {
-				throw new Exception("token_nao_foi_gerado");
+			if(role.equals("ROLE_CLIENTE")) {
+				return "redirect:/dashboard/cliente";
+			}else if(role.equals("ROLE_PROFISSIONAL")) {
+				return "redirect:/dashboard/profissional";
 			}
 			
 		} catch (Exception e) {

@@ -2,6 +2,8 @@ package br.fai.dogs.controller;
 
 import java.util.Base64;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.fai.dogs.helper.Helper;
 import br.fai.dogs.model.entities.Pessoa;
 import br.fai.dogs.service.PessoaService;
 
@@ -22,10 +25,13 @@ public class PerfilController {
 	@Autowired
 	private PessoaService pessoaService;
 	
+	@Autowired
+	private HttpSession session;
+	
 	@GetMapping("/cliente/meu-perfil")
 	public String getPagePerfilDoCliente(Model model) {
 		
-		Long cliente_id = pessoaService.sessaoAtual().getId();
+		Long cliente_id = Helper.getSessao(session).getId();
 		Pessoa cliente = pessoaService.readById(cliente_id);
 
 		model.addAttribute("cliente", cliente);
@@ -41,7 +47,7 @@ public class PerfilController {
 	@GetMapping("/profissional/meu-perfil")
 	public String getPagePerfilDoProfissional(Model model) {
 		
-		Long profissional_id = pessoaService.sessaoAtual().getId();
+		Long profissional_id = Helper.getSessao(session).getId();
 		Pessoa profissional = pessoaService.readById(profissional_id);
 		
 		model.addAttribute("profissional", profissional);
@@ -57,7 +63,7 @@ public class PerfilController {
 	@PostMapping("/post-atualizar-dados")
 	public String postAtualizarDados(Pessoa pessoa, RedirectAttributes redirect) {
 		
-		Long id = pessoaService.sessaoAtual().getId();
+		Long id = Helper.getSessao(session).getId();
 				
 		pessoa.setPais("Brasil");
 		pessoa.setId(id);
@@ -82,7 +88,7 @@ public class PerfilController {
 	@PostMapping("/put-alterar-imagem")
 	public String putAlterarImagem(@RequestParam("image") MultipartFile file, RedirectAttributes redirect) {
 		
-		Pessoa usuario = (Pessoa) pessoaService.sessaoAtual();
+		Pessoa usuario = (Pessoa) Helper.getSessao(session);
 		
 		String prefix = null;
 

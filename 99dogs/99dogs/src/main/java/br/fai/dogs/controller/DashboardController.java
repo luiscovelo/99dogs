@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+import javax.servlet.http.HttpSession;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +35,15 @@ public class DashboardController {
 	@Autowired
 	private ProfissionalService profissionalService;
 	
+	@Autowired
+	private HttpSession session;
+	
 	@GetMapping("/cliente")
 	public String getDashboardCliente(Model model) {
 		
 		try {
 						
-			Long cliente_id = pessoaService.sessaoAtual().getId();
+			Long cliente_id = Helper.getSessao(session).getId();
 
 			List<Passeio> passeios = new ArrayList<Passeio>();
 					
@@ -76,7 +81,7 @@ public class DashboardController {
 		
 		try {
 		
-			Long profissional_id = pessoaService.sessaoAtual().getId();
+			Long profissional_id = Helper.getSessao(session).getId();
 					
 			Map<String,String> passeiosAgrupadoPorMes = profissionalService.passeiosAgrupadoPorMes(profissional_id);
 			Map<String,String> ticketMedioAgrupadoPorMes = profissionalService.ticketMedioAgrupadoPorMes(profissional_id);
