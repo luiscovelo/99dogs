@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import br.fai.dogs.helper.Helper;
 import br.fai.dogs.model.entities.Passeio;
+import br.fai.dogs.service.AvaliacaoService;
 import br.fai.dogs.service.PasseioService;
 import br.fai.dogs.service.PessoaService;
 import br.fai.dogs.service.ProfissionalService;
@@ -27,13 +28,13 @@ import br.fai.dogs.service.ProfissionalService;
 public class DashboardController {
 	
 	@Autowired
-	private PessoaService pessoaService;
-	
-	@Autowired
 	private PasseioService passeioService;
 	
 	@Autowired
 	private ProfissionalService profissionalService;
+	
+	@Autowired
+	private AvaliacaoService avaliacaoService;
 	
 	@Autowired
 	private HttpSession session;
@@ -86,7 +87,8 @@ public class DashboardController {
 			Map<String,String> passeiosAgrupadoPorMes = profissionalService.passeiosAgrupadoPorMes(profissional_id);
 			Map<String,String> ticketMedioAgrupadoPorMes = profissionalService.ticketMedioAgrupadoPorMes(profissional_id);
 			Map<String,String> recebimentoAgrupadoPorMes = profissionalService.recebimentoAgrupadoPorMes(profissional_id);
-						
+			String rating = avaliacaoService.rating(profissional_id);
+
 			JSONArray grafPasseioPorMesJsonNomesMeses = new JSONArray();
 			JSONArray grafPasseioPorMesJsonValoresMeses = new JSONArray();
 			JSONArray grafPasseioPorMesJsonCores = new JSONArray();
@@ -132,6 +134,7 @@ public class DashboardController {
 			model.addAttribute("grafRecebimentoJsonNomesMeses", grafRecebimentoJsonNomesMeses);
 			model.addAttribute("grafRecebimentoJsonValoresMeses", grafRecebimentoJsonValoresMeses);
 			model.addAttribute("grafRecebimentoJsonCores", grafRecebimentoJsonCores);
+			model.addAttribute("rating", Integer.valueOf(rating));
 						
 		}catch (Exception e) {
 			System.out.println(e.getMessage());

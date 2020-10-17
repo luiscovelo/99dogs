@@ -113,3 +113,12 @@ create table recebimento(
 	profissional_id integer not null references profissional(pessoa_id) on update cascade,
 	passeio_id integer references passeio(id) on update cascade
 );
+
+create table avaliacao(
+	id serial primary key,
+	created timestamp without time zone not null,
+	nota integer not null check(nota >= 0 and nota <= 5),
+	observacao text,
+	profissional_id integer references profissional(pessoa_id) on update cascade,
+	cliente_id integer references cliente(pessoa_id) on update cascade
+);

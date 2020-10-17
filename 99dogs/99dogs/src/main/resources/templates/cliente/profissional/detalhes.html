@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html layout:decorate="~{/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Cliente | Detalhes do Profissional</title>
+
+<style>
+ul.timeline {
+	list-style-type: none;
+	position: relative;
+}
+
+ul.timeline:before {
+	content: ' ';
+	background: #d4d9df;
+	display: inline-block;
+	position: absolute;
+	left: 29px;
+	width: 2px;
+	height: 100%;
+	z-index: 400;
+}
+
+ul.timeline>li {
+	margin: 20px 0;
+	padding-left: 20px;
+}
+
+ul.timeline>li:before {
+	content: ' ';
+	background: white;
+	display: inline-block;
+	position: absolute;
+	border-radius: 50%;
+	border: 3px solid #22c0e8;
+	left: 20px;
+	width: 20px;
+	height: 20px;
+	z-index: 400;
+}
+
+.widget .panel-body { padding:0px; }
+.widget .list-group { margin-bottom: 0; }
+.widget .panel-title { display:inline }
+.widget .label-info { float: right; }
+.widget li.list-group-item {border-radius: 0;border: 0;border-top: 1px solid #ddd;}
+.widget li.list-group-item:hover { background-color: rgba(86,61,124,.1); }
+.widget .mic-info { color: #666666;font-size: 11px; }
+.widget .action { margin-top:5px; }
+.widget .comment-text { font-size: 12px; }
+.widget .btn-block { border-top-left-radius:0px;border-top-right-radius:0px; }
+
+</style>
+
+</head>
+<body>
+
+	<div layout:fragment="body">
+
+		<div class="row">
+
+			<div class="col-md-12">
+
+				<div class="container-box" style="padding-bottom:0px!important">
+				
+					<br>
+					
+					<div class="row"
+						style="display: flex; align-items: center; justify-content: center;">
+						<img th:if="${pessoa.base64Foto != null}"
+							th:src="*{'data:image/png;base64,'+pessoa.base64Foto}"
+							class="text-center" width="120"> <img
+							th:if="${pessoa.base64Foto == null}"
+							src="/assets/imgs/default-img.png" class="text-center"
+							width="120">
+					</div>
+					
+					<hr>
+					
+					<div class="estrelas text-center">
+						<span th:class="${rating >= 1 ? 'fa fa-star checked fa-2x' : 'fa fa-star fa-2x'}" title="Reputação de 1 estrela"></span>
+						<span th:class="${rating >= 2 ? 'fa fa-star checked fa-2x' : 'fa fa-star fa-2x'}" title="Reputação de 2 estrelas"></span>
+						<span th:class="${rating >= 3 ? 'fa fa-star checked fa-2x' : 'fa fa-star fa-2x'}" title="Reputação de 3 estrelas"></span>
+						<span th:class="${rating >= 4 ? 'fa fa-star checked fa-2x' : 'fa fa-star fa-2x'}" title="Reputação de 4 estrelas"></span>
+						<span th:class="${rating >= 5 ? 'fa fa-star checked fa-2x' : 'fa fa-star fa-2x'}" title="Reputação de 5 estrelas"></span>
+					</div>
+					<br>
+					
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="container-box">
+
+			<h4>Informações</h4>
+			<hr>
+
+			<div class="col-md-12">
+
+				<form>
+					<div class="row">
+
+						<div class="input-group col-lg-12 mb-4">
+							<div class="input-group-prepend">
+								<span
+									class="input-group-text bg-white px-4 border-md border-right-0">
+									<i class="fa fa-user text-muted"></i>
+								</span>
+							</div>
+							<input id="nome" type="text" th:name="nome" placeholder="Nome"
+								class="form-control bg-white border-left-0 border-md"
+								th:value="${pessoa.nome}">
+						</div>
+
+						<div class="input-group col-lg-6 mb-4">
+							<div class="input-group-prepend">
+								<span
+									class="input-group-text bg-white px-4 border-md border-right-0">
+									<i class="fa fa-phone-square text-muted"></i>
+								</span>
+							</div>
+							<input id="telefone" type="text" th:name="telefone"
+								placeholder="Telefone"
+								class="form-control bg-white border-left-0 border-md"
+								th:value="${pessoa.telefone}">
+						</div>
+
+						<div class="input-group col-lg-6 mb-4">
+							<div class="input-group-prepend">
+								<span
+									class="input-group-text bg-white px-4 border-md border-right-0">
+									<i class="fa fa-envelope text-muted"></i>
+								</span>
+							</div>
+							<input id="email" type="email" th:name="email"
+								placeholder="E-mail"
+								class="form-control bg-white border-md border-left-0 pl-3"
+								th:value="${pessoa.email}">
+						</div>
+
+						<div class="input-group col-lg-12 mb-4">
+							<div class="input-group-prepend">
+								<span
+									class="input-group-text bg-white px-4 border-md border-right-0">
+									<i class="fa fa-bookmark-o text-muted"></i>
+								</span>
+							</div>
+							<input id="rua" type="text" th:name="rua" placeholder="Endereço"
+								class="form-control bg-white border-left-0 border-md"
+								th:value="${pessoa.rua}">
+						</div>
+
+						<div class="input-group col-lg-6 mb-4">
+							<div class="input-group-prepend">
+								<span
+									class="input-group-text bg-white px-4 border-md border-right-0">
+									<i class="fa fa-bookmark-o text-muted"></i>
+								</span>
+							</div>
+							<input id="bairro" type="text" th:name="bairro"
+								placeholder="Bairro"
+								class="form-control bg-white border-left-0 border-md"
+								th:value="${pessoa.bairro}">
+						</div>
+
+						<div class="input-group col-lg-6 mb-4">
+							<div class="input-group-prepend">
+								<span
+									class="input-group-text bg-white px-4 border-md border-right-0">
+									<i class="fa fa-bookmark-o text-muted"></i>
+								</span>
+							</div>
+							<input id="numero" type="text" th:name="numero"
+								placeholder="Número"
+								class="form-control bg-white border-left-0 border-md"
+								th:value="${pessoa.numero}">
+						</div>
+
+						<div class="input-group col-lg-6 mb-4">
+							<div class="input-group-prepend">
+								<span
+									class="input-group-text bg-white px-4 border-md border-right-0">
+									<i class="fa fa-bookmark-o text-muted"></i>
+								</span>
+							</div>
+							<input id="cidade" type="text" th:name="cidade"
+								placeholder="Cidade"
+								class="form-control bg-white border-left-0 border-md"
+								th:value="${pessoa.cidade}">
+						</div>
+
+						<div class="input-group col-lg-6 mb-4">
+							<div class="input-group-prepend">
+								<span
+									class="input-group-text bg-white px-4 border-md border-right-0">
+									<i class="fa fa-bookmark-o text-muted"></i>
+								</span>
+							</div>
+							<input id="estado" type="text" th:name="estado"
+								placeholder="Estado"
+								class="form-control bg-white border-left-0 border-md"
+								th:value="${pessoa.estado}">
+						</div>
+
+					</div>
+				</form>
+
+			</div>
+
+		</div>
+
+		<div class="row">
+
+			<div class="col-md-12">
+
+				<div class="container-box">
+
+					<h4>Qualificações</h4>
+					<hr>
+					
+					<h5 th:if="${avaliacoes.empty}"> <small>Este profissional ainda não possui nenhuma qualificação cadastrada.</small> </h5>
+					
+					<ul class="timeline">
+						<li th:each="qualificacao : ${qualificacoes}"><a
+							th:text="${qualificacao.titulo}"></a> <a
+							th:text="${qualificacao.modalidade}" class="float-right"></a>
+							<p th:text="${qualificacao.descricao}"></p></li>
+					</ul>
+
+				</div>
+
+			</div>
+
+		</div>
+		
+		<div class="row">
+
+			<div class="col-md-12">
+
+				<div class="container-box">
+
+					<h4>
+						Avaliações
+						
+						<a th:href="@{/avaliacao/cliente/registrar-avaliacao/{id} (id=${pessoa.id}) }" class="btn btn-success float-right">Registrar Avaliação <i class="fa fa-plus"></i></a>	
+							
+					</h4>
+					<hr>
+					
+					<h5 th:if="${avaliacoes.empty}"> <small>Este profissional ainda não possui nenhuma avaliação.</small> </h5>
+					
+					<div class="panel panel-default widget" th:if="${!avaliacoes.empty}">
+
+			            <div class="panel-body">
+			                <ul class="list-group">
+			                    <li class="list-group-item" th:each="avaliacao: ${avaliacoes}">
+			                        <div class="row">
+			                            <div class="col-xs-2 col-md-1" style="display: flex; align-items: center; justify-content: center;">
+			                                <img th:if="${avaliacao.cliente.pessoa.base64Foto == null}" src="http://placehold.it/80" class="img-circle img-responsive" alt="" />
+			                                <img th:if="${avaliacao.cliente.pessoa.base64Foto != null}" th:src="*{'data:image/png;base64,'+avaliacao.cliente.pessoa.base64Foto}" class="img-circle img-responsive" alt="" width="80"/>
+			                            </div>
+			                            <div class="col-xs-10 col-md-11">
+			                                <div>
+			                                    
+			                                    <div class="estrelas">
+												  	<span th:class="${avaliacao.nota >= 1 ? 'fa fa-star checked' : 'fa fa-star'}"></span>
+													<span th:class="${avaliacao.nota >= 2 ? 'fa fa-star checked' : 'fa fa-star'}"></span>
+													<span th:class="${avaliacao.nota >= 3 ? 'fa fa-star checked' : 'fa fa-star'}"></span>
+													<span th:class="${avaliacao.nota >= 4 ? 'fa fa-star checked' : 'fa fa-star'}"></span>
+													<span th:class="${avaliacao.nota >= 5 ? 'fa fa-star checked' : 'fa fa-star'}"></span>
+												</div>
+			                                    
+			                                    <div class="mic-info">
+			                                        <span th:text="${avaliacao.cliente.pessoa.nome}"></span> em <span th:text="${#dates.format(avaliacao.created, 'dd/MM/yyyy HH:mm')}"></span>
+			                                    </div>
+			                                </div>
+			                                <hr>
+			                                <div class="comment-text">
+			                                    <span th:text="${avaliacao.observacao}"></span>
+			                                </div>
+			                            </div>
+			                        </div>
+			                    </li>
+			                </ul>
+			                
+			            </div>
+			        </div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+</body>
+</html>
