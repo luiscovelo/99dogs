@@ -2,6 +2,7 @@ package br.fai.dogs.api.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -71,6 +72,10 @@ public class ConfiguracaoDaAgendaRestController {
 	public HttpEntity<Map<String,String>> horariosDisponiveisPorData(@PathVariable("data") String data, @PathVariable("id") Long id){
 		
 		Map<String,String> response = configuracaoDaAgendaService.horariosDisponiveisPorData(data, id);
+		TreeMap<String, String> sorted = new TreeMap<>(response);
+				
+		response = sorted;
+		
 		return ResponseEntity.ok(response);
 		
 	}

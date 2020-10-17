@@ -213,18 +213,18 @@ public class ProfissionalDaoImpl implements ProfissionalDao {
 		String sql = "select " + 
 				"	count(id) as passeios, " + 
 				"	case " + 
-				"		when (EXTRACT(MONTH FROM datahora)= 1) then 'janeiro' " + 
-				"		when (EXTRACT(MONTH FROM datahora)= 2) then 'fevereiro' " + 
-				"		when (EXTRACT(MONTH FROM datahora)= 3) then 'marco' " + 
-				"		when (EXTRACT(MONTH FROM datahora)= 4) then 'abril' " + 
-				"		when (EXTRACT(MONTH FROM datahora)= 5) then 'maio' " + 
-				"		when (EXTRACT(MONTH FROM datahora)= 6) then 'junho' " + 
-				"		when (EXTRACT(MONTH FROM datahora)= 7) then 'julho' " + 
-				"		when (EXTRACT(MONTH FROM datahora)= 8) then 'agosto' " + 
-				"		when (EXTRACT(MONTH FROM datahora)= 9) then 'setembro' " + 
-				"		when (EXTRACT(MONTH FROM datahora)= 10) then 'outubro' " + 
-				"		when (EXTRACT(MONTH FROM datahora)= 11) then 'novembro' " + 
-				"		when (EXTRACT(MONTH FROM datahora)= 12) then 'dezembro' " + 
+				"		when (EXTRACT(MONTH FROM datahora)= 1) then '01/JAN' " + 
+				"		when (EXTRACT(MONTH FROM datahora)= 2) then '02/FEV' " + 
+				"		when (EXTRACT(MONTH FROM datahora)= 3) then '03/MAR' " + 
+				"		when (EXTRACT(MONTH FROM datahora)= 4) then '04/ABR' " + 
+				"		when (EXTRACT(MONTH FROM datahora)= 5) then '05/MAI' " + 
+				"		when (EXTRACT(MONTH FROM datahora)= 6) then '06/JUN' " + 
+				"		when (EXTRACT(MONTH FROM datahora)= 7) then '07/JUL' " + 
+				"		when (EXTRACT(MONTH FROM datahora)= 8) then '08/AGO' " + 
+				"		when (EXTRACT(MONTH FROM datahora)= 9) then '09/SET' " + 
+				"		when (EXTRACT(MONTH FROM datahora)= 10) then '10/OUT' " + 
+				"		when (EXTRACT(MONTH FROM datahora)= 11) then '11/NOV' " + 
+				"		when (EXTRACT(MONTH FROM datahora)= 12) then '12/DEZ' " + 
 				"	end as mes " + 
 				"from passeio " + 
 				"where profissional_id = ? " + 
@@ -271,18 +271,18 @@ public class ProfissionalDaoImpl implements ProfissionalDao {
 		
 		String sql = " select (sum(R.valor)/count(PA.id)) as ticketMedio, " + 
 				"		case " + 
-				"		when (EXTRACT(MONTH FROM PA.datahora)= 1) then 'janeiro' " + 
-				"		when (EXTRACT(MONTH FROM PA.datahora)= 2) then 'fevereiro' " + 
-				"		when (EXTRACT(MONTH FROM PA.datahora)= 3) then 'marco' " + 
-				"		when (EXTRACT(MONTH FROM PA.datahora)= 4) then 'abril' " + 
-				"		when (EXTRACT(MONTH FROM PA.datahora)= 5) then 'maio' " + 
-				"		when (EXTRACT(MONTH FROM PA.datahora)= 6) then 'junho' " + 
-				"		when (EXTRACT(MONTH FROM PA.datahora)= 7) then 'julho' " + 
-				"		when (EXTRACT(MONTH FROM PA.datahora)= 8) then 'agosto' " + 
-				"		when (EXTRACT(MONTH FROM PA.datahora)= 9) then 'setembro' " + 
-				"		when (EXTRACT(MONTH FROM PA.datahora)= 10) then 'outubro' " + 
-				"		when (EXTRACT(MONTH FROM PA.datahora)= 11) then 'novembro' " + 
-				"		when (EXTRACT(MONTH FROM PA.datahora)= 12) then 'dezembro' " + 
+				"		when (EXTRACT(MONTH FROM PA.datahora)= 1) then '01/JAN' " + 
+				"		when (EXTRACT(MONTH FROM PA.datahora)= 2) then '02/FEV' " + 
+				"		when (EXTRACT(MONTH FROM PA.datahora)= 3) then '03/MAR' " + 
+				"		when (EXTRACT(MONTH FROM PA.datahora)= 4) then '04/ABR' " + 
+				"		when (EXTRACT(MONTH FROM PA.datahora)= 5) then '05/MAI' " + 
+				"		when (EXTRACT(MONTH FROM PA.datahora)= 6) then '06/JUN' " + 
+				"		when (EXTRACT(MONTH FROM PA.datahora)= 7) then '07/JUL' " + 
+				"		when (EXTRACT(MONTH FROM PA.datahora)= 8) then '08/AGO' " + 
+				"		when (EXTRACT(MONTH FROM PA.datahora)= 9) then '09/SET' " + 
+				"		when (EXTRACT(MONTH FROM PA.datahora)= 10) then '10/OUT' " + 
+				"		when (EXTRACT(MONTH FROM PA.datahora)= 11) then '11/NOV' " + 
+				"		when (EXTRACT(MONTH FROM PA.datahora)= 12) then '12/DEZ' " + 
 				"		end as mes " + 
 				"		from passeio PA " + 
 				"		inner join recebimento R on R.passeio_id = PA.id " + 

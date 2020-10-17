@@ -3,6 +3,7 @@ package br.fai.dogs.api.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -81,8 +82,9 @@ public class ProfissionalRestController {
 	public ResponseEntity<Map<String,String>> passeiosAgrupadoPorMes(@PathVariable("id") Long id){
 				
 		Map<String,String> passeios = profissionalService.passeiosAgrupadoPorMes(id);
+		TreeMap<String, String> sorted = new TreeMap<>(passeios);
 		
-		return ResponseEntity.ok(passeios);
+		return ResponseEntity.ok(sorted);
 		
 	}
 	
@@ -90,8 +92,9 @@ public class ProfissionalRestController {
 	public ResponseEntity<Map<String,String>> ticketMedioAgrupadoPorMes(@PathVariable("id") Long id){
 				
 		Map<String,String> passeios = profissionalService.ticketMedioAgrupadoPorMes(id);
+		TreeMap<String, String> sorted = new TreeMap<>(passeios);
 		
-		return ResponseEntity.ok(passeios);
+		return ResponseEntity.ok(sorted);
 		
 	}
 	

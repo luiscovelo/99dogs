@@ -32,7 +32,9 @@
 					
 					<h5>Número de avaliações</h5>
 					<br>
-					<span style="font-size: 2em;">7 avaliação(ões)</span>
+					<span style="font-size: 2em;" th:if="${numeroAvaliacoes == 0}"> Nenhuma avaliação</span>
+					<span style="font-size: 2em;" th:if="${numeroAvaliacoes == 1}" th:text="${numeroAvaliacoes}"></span> <span th:if="${numeroAvaliacoes == 1}"> avaliação</span>
+					<span style="font-size: 2em;" th:if="${numeroAvaliacoes > 1}" th:text="${numeroAvaliacoes}"></span> <span th:if="${numeroAvaliacoes > 1}"> avaliações</span>
 				</div>
 				
 			</div>
