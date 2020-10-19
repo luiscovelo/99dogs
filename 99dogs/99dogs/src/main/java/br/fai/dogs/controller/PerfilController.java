@@ -15,7 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.fai.dogs.helper.Helper;
+import br.fai.dogs.model.entities.ConfiguracaoPicpay;
 import br.fai.dogs.model.entities.Pessoa;
+import br.fai.dogs.service.ConfiguracaoPicpayService;
 import br.fai.dogs.service.PessoaService;
 
 @Controller
@@ -24,6 +26,9 @@ public class PerfilController {
 	
 	@Autowired
 	private PessoaService pessoaService;
+	
+	@Autowired
+	private ConfiguracaoPicpayService configuracaoPicpayService;
 	
 	@Autowired
 	private HttpSession session;
@@ -56,9 +61,12 @@ public class PerfilController {
 		try {
 			
 			Long profissional_id = Helper.getSessao(session).getId();
+			
 			Pessoa profissional = pessoaService.readById(profissional_id);
+			ConfiguracaoPicpay configPicpay = configuracaoPicpayService.readByProfissionalId(profissional_id);
 			
 			model.addAttribute("profissional", profissional);
+			model.addAttribute("configPicpay", configPicpay);
 			
 			if(profissional.getFoto() != null) {
 				model.addAttribute("foto", Base64.getEncoder().encodeToString(profissional.getFoto()));

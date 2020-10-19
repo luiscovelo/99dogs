@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html layout:decorate="~{/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Profissional | Alterar Configuração PicPay</title>
+</head>
+<body>
+	
+	<div layout:fragment="body">
+	
+		<div class="alert alert-primary alert-dismissible fade show" role="alert" th:if="${message != null}">
+  			<span th:text="${message}"></span>
+  			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    			<span aria-hidden="true">&times;</span>
+  			</button>
+		</div>
+	
+		<div class="container-box">
+			
+			<form method="POST" th:object="${configuracaoPicpay}" th:action="@{/configuracao-picpay/profissional/put-adicionar}">
+				
+				<input type="hidden" th:name="id" th:id="id" th:value="${configPicpay.id}">
+				<input type="hidden" th:name="profissionalId" th:id="profissionalId" th:value="${configPicpay.profissionalId}">
+				
+				<div class="form-group">
+				  	<label for="ativo">Status:</label>
+				  	<select class="form-control" th:name="ativo" th:id="ativo" required>
+				  		<option value="">Selecione o status...</option>
+				  		<option value="1" th:selected="${configPicpay.ativo == true}">Ativo</option>
+				  		<option value="0"  th:selected="${configPicpay.ativo == false}">Inativo</option>
+				  	</select>
+				</div>
+				
+				<div class="form-group">
+				  	<label for="picpayToken">x-picpay-token:</label>
+				  	<input type="text" class="form-control" placeholder="" th:name="picpayToken" th:id="picpayToken" required th:value="${configPicpay.picpayToken}">
+				</div>
+				
+				<div class="form-group">
+				  	<label for="picpayToken">x-picpay-seller:</label>
+				  	<input type="text" class="form-control" placeholder="" th:name="picpaySeller" th:id="picpaySeller" required th:value="${configPicpay.picpaySeller}">
+				</div>
+
+				<div class="form-group">
+				  	<button type="submit" class="btn btn-success btn-block">Alterar</button>
+				</div>
+			  </form>
+			
+		</div>
+	</div>
+	
+</body>
+</html>

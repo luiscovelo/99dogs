@@ -122,3 +122,11 @@ create table avaliacao(
 	profissional_id integer references profissional(pessoa_id) on update cascade,
 	cliente_id integer references cliente(pessoa_id) on update cascade
 );
+
+create table configuracao_picpay (
+	id serial primary key,
+	ativo boolean default false,
+	picpay_token character varying(250), 
+	picpay_seller character varying(250), 
+	profissional_id integer not null references profissional(pessoa_id) on delete cascade
+);
