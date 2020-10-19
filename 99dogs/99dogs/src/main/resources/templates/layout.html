@@ -29,6 +29,9 @@
 	  	span.checked {
 		  	color: orange;
 		}
+		.table > tbody > tr > td {
+     		vertical-align: middle;
+		}
 	</style>
 	
 </head>
@@ -185,20 +188,17 @@
 	
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js" integrity="sha512-d4KkQohk+HswGs6A1d6Gak6Bb9rMWtxjOa0IiY49Q3TeFd5xAzjWXDCBW9RS7m86FQ4RzM2BdHmdJnnKRYknxw==" crossorigin="anonymous"></script>
+	
     <script type="text/javascript">
         $(document).ready(function() {
         	
             $('#sidebarCollapse').on('click', function() {
                 $('#sidebar').toggleClass('active');
             });
-            
-            $('.dataTable').DataTable({
-            	dom: 'frtip',
-            	ordering: true,
-            	stateSave: true
-            });
-            
+
         });
+
     </script>
 
 </body>

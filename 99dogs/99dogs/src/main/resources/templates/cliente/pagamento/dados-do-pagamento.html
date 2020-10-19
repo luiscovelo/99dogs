@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html layout:decorate="~{/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Cliente | Dados de Pagamento</title>
+</head>
+<body>
+	
+	<div layout:fragment="body">
+	
+		<div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${responseError != null}">
+  			<span th:text="${responseError}"></span>
+  			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    			<span aria-hidden="true">&times;</span>
+  			</button>
+		</div>
+	
+		<div class="container-box">
+			
+			<div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${message != null}">
+  				<span th:text="${message}"></span>
+  				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    				<span aria-hidden="true">&times;</span>
+  				</button>
+			</div>
+			
+			<div th:if="${passeio.formaDePagamentoId == 3}">
+				
+				<div class="alert alert-info" role="alert">
+	  				<span>
+	  					Nós estamos solicitando o seu CPF devido a obrigatoriedade do serviço PicPay para gerar a transação de pagamento. <br>
+	  					Entretanto, nós iremos utilizar apenas durante o processo da transação, não iremos manter esta informação em nossa base de dados.
+	  				</span>
+				</div>
+				
+				<form method="POST" th:object="${picpayBuyer}" th:action="@{/pagamento/picpay/create/{id} (id=${passeio.id})}" >
+					
+					<input type="hidden" th:name="passeioId" th:id="passeioId" th:value="${passeio.id}">
+					
+					<div class="form-group">
+				  		<label for="firstName">Nome:</label>
+				  		<input type="text" class="form-control" id="firstName" placeholder="" th:name="firstName" required readonly th:value="${passeio.cliente.pessoa.nome}">
+					</div>
+					
+					<div class="form-group">
+				  		<label for="email">Email:</label>
+				  		<input type="text" class="form-control" id="email" placeholder="" th:name="email" required readonly th:value="${passeio.cliente.pessoa.email}">
+					</div>
+					
+					<div class="form-group">
+				  		<label for="document">*CPF:</label>
+				  		<input type="text" class="form-control" id="document" placeholder="" th:name="document" required onblur="formatarCpf(this)" maxlength="14">
+					</div>
+										
+					<div class="form-group">
+				  		<button id="btn_finalizar" type="submit" class="btn btn-success btn-block"> Prosseguir </button>
+					</div>
+					
+				</form>
+				
+			</div>
+			
+		</div>
+		
+		<script>
+		
+			document.querySelector("form").addEventListener("submit", () => {
+				document.querySelector("#btn_finalizar").disabled = true;
+			})
+			
+			function formatarCpf(element){ 
+				
+				var cpf = element.value;
+				
+				cpf = cpf.replace(/\D/g,""); 
+				cpf = cpf.replace(/(\d{3})(\d)/,"$1.$2"); 
+				cpf = cpf.replace(/(\d{3})(\d)/,"$1.$2"); 
+				cpf = cpf.replace(/(\d{3})(\d{1,2})$/,"$1-$2"); 
+				
+				element.value = cpf;
+
+			}
+			
+		</script>
+		
+	</div>
+	
+</body>
+</html>

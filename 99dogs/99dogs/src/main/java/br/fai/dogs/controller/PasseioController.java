@@ -25,11 +25,15 @@ import br.fai.dogs.email.MailStrategy;
 import br.fai.dogs.email.Mailtrap;
 import br.fai.dogs.helper.Helper;
 import br.fai.dogs.model.entities.Cachorro;
+import br.fai.dogs.model.entities.ConfiguracaoPicpay;
 import br.fai.dogs.model.entities.FormaDePagamento;
 import br.fai.dogs.model.entities.Passeio;
 import br.fai.dogs.model.entities.PasseioCachorro;
 import br.fai.dogs.model.entities.Pessoa;
+import br.fai.dogs.model.entities.TransacaoPicpay;
+import br.fai.dogs.payment.picpay.PaymentPicpayService;
 import br.fai.dogs.service.CachorroService;
+import br.fai.dogs.service.ConfiguracaoPicpayService;
 import br.fai.dogs.service.FormaDePagamentoService;
 import br.fai.dogs.service.PasseioCachorroService;
 import br.fai.dogs.service.PasseioService;
@@ -53,6 +57,12 @@ public class PasseioController {
 	
 	@Autowired
 	private PasseioCachorroService passeioCachorroService;
+	
+	@Autowired
+	private ConfiguracaoPicpayService configuracaoPicpayService;
+	
+	@Autowired
+	private PaymentPicpayService paymentPicpayService;
 	
 	@Autowired
 	private HttpSession session;
@@ -167,6 +177,12 @@ public class PasseioController {
 			
 			if(response == true) {
 				
+				boolean integracaoPagamento = verificaIntegracaoDePagamento(passeio);
+				
+				if(integracaoPagamento) {
+					return "redirect:/pagamento/cliente/dados-do-pagamento/" + passeioCachorro.getPasseioId();
+				}
+				
 				sendMail.passeioSolicitado(passeio);
 				return "redirect:/passeio/cliente/detalhes/" + passeioCachorro.getPasseioId();
 				
@@ -186,7 +202,8 @@ public class PasseioController {
 		try {
 			
 			Passeio passeio = passeioService.readById(id);
-			List<Cachorro> cachorros = passeioCachorroService.readByPasseioId(passeio.getId());
+			List<Cachorro> cachorros = passeioCachorroService.readByPasseioId(id);
+			List<TransacaoPicpay> transacaoPicpay = paymentPicpayService.readByPasseioId(id);
 			
 			if(passeio.getProfissional().getPessoa().getFoto() != null) {
 				
@@ -218,6 +235,7 @@ public class PasseioController {
 			
 			model.addAttribute("passeio", passeio);
 			model.addAttribute("cachorros", cachorros);
+			model.addAttribute("transacaoPicpay", transacaoPicpay);
 			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -290,6 +308,7 @@ public class PasseioController {
 			
 			Passeio passeio = passeioService.readById(id);
 			List<Cachorro> cachorros = passeioCachorroService.readByPasseioId(passeio.getId());
+			List<TransacaoPicpay> transacaoPicpay = paymentPicpayService.readByPasseioId(id);
 			
 			if(passeio.getProfissional().getPessoa().getFoto() != null) {
 				
@@ -321,6 +340,7 @@ public class PasseioController {
 			
 			model.addAttribute("passeio", passeio);
 			model.addAttribute("cachorros", cachorros);
+			model.addAttribute("transacaoPicpay", transacaoPicpay);
 			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -422,6 +442,36 @@ public class PasseioController {
 		}
 		
 		return ResponseEntity.ok(null);
+		
+	}
+	
+	public boolean verificaIntegracaoDePagamento(Passeio entity) {
+		
+		boolean response = false;
+		
+		try {
+			
+			if(entity.getFormaDePagamentoId() == 3) {
+				
+				ConfiguracaoPicpay configPicpay = configuracaoPicpayService.readByProfissionalId(entity.getProfissionalId());
+				
+				if(configPicpay != null && configPicpay.isAtivo()) {
+					
+					response = true;
+					
+				}else {
+					response = false;
+				}
+				
+			}else {
+				response = false;
+			}
+			
+		} catch (Exception e) {
+			System.out.println("Problema pra verificar integração do pagamento: " + e.getMessage());
+		}
+		
+		return response;
 		
 	}
 	

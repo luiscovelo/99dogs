@@ -7,7 +7,38 @@
 <body>
 	
 	<div layout:fragment="body">
-	
+		
+		<div class="alert alert-primary alert-dismissible fade show" role="alert" th:if="${message != null}">
+  			<span th:text="${message}"></span>
+  			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    			<span aria-hidden="true">&times;</span>
+  			</button>
+		</div>
+		
+		<div class="container-box" th:if="${!transacaoPicpay.empty}">
+			<table class="table">
+				<thead>
+					<tr>
+						<th colspan="5">Transações Picpay</th>
+					</tr>
+					<tr>
+						<th>QRCode</th>
+						<th>Link de pagamento</th>
+						<th>Data de expiração</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="tPicpay : ${transacaoPicpay}">
+						<td>
+							<img th:src="${tPicpay.qrcodeBase64}" style="max-width: 120px">
+						</td>
+						<td><a target="_blank" th:href="${tPicpay.paymentUrl}" th:text="${tPicpay.paymentUrl}" title="Clique para abrir a página de pagamento."></a></td>
+						<td th:text="${tPicpay.expiresAt}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
 		<div class="container-box">
 			
 			<table class="table">

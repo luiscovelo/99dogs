@@ -130,3 +130,13 @@ create table configuracao_picpay (
 	picpay_seller character varying(250), 
 	profissional_id integer not null references profissional(pessoa_id) on delete cascade
 );
+
+create table transacao_picpay(
+	id serial primary key,
+	reference_id character varying(100) not null,
+	payment_url character varying(250) not null,
+	expires_at character varying(100) not null,
+	qrcode_content character varying(250) not null,
+	qrcode_base64 text not null,
+	passeio_id integer not null references passeio(id) on delete cascade
+);
