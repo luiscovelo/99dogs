@@ -278,7 +278,7 @@ public class PasseioServiceImpl implements PasseioService {
 			);
 			
 			if(requestResponse.getStatusCodeValue() == 200) {
-				return true;
+				return requestResponse.getBody();
 			}
 			
 		} catch (Exception e) {

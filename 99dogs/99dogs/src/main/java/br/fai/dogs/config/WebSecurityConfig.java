@@ -33,6 +33,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/login").permitAll()
 				.antMatchers("/criar-conta-cliente").permitAll()
 				.antMatchers("/criar-conta-profissional").permitAll()
+				.antMatchers("/configuracao-da-agenda/cliente/horarios-disponveis-por-data/**").permitAll()
+				.antMatchers("/passeio/cliente/verificar-disponibilidade/**").permitAll()
 				.anyRequest().authenticated()
 			.and()
 				.formLogin().loginPage("/login").defaultSuccessUrl("/redirect-after-login")

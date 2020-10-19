@@ -109,7 +109,7 @@
 				
 				axios.get("http://localhost:8081/passeio/cliente/verificar-disponibilidade/" + horario + "/" + profissional_id)
 				  .then(function (response) {
-
+						console.log(response)
 					  if(response.status === 200){
 						  if(response.data === true){
 							  swal("Boa notícia!", "O horário selecionado está disponível.", "success");
