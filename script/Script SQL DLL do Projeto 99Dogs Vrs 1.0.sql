@@ -140,3 +140,6 @@ create table transacao_picpay(
 	qrcode_base64 text not null,
 	passeio_id integer not null references passeio(id) on delete cascade
 );
+
+alter table profissional add column media_avaliacao integer default 0;
+alter table profissional add column qtde_avaliacao integer default 0;

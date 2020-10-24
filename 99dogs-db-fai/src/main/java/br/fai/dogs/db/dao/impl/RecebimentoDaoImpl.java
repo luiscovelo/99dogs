@@ -155,7 +155,7 @@ public class RecebimentoDaoImpl implements RecebimentoDao {
 	@Override
 	public List<Passeio> readPasseiosSemRecebimentoPorProfissional(Long id) {
 		
-List<Passeio> passeios = new ArrayList<Passeio>();
+		List<Passeio> passeios = new ArrayList<Passeio>();
 		
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
