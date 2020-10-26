@@ -1,6 +1,5 @@
 package br.fai.dogs.api.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.fai.dogs.api.service.ProfissionalService;
-import br.fai.dogs.model.entities.Pessoa;
 import br.fai.dogs.model.entities.Profissional;
 
 @RestController
@@ -30,9 +28,9 @@ public class ProfissionalRestController {
 	private ProfissionalService profissionalService;
 	
 	@GetMapping("/read-all")
-	public ResponseEntity<List<Pessoa>> readAll(){
+	public ResponseEntity<List<Profissional>> readAll(){
 		
-		List<Pessoa> profissional = profissionalService.readAll();
+		List<Profissional> profissional = profissionalService.readAll();
 		
 		if(profissional == null || profissional.size()==0) {
 			return ResponseEntity.ok(null);

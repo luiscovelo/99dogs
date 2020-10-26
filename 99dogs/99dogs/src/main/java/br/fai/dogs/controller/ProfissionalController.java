@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import br.fai.dogs.model.entities.Avaliacao;
 import br.fai.dogs.model.entities.Pessoa;
+import br.fai.dogs.model.entities.Profissional;
 import br.fai.dogs.model.entities.Qualificacao;
 import br.fai.dogs.service.AvaliacaoService;
 import br.fai.dogs.service.PessoaService;
@@ -40,20 +41,8 @@ public class ProfissionalController {
 		
 		try {
 			
-			List<Pessoa> newList = new ArrayList<>();
-			List<Pessoa> profissionais = profissionalService.readAll();
-			
-			for(Pessoa p: profissionais) {
-				
-				if(p.getFoto() != null) {
-					p.setBase64Foto(Base64.getEncoder().encodeToString(p.getFoto()));
-				}
-				
-				newList.add(p);
-				
-			}
-			
-			model.addAttribute("profissionais", newList);
+			List<Profissional> profissionais = profissionalService.readAll();
+			model.addAttribute("profissionais", profissionais);
 			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

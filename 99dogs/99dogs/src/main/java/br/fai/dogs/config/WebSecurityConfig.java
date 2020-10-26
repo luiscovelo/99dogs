@@ -34,6 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/criar-conta-cliente").permitAll()
 				.antMatchers("/criar-conta-profissional").permitAll()
 				.antMatchers("/configuracao-da-agenda/cliente/horarios-disponveis-por-data/**").permitAll()
+				.antMatchers("/profissionais").permitAll()
 				.antMatchers("/passeio/cliente/verificar-disponibilidade/**").permitAll()
 				.anyRequest().authenticated()
 			.and()

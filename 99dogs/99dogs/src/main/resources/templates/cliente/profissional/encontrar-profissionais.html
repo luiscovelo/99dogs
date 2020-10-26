@@ -9,10 +9,11 @@
 	<div layout:fragment="body">
 		<div class="container-box">
 			
-			<table class="table dataTable">
+			<table class="table table-sm dataTable">
 				<thead>
 					<tr>
 						<th>Logo</th>
+						<th>Rating</th>
 						<th>Nome</th>
 						<th>Email</th>
 						<th>TeleFone</th>
@@ -23,15 +24,24 @@
 				<tbody>
 					<tr th:each="profissional: ${profissionais}">
 						<td>
-							<img th:if="${profissional.base64Foto == null}" src="/assets/imgs/default-img.png" width="50">
-							<img th:if="${profissional.base64Foto != null}" th:src="*{'data:image/png;base64,'+profissional.base64Foto}" width="50">
+							<img th:if="${profissional.pessoa.base64Foto == null}" src="/assets/imgs/default-img.png" width="50">
+							<img th:if="${profissional.pessoa.base64Foto != null}" th:src="*{'data:image/png;base64,'+profissional.pessoa.base64Foto}" width="50">
 						</td>
-						<td th:text="${profissional.nome}"></td>
-						<td th:text="${profissional.email}"></td>
-						<td th:text="${profissional.telefone}"></td>
-						<td th:text="${profissional.cidade}"></td>
 						<td>
-							<a th:href="@{/profissional/cliente/detalhes/{id} (id=${profissional.id})}" class="btn btn-secondary">Detalhes</a>
+							<div>
+								<span th:class="${profissional.mediaAvaliacao >= 1 ? 'fa fa-star checked' : 'fa fa-star'}" title="Reputação de 1 estrela"></span>
+								<span th:class="${profissional.mediaAvaliacao >= 2 ? 'fa fa-star checked' : 'fa fa-star'}" title="Reputação de 2 estrelas"></span>
+								<span th:class="${profissional.mediaAvaliacao >= 3 ? 'fa fa-star checked' : 'fa fa-star'}" title="Reputação de 3 estrelas"></span>
+								<span th:class="${profissional.mediaAvaliacao >= 4 ? 'fa fa-star checked' : 'fa fa-star'}" title="Reputação de 4 estrelas"></span>
+								<span th:class="${profissional.mediaAvaliacao >= 5 ? 'fa fa-star checked' : 'fa fa-star'}" title="Reputação de 5 estrelas"></span>
+							</div>
+						</td>
+						<td th:text="${profissional.pessoa.nome}"></td>
+						<td th:text="${profissional.pessoa.email}"></td>
+						<td th:text="${profissional.pessoa.telefone}"></td>
+						<td th:text="${profissional.pessoa.cidade} +'/'+ ${profissional.pessoa.estado}"></td>
+						<td>
+							<a th:href="@{/profissional/cliente/detalhes/{id} (id=${profissional.pessoa.id})}" class="btn btn-secondary">Detalhes</a>
 						</td>
 					</tr>
 				</tbody>

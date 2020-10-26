@@ -18,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 import br.fai.dogs.helper.Helper;
 import br.fai.dogs.model.entities.Pessoa;
+import br.fai.dogs.model.entities.Profissional;
 import br.fai.dogs.service.ProfissionalService;
 
 @Service
@@ -30,9 +31,9 @@ public class ProfissionalServiceImpl implements ProfissionalService {
 	HttpSession session;
 	
 	@Override
-	public List<Pessoa> readAll() {
+	public List<Profissional> readAll() {
 		
-		List<Pessoa> response = null;
+		List<Profissional> response = null;
 		String endpoint = "http://localhost:8082/api/v1/profissional/read-all";
 
 		RestTemplate restTemplate = new RestTemplate();
@@ -44,14 +45,14 @@ public class ProfissionalServiceImpl implements ProfissionalService {
 			
 			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 			
-			ResponseEntity<Pessoa[]> requestResponse = restTemplate.exchange(
+			ResponseEntity<Profissional[]> requestResponse = restTemplate.exchange(
 				endpoint, 
 				HttpMethod.GET, 
 				requestEntity,
-				Pessoa[].class
+				Profissional[].class
 			);
 			
-			Pessoa[] profissionais = requestResponse.getBody();
+			Profissional[] profissionais = requestResponse.getBody();
 
 			response = Arrays.asList(profissionais);
 			
@@ -100,19 +101,19 @@ public class ProfissionalServiceImpl implements ProfissionalService {
 	}
 
 	@Override
-	public boolean create(Pessoa entity) {
+	public boolean create(Profissional entity) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public Pessoa readById(Long id) {
+	public Profissional readById(Long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public boolean update(Pessoa entity) {
+	public boolean update(Profissional entity) {
 		// TODO Auto-generated method stub
 		return false;
 	}

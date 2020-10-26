@@ -3,12 +3,11 @@ package br.fai.dogs.db.dao;
 import java.util.List;
 import java.util.Map;
 
-import br.fai.dogs.model.entities.Pessoa;
 import br.fai.dogs.model.entities.Profissional;
 
 public interface ProfissionalDao {
 	
-	List<Pessoa> readAll();
+	List<Profissional> readAll();
 
 	boolean create(Profissional entity);
 

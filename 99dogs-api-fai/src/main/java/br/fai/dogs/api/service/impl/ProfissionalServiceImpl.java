@@ -42,7 +42,7 @@ public class ProfissionalServiceImpl implements ProfissionalService {
 	}
 
 	@Override
-	public List<Pessoa> readAll() {
+	public List<Profissional> readAll() {
 		
 		return profissionalDao.readAll();
 	}

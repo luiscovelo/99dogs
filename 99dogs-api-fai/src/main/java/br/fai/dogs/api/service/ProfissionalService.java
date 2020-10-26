@@ -3,12 +3,11 @@ package br.fai.dogs.api.service;
 import java.util.List;
 import java.util.Map;
 
-import br.fai.dogs.model.entities.Pessoa;
 import br.fai.dogs.model.entities.Profissional;
 
 public interface ProfissionalService {
 	
-	List<Pessoa> readAll();
+	List<Profissional> readAll();
 
 	boolean create(Profissional entity);
 

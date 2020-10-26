@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,9 +21,9 @@ import br.fai.dogs.model.entities.Profissional;
 public class ProfissionalDaoImpl implements ProfissionalDao {
 
 	@Override
-	public List<Pessoa> readAll() {
+	public List<Profissional> readAll() {
 		
-		List<Pessoa> profissionais = new ArrayList<Pessoa>();
+		List<Profissional> profissionais = new ArrayList<Profissional>();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -31,7 +32,7 @@ public class ProfissionalDaoImpl implements ProfissionalDao {
 
 			connection = ConnectionFactory.getConnection();
 
-			String sql = "select p.* from pessoa p inner join profissional pro on pro.pessoa_id = p.id";
+			String sql = "select p.*, pro.id as pro_id, pro.media_avaliacao as media_avaliacao, pro.qtde_avaliacao as qtde_avaliacao from pessoa p inner join profissional pro on pro.pessoa_id = p.id";
 
 			preparedStatement = connection.prepareStatement(sql);
 
@@ -39,21 +40,29 @@ public class ProfissionalDaoImpl implements ProfissionalDao {
 
 			while (resultSet.next()) {
 				
-				Pessoa profissional = new Pessoa();
-								
-				profissional.setId(resultSet.getLong("id"));
-				profissional.setNome(resultSet.getString("nome"));
-				profissional.setTelefone(resultSet.getString("telefone"));
-				profissional.setEmail(resultSet.getString("email"));
-				profissional.setSenha(resultSet.getString("senha"));
-				profissional.setRua(resultSet.getString("rua"));
-				profissional.setBairro(resultSet.getString("bairro"));
-				profissional.setCidade(resultSet.getString("cidade"));
-				profissional.setEstado(resultSet.getString("estado"));
-				profissional.setPais(resultSet.getString("pais"));
-				profissional.setFoto(resultSet.getBytes("foto"));
-				profissional.setNumero(resultSet.getInt("numero"));
-				profissional.setTipo(resultSet.getString("tipo"));
+				Profissional profissional = new Profissional();
+				Pessoa pessoa = new Pessoa();
+							
+				pessoa.setId(resultSet.getLong("id"));
+				pessoa.setNome(resultSet.getString("nome"));
+				pessoa.setTelefone(resultSet.getString("telefone"));
+				pessoa.setEmail(resultSet.getString("email"));
+				pessoa.setRua(resultSet.getString("rua"));
+				pessoa.setBairro(resultSet.getString("bairro"));
+				pessoa.setCidade(resultSet.getString("cidade"));
+				pessoa.setEstado(resultSet.getString("estado"));
+				pessoa.setPais(resultSet.getString("pais"));
+				pessoa.setNumero(resultSet.getInt("numero"));
+				pessoa.setTipo(resultSet.getString("tipo"));
+				
+				if(resultSet.getBytes("foto") != null) {
+					pessoa.setBase64Foto(Base64.getEncoder().encodeToString(resultSet.getBytes("foto")));
+				}
+				
+				profissional.setId(resultSet.getLong("pro_id"));
+				profissional.setMediaAvaliacao(resultSet.getInt("media_avaliacao"));
+				profissional.setQtdeAvaliacao(resultSet.getInt("qtde_avaliacao"));
+				profissional.setPessoa(pessoa);
 				
 				profissionais.add(profissional);
 

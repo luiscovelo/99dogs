@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout_landing_page}">
+<head>
+<meta charset="UTF-8">
+<title>99Dogs | Profissionais</title>
+</head>
+<body>
+	<div layout:fragment="body">
+		<div class="container">
+			
+			<br>
+			<h3 class="text-center" style="text-transform: uppercase">Profissionais Disponíveis</h3>
+			
+			<div class="row">
+			 	
+			    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" th:each="profissional : ${profissionais}">
+               
+					<div class="box-part text-center">
+					
+                        <br>
+						
+						<img th:if="${profissional.pessoa.base64Foto != null}" th:src="*{'data:image/png;base64,'+profissional.pessoa.base64Foto}" width="120">
+						
+                        <hr th:if="${profissional.pessoa.base64Foto != null}">
+                        
+						<div class="title">
+							<h5 th:text="${profissional.pessoa.nome}" style="text-transform: uppercase"></h5>
+						</div>
+                        
+						<div class="text">
+							<p th:text="${profissional.pessoa.email}"></p>
+							<p th:text="${profissional.pessoa.telefone}"></p>
+						</div>
+						
+                        <hr>
+                        
+						<div>
+							<span th:class="${profissional.mediaAvaliacao >= 1 ? 'fa fa-star checked' : 'fa fa-star'}" title="Reputação de 1 estrela"></span>
+							<span th:class="${profissional.mediaAvaliacao >= 2 ? 'fa fa-star checked' : 'fa fa-star'}" title="Reputação de 2 estrelas"></span>
+							<span th:class="${profissional.mediaAvaliacao >= 3 ? 'fa fa-star checked' : 'fa fa-star'}" title="Reputação de 3 estrelas"></span>
+							<span th:class="${profissional.mediaAvaliacao >= 4 ? 'fa fa-star checked' : 'fa fa-star'}" title="Reputação de 4 estrelas"></span>
+							<span th:class="${profissional.mediaAvaliacao >= 5 ? 'fa fa-star checked' : 'fa fa-star'}" title="Reputação de 5 estrelas"></span>
+						</div>
+                        
+                        <br>
+                        
+					 </div>
+				</div>	 
+		
+			</div>
+		
+		</div>
+	</div>
+
+</body>
+</html>
