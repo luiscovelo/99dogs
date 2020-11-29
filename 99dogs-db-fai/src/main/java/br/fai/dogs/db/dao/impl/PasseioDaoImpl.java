@@ -8,15 +8,20 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.json.JSONObject;
 import org.springframework.stereotype.Repository;
 
 import br.fai.dogs.db.connection.ConnectionFactory;
 import br.fai.dogs.db.dao.PasseioDao;
 import br.fai.dogs.model.entities.Cliente;
 import br.fai.dogs.model.entities.FormaDePagamento;
+import br.fai.dogs.model.entities.Localizacao;
 import br.fai.dogs.model.entities.Passeio;
 import br.fai.dogs.model.entities.Pessoa;
 import br.fai.dogs.model.entities.Profissional;
@@ -606,7 +611,7 @@ public class PasseioDaoImpl implements PasseioDao {
 					"inner join profissional PRO on PRO.pessoa_id = PA.profissional_id " + 
 					"inner join pessoa PE_CLI on PE_CLI.id = CLI.pessoa_id " + 
 					"inner join pessoa PE_PRO on PE_PRO.id = PRO.pessoa_id " + 
-					"where PA.profissional_id = ? ";
+					"where PA.profissional_id = ? order by PA.id DESC";
 
 				preparedStatement = connection.prepareStatement(sql);
 				preparedStatement.setLong(1, profissional_id);
@@ -646,6 +651,10 @@ public class PasseioDaoImpl implements PasseioDao {
 					pessoa_cliente.setNumero(resultSet.getInt("cliente_numero"));
 					//pessoa_cliente.setFoto(resultSet.getBytes("cliente_foto"));
 					pessoa_cliente.setTipo(resultSet.getString("cliente_tipo"));
+					
+					if(resultSet.getBytes("cliente_foto") != null) {
+						pessoa_cliente.setBase64Foto("data:image/png;base64," + Base64.getEncoder().encodeToString(resultSet.getBytes("cliente_foto")));
+					}
 					
 					cliente.setId(resultSet.getLong("cliente_id"));
 					cliente.setPessoaId(resultSet.getInt("cliente_pessoa_id"));
@@ -942,6 +951,144 @@ public class PasseioDaoImpl implements PasseioDao {
 
 		return passeios;
 		
+	}
+
+	@Override
+	public boolean createLocalization(Localizacao entity) {
+		
+		boolean response = false;
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+
+		String sql = "INSERT INTO geolocalizacao (created, latitude, longitude, passeio_id)";
+		sql += " VALUES (?,?,?,?); ";
+
+		try {
+			
+			connection = ConnectionFactory.getConnection();
+			connection.setAutoCommit(false);
+			
+			preparedStatement = connection.prepareStatement(sql);
+			
+			preparedStatement.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+			preparedStatement.setString(2, entity.getLatitude());
+			preparedStatement.setString(3, entity.getLongitude());
+			preparedStatement.setLong(4, entity.getPasseioId());
+			
+			preparedStatement.execute();
+			
+			connection.commit();
+			
+			response = true;
+			
+		} catch (Exception e) {
+			
+			System.out.println("Exception: " + e.getMessage());
+			
+			try {
+				System.out.println("Problema ao conectar ou preparar o sql de create localizacao: " + e.getMessage());
+				connection.rollback();
+			} catch (SQLException e1) {
+				System.out.println("Problema no sql do create localizacao" + e1.getMessage());
+			}
+			
+		} finally {
+			ConnectionFactory.close(preparedStatement, connection);
+		}
+		
+		return response;
+		
+	}
+
+	@Override
+	public Map<Double, Double> localizacao(Long id) {
+		
+		Map<Double, Double> localizacoes = new HashMap<Double, Double>();
+		
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+
+			connection = ConnectionFactory.getConnection();
+						
+			String sql = " select * from geolocalizacao where passeio_id = ? ";
+
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setLong(1, id);
+
+			resultSet = preparedStatement.executeQuery();
+			
+			while (resultSet.next()) {
+					
+				localizacoes.put(Double.valueOf(resultSet.getString("latitude")), Double.valueOf(resultSet.getString("longitude")));
+					
+			}
+							
+		} catch (Exception e) {
+			
+			System.out.println("Falha ao obter a localizacao por passeio: " + e.getMessage());
+			
+		} finally {
+
+			ConnectionFactory.close(resultSet, preparedStatement, connection);
+
+		}
+
+		return localizacoes;
+		
+	}
+
+	@Override
+	public boolean createLocalizationObj(Long id, Map<Double, Double> localizacoes) {
+				
+		boolean response = false;
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+
+		String sql = "INSERT INTO geolocalizacao (created, latitude, longitude, passeio_id)";
+		sql += " VALUES (?,?,?,?); ";
+
+		try {
+			
+			for (Map.Entry<Double,Double> entry : localizacoes.entrySet()) {
+			
+				connection = ConnectionFactory.getConnection();
+				connection.setAutoCommit(false);
+				
+				preparedStatement = connection.prepareStatement(sql);
+				
+				preparedStatement.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+				preparedStatement.setString(2, entry.getKey().toString());
+				preparedStatement.setString(3, entry.getValue().toString());
+				preparedStatement.setLong(4, id);
+				
+				preparedStatement.execute();
+				
+				connection.commit();
+			
+			}
+				
+			response = true;
+			
+		} catch (Exception e) {
+			
+			System.out.println("Exception: " + e.getMessage());
+			
+			try {
+				System.out.println("Problema ao conectar ou preparar o sql de create localizacao: " + e.getMessage());
+				connection.rollback();
+			} catch (SQLException e1) {
+				System.out.println("Problema no sql do create localizacao" + e1.getMessage());
+			}
+			
+		} finally {
+			ConnectionFactory.close(preparedStatement, connection);
+		}
+		
+		return response;
+
 	}
 
 }

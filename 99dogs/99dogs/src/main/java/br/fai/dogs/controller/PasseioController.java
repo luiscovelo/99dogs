@@ -204,6 +204,9 @@ public class PasseioController {
 			Passeio passeio = passeioService.readById(id);
 			List<Cachorro> cachorros = passeioCachorroService.readByPasseioId(id);
 			List<TransacaoPicpay> transacaoPicpay = paymentPicpayService.readByPasseioId(id);
+			Map<Double, Double> localizacoes = passeioService.localizacao(id);
+			
+			JSONObject jsonLocations = new JSONObject(localizacoes);
 			
 			if(passeio.getProfissional().getPessoa().getFoto() != null) {
 				
@@ -236,6 +239,9 @@ public class PasseioController {
 			model.addAttribute("passeio", passeio);
 			model.addAttribute("cachorros", cachorros);
 			model.addAttribute("transacaoPicpay", transacaoPicpay);
+			model.addAttribute("jsonLocations", jsonLocations);
+			model.addAttribute("localizacoes", localizacoes);
+			
 			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -309,6 +315,9 @@ public class PasseioController {
 			Passeio passeio = passeioService.readById(id);
 			List<Cachorro> cachorros = passeioCachorroService.readByPasseioId(passeio.getId());
 			List<TransacaoPicpay> transacaoPicpay = paymentPicpayService.readByPasseioId(id);
+			Map<Double, Double> localizacoes = passeioService.localizacao(id);
+			
+			JSONObject jsonLocations = new JSONObject(localizacoes);
 			
 			if(passeio.getProfissional().getPessoa().getFoto() != null) {
 				
@@ -341,6 +350,8 @@ public class PasseioController {
 			model.addAttribute("passeio", passeio);
 			model.addAttribute("cachorros", cachorros);
 			model.addAttribute("transacaoPicpay", transacaoPicpay);
+			model.addAttribute("jsonLocations", jsonLocations);
+			model.addAttribute("localizacoes", localizacoes);
 			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

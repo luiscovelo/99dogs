@@ -1,6 +1,7 @@
 package br.fai.dogs.api.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.fai.dogs.api.service.PasseioService;
+import br.fai.dogs.model.entities.Localizacao;
 import br.fai.dogs.model.entities.Passeio;
 
 @RestController
@@ -112,6 +114,30 @@ public class PasseioRestController {
 	public HttpEntity<List<Passeio>> readAllByProfissionalIdAndStatus(@PathVariable("id") Long id, @PathVariable("status") String status){
 		
 		List<Passeio> response = passeioService.readAllByProfissionalIdAndStatus(id,status);
+		return ResponseEntity.ok(response);
+		
+	}
+	
+	@PostMapping("/localizacao/create")
+	public ResponseEntity<Boolean> createLocalization(@RequestBody Localizacao entity){
+		
+		boolean response = passeioService.createLocalization(entity);
+		return ResponseEntity.ok(response);
+		
+	}
+	
+	@GetMapping("/localizacao/{id}")
+	public ResponseEntity<Map<Double, Double>> localizacao(@PathVariable("id") Long id){
+		
+		Map<Double, Double> response = passeioService.localizacao(id);
+		return ResponseEntity.ok(response);
+		
+	}
+	
+	@PostMapping("/localizacao/create/{id}")
+	public ResponseEntity<Boolean> createObjLocalization(@RequestBody Map<Double, Double> localizacoes, @PathVariable("id") Long id){
+		
+		boolean response = passeioService.createLocalizationObj(id,localizacoes);
 		return ResponseEntity.ok(response);
 		
 	}

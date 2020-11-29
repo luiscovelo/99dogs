@@ -29,4 +29,6 @@ public interface PasseioService {
 	
 	List<Passeio> readAllByProfissionalIdAndStatus(Long id, String status);
 	
+	Map<Double, Double> localizacao(Long id);
+	
 }

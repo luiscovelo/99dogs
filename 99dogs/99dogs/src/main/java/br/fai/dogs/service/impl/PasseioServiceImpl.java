@@ -363,4 +363,39 @@ public class PasseioServiceImpl implements PasseioService {
 		
 	}
 
+	@Override
+	public Map<Double, Double> localizacao(Long id) {
+		
+		Map<Double, Double> response = null;
+		String endpoint = "http://localhost:8082/api/v1/passeio/localizacao/" + id;
+
+		RestTemplate restTemplate = new RestTemplate();
+		
+		ParameterizedTypeReference<Map<Double, Double>> typeRef = new ParameterizedTypeReference<Map<Double, Double>>() {};
+		
+		try {
+			
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Authorization", Helper.getUserTokenJwt(session));
+			
+			HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
+			
+			ResponseEntity<Map<Double, Double>> requestResponse = restTemplate.exchange(
+				endpoint, 
+				HttpMethod.GET, 
+				requestEntity,
+				typeRef
+			);
+			
+			response = requestResponse.getBody();
+			
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return response;
+		
+	}
+
 }
